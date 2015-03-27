@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Threading;
 
@@ -18,20 +19,20 @@ namespace lego_communication_library
         private int iteratorConnectIndex;
         private static lego_brick instance;
 
-        private Motor getMotorByLitera(Brick<Sensor, Sensor, Sensor, Sensor> brick, char motor)
+        private Motor getMotorByLitera(Brick<Sensor, Sensor, Sensor, Sensor> brick, char motor) // РІРјРµСЃС‚Рѕ Р»РёС‚РµСЂ С‡РёСЃР»Р°
         {
             switch (motor)
             {
-                case 'A':
+                case '1':
                     return brick.MotorA;
-                case 'B':
+                case '2':
                     return brick.MotorB;
-                case 'C':
+                case '3':
                     return brick.MotorC;
-                case 'D':
+                case '4':
                     return brick.MotorD;
                 default:
-                    throw new Exception("Недопустимая литера мотора!");
+                    throw new Exception("РќРµРґРѕРїСѓСЃС‚РёРјР°СЏ Р»РёС‚РµСЂР° РјРѕС‚РѕСЂР°!");
             }
         }
 
@@ -39,7 +40,7 @@ namespace lego_communication_library
         {
             if (!connectedBricks.Contains((Object) indexBrick))
             {
-                throw new Exception("Блок с запрашиваемым индексом не подключен!");
+                throw new Exception("Р‘Р»РѕРє СЃ Р·Р°РїСЂР°С€РёРІР°РµРјС‹Рј РёРЅРґРµРєСЃРѕРј РЅРµ РїРѕРґРєР»СЋС‡РµРЅ!");
             }
 
             return (Brick<Sensor, Sensor, Sensor, Sensor>) connectedBricks[(Object) indexBrick];
@@ -150,32 +151,32 @@ namespace lego_communication_library
             Vehicle vehicle = getVehicleByIndexBrick(indexBrick);
             switch (leftMotor)
             {
-                case 'A':
+                case '1':
                     vehicle.LeftPort = MotorPort.OutA;
                     break;
-                case 'B':
+                case '2':
                     vehicle.LeftPort = MotorPort.OutB;
                     break;
-                case 'C':
+                case '3':
                     vehicle.LeftPort = MotorPort.OutC;
                     break;
-                case 'D':
+                case '4':
                     vehicle.LeftPort = MotorPort.OutD;
                     break;
             }
 
             switch (rightMotor)
             {
-                case 'A':
+                case '1':
                     vehicle.RightPort = MotorPort.OutA;
                     break;
-                case 'B':
+                case '2':
                     vehicle.RightPort = MotorPort.OutB;
                     break;
-                case 'C':
+                case '3':
                     vehicle.RightPort = MotorPort.OutC;
                     break;
-                case 'D':
+                case '4':
                     vehicle.RightPort = MotorPort.OutD;
                     break;
             }
@@ -250,9 +251,20 @@ namespace lego_communication_library
             }
         }
 
-        public void waitMultiMotorsToStop(int indexBrick, char[] motors)
+        //public void waitMultiMotorsToStop(int indexBrick, char[] motors)
+        public void waitMultiMotorsToStop(int indexBrick, int MotorA, int MotorB, int MotorC, int MotorD)
         {
             Thread.Sleep(500);
+
+            //char[] motors = new char[0];
+
+
+            List<char> motors = new  List<char> ();
+
+            if (MotorA == 1) { motors.Add('1'); };
+            if (MotorB == 1) { motors.Add('2'); };
+            if (MotorC == 1) { motors.Add('3'); };
+            if (MotorD == 1) { motors.Add('4'); };
 
             bool allMotorsStopped;
             do {
