@@ -44,6 +44,4 @@ public:
 	~LegoRobotModule() {};
 };
 
-
-
 #endif	/* LEGO_MODULE_H */
