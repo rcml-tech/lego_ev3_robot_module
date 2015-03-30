@@ -1,3 +1,8 @@
+/*
+* File: lego_module.cpp
+* Author: m79lol, iskinmike
+*
+*/
 #include <iostream>
 #include <windows.h>
 #include <time.h>
@@ -251,56 +256,56 @@ FunctionResult* LegoRobot::executeFunction(regval functionId, regval *args) {
 	bool throw_exception = false;
 	switch (functionId) {
 	case 1: {
-		lego_communication_library::lego_brick::getInstance()->motorBreak(*args, (wchar_t) *(args+1) ); //   2 аргументов // По идее символы можно получить из чисел а значит массива int нам достаточно
+		lego_communication_library::lego_brick::getInstance()->motorBreak(*args,*(args+1) ); //   2 аргументов // По идее символы можно получить из чисел а значит массива int нам достаточно
 		rez->result = *args;
 		break;
 	}
 	case 2: {
-		rez->result = lego_communication_library::lego_brick::getInstance()->motorGetDirection(*args, (wchar_t)*(args + 1)); //   2 аргументов// возвращает bool
+		rez->result = lego_communication_library::lego_brick::getInstance()->motorGetDirection(*args, *(args + 1)); //   2 аргументов// возвращает bool
 		break;
 	}
 	case 3: {
-		rez->result = lego_communication_library::lego_brick::getInstance()->motorGetTacho(*args, (wchar_t)*(args + 1)); //   2 аргументов// возвращает Int
+		rez->result = lego_communication_library::lego_brick::getInstance()->motorGetTacho(*args, *(args + 1)); //   2 аргументов// возвращает Int
 		break;
 	}
 	case 4: {
-		lego_communication_library::lego_brick::getInstance()->motorMoveTo(*args, (wchar_t)*(args + 1), *(args + 2), *(args + 3), *(args + 4) ); //   5 аргументов // Естественно надо потом будет все поментяь но теперь все видно хотя бы сколько аргументов ти т.д. и т.п.
+		lego_communication_library::lego_brick::getInstance()->motorMoveTo(*args, *(args + 1), *(args + 2), *(args + 3), *(args + 4) ); //   5 аргументов // Естественно надо потом будет все поментяь но теперь все видно хотя бы сколько аргументов ти т.д. и т.п.
 		
 		rez->result = *args;
 		break;
 	}
 	case 5: {
-		lego_communication_library::lego_brick::getInstance()->motorOff(*args, (wchar_t) *(args+1) );//   2 аргументов
+		lego_communication_library::lego_brick::getInstance()->motorOff(*args, *(args + 1) );//   2 аргументов
 		
 		rez->result = *args;
 		break;
 	}
 	case 6: {
-		lego_communication_library::lego_brick::getInstance()->motorResetTacho(*args, (wchar_t) *(args+1) ); //   2 аргументов
+		lego_communication_library::lego_brick::getInstance()->motorResetTacho(*args, *(args + 1) ); //   2 аргументов
 		
 		rez->result = *args;
 		break;
 	}
 	case 7: {
-		lego_communication_library::lego_brick::getInstance()->motorSetDirection(*args, (wchar_t)*(args + 1), *(args + 2) ); //   3 аргументов
+		lego_communication_library::lego_brick::getInstance()->motorSetDirection(*args, *(args + 1), *(args + 2) ); //   3 аргументов
 		
 		rez->result = *args;
 		break;
 	}
 	case 8: {
-		lego_communication_library::lego_brick::getInstance()->motorSetSpeed(*args, (wchar_t)*(args + 1), *(args + 2) ); //   3 аргументов
+		lego_communication_library::lego_brick::getInstance()->motorSetSpeed(*args, *(args + 1), *(args + 2) ); //   3 аргументов
 		
 		rez->result = *args;
 		break;
 	}
 	case 9: {
-		lego_communication_library::lego_brick::getInstance()->setTrackVehicle(*args, (wchar_t)*(args + 1), (wchar_t)*(args + 2), *(args + 3), *(args + 4) ); //   5 аргументов
+		lego_communication_library::lego_brick::getInstance()->setTrackVehicle(*args, *(args + 1), *(args + 2), *(args + 3), *(args + 4) ); //   5 аргументов
 		
 		rez->result = *args;
 		break;
 	}
 	case 10: {
-		lego_communication_library::lego_brick::getInstance()->waitMotorToStop(*args, (wchar_t) *(args+1)); //   2 аргументов
+		lego_communication_library::lego_brick::getInstance()->waitMotorToStop(*args, *(args + 1)); //   2 аргументов
 		
 		rez->result = *args;
 		break;
@@ -376,3 +381,4 @@ FunctionResult* LegoRobot::executeFunction(regval functionId, regval *args) {
 __declspec(dllexport) RobotModule* getRobotModuleObject() {
 	return new LegoRobotModule();
 };
+
