@@ -244,7 +244,9 @@ void LegoRobot::axisControl(regval axis_index, regval value){
 
 };
 
-
+void LegoRobotModule::prepare(colorPrintf_t *colorPrintf_p, colorPrintfVA_t *colorPrintfVA_p) {
+	colorPrintf = colorPrintf_p;
+}
 
 //Теперь самое интересное - executeFunction
 // Здесь в зависимости от введенного пара метра через оператор switch будем выполнять разные функции из проекта Lego_communication
@@ -256,120 +258,104 @@ FunctionResult* LegoRobot::executeFunction(regval functionId, regval *args) {
 	bool throw_exception = false;
 	switch (functionId) {
 	case 1: {
-		lego_communication_library::lego_brick::getInstance()->motorBreak(*args,*(args+1) ); //   2 аргументов // По идее символы можно получить из чисел а значит массива int нам достаточно
-		rez->result = *args;
+		lego_communication_library::lego_brick::getInstance()->motorBreak(*args,(wchar_t)*(args+1) ); //   2 аргументов // По идее символы можно получить из чисел а значит массива int нам достаточно
+		 
 		break;
 	}
 	case 2: {
-		rez->result = lego_communication_library::lego_brick::getInstance()->motorGetDirection(*args, *(args + 1)); //   2 аргументов// возвращает bool
+		rez->result = lego_communication_library::lego_brick::getInstance()->motorGetDirection(*args, (wchar_t)*(args + 1)); //   2 аргументов// возвращает bool
 		break;
 	}
 	case 3: {
-		rez->result = lego_communication_library::lego_brick::getInstance()->motorGetTacho(*args, *(args + 1)); //   2 аргументов// возвращает Int
+		rez->result = lego_communication_library::lego_brick::getInstance()->motorGetTacho(*args, (wchar_t)*(args+1)); //   2 аргументов// возвращает Int
 		break;
 	}
 	case 4: {
-		lego_communication_library::lego_brick::getInstance()->motorMoveTo(*args, *(args + 1), *(args + 2), *(args + 3), *(args + 4) ); //   5 аргументов // Естественно надо потом будет все поментяь но теперь все видно хотя бы сколько аргументов ти т.д. и т.п.
+		lego_communication_library::lego_brick::getInstance()->motorMoveTo(*args, (wchar_t)*(args+1), *(args + 2), *(args + 3), *(args + 4) ); //   5 аргументов // Естественно надо потом будет все поментяь но теперь все видно хотя бы сколько аргументов ти т.д. и т.п.
 		
-		rez->result = *args;
 		break;
 	}
 	case 5: {
-		lego_communication_library::lego_brick::getInstance()->motorOff(*args, *(args + 1) );//   2 аргументов
+		lego_communication_library::lego_brick::getInstance()->motorOff(*args, (wchar_t)*(args+1) );//   2 аргументов
 		
-		rez->result = *args;
 		break;
 	}
 	case 6: {
-		lego_communication_library::lego_brick::getInstance()->motorResetTacho(*args, *(args + 1) ); //   2 аргументов
+		lego_communication_library::lego_brick::getInstance()->motorResetTacho(*args, (wchar_t)*(args+1) ); //   2 аргументов
 		
-		rez->result = *args;
 		break;
 	}
 	case 7: {
-		lego_communication_library::lego_brick::getInstance()->motorSetDirection(*args, *(args + 1), *(args + 2) ); //   3 аргументов
+		lego_communication_library::lego_brick::getInstance()->motorSetDirection(*args, (wchar_t)*(args+1), *(args + 2) ); //   3 аргументов
 		
-		rez->result = *args;
 		break;
 	}
 	case 8: {
-		lego_communication_library::lego_brick::getInstance()->motorSetSpeed(*args, *(args + 1), *(args + 2) ); //   3 аргументов
+		lego_communication_library::lego_brick::getInstance()->motorSetSpeed(*args, (wchar_t)*(args+1), *(args + 2) ); //   3 аргументов
 		
-		rez->result = *args;
 		break;
 	}
 	case 9: {
-		lego_communication_library::lego_brick::getInstance()->setTrackVehicle(*args, *(args + 1), *(args + 2), *(args + 3), *(args + 4) ); //   5 аргументов
+		lego_communication_library::lego_brick::getInstance()->setTrackVehicle(*args, (wchar_t)*(args + 1), (wchar_t)*(args + 2), *(args + 3), *(args + 4)); //   5 аргументов
 		
-		rez->result = *args;
 		break;
 	}
 	case 10: {
-		lego_communication_library::lego_brick::getInstance()->waitMotorToStop(*args, *(args + 1)); //   2 аргументов
+		lego_communication_library::lego_brick::getInstance()->waitMotorToStop(*args, (wchar_t)*(args+1)); //   2 аргументов
 		
-		rez->result = *args;
 		break;
 	}
 	case 11: {
 
 		// Теперь надо сделать чтобы в зависимости от принятого 
-		lego_communication_library::lego_brick::getInstance()->waitMultiMotorsToStop(*args, *(args + 1), *(args + 2), *(args + 3), *(args + 4)); // Тут проблема с тем чсто в аргументе должен быть массив символов
+		lego_communication_library::lego_brick::getInstance()->waitMultiMotorsToStop(*args, (wchar_t)*(args + 1), (wchar_t)*(args + 2), (wchar_t)*(args + 3), (wchar_t)*(args + 4)); // Тут проблема с тем чсто в аргументе должен быть массив символов
 		
-		rez->result = *args;
 		break;
 	}
 	case 12: {
-		lego_communication_library::lego_brick::getInstance()->trackVehicleBackward(*args, *(args + 1)); //   2 аргументов
+		lego_communication_library::lego_brick::getInstance()->trackVehicleBackward(*args, *(args+1)); //   2 аргументов
 		
-		rez->result = *args;
 		break;
 	}
 	case 13: {
-		lego_communication_library::lego_brick::getInstance()->trackVehicleForward(*args, *(args + 1));//   2 аргументов
+		lego_communication_library::lego_brick::getInstance()->trackVehicleForward(*args, *(args+1));//   2 аргументов
 		
-		rez->result = *args;
 		break;
 	}
 	case 14: {
 		lego_communication_library::lego_brick::getInstance()->trackVehicleOff(*args); //   1 аргументов
 		//cout << "works@" << endl;
-		rez->result = *args;
+		 
 		break;
 	}
 	case 15: {
-		lego_communication_library::lego_brick::getInstance()->trackVehicleSpinLeft(*args, *(args + 1)); //   2 аргументов
+		lego_communication_library::lego_brick::getInstance()->trackVehicleSpinLeft(*args, *(args+1)); //   2 аргументов
 			
-		rez->result = *args;
 		break;
 	}
 	case 16: {
 		lego_communication_library::lego_brick::getInstance()->trackVehicleSpinRight(*args, *(args + 1)); //   2 аргументов
 			
-		rez->result = *args;
 		break;
 	}
 	case 17: {
 		lego_communication_library::lego_brick::getInstance()->trackVehicleTurnLeftForward(*args, *(args + 1), *(args + 2)); //   3 аргументов
 			
-		rez->result = *args;
 		break;
 	}
 	case 18: { 
 		lego_communication_library::lego_brick::getInstance()->trackVehicleTurnLeftReverse(*args, *(args + 1), *(args + 2)); //   3 аргументов
 			
-		rez->result = *args;
 		break;
 	}
 	case 19: {
 		lego_communication_library::lego_brick::getInstance()->trackVehicleTurnRightForward(*args, *(args + 1), *(args + 2)); //   3 аргументов
 			
-		rez->result = *args;
 		break;
 	}
 	case 20: {
 		lego_communication_library::lego_brick::getInstance()->trackVehicleTurnRightForward(*args, *(args + 1), *(args + 2)); //   3 аргументов
 		
-		rez->result = *args;
 		break;
 	}
 	};// End Switch
