@@ -16,23 +16,17 @@
 #include "robot_module.h"
 #include "lego_module.h"
 
-//#include "g:\VSProjects\LegoProxyFuncTest1\simpleini-master\SimpleIni.h"
 #include "SimpleIni.h"
-
 
 using namespace std;
 
-// Начнем потихоньку добавлять наши методы класса 
-
 ////////////// Установка Глобальных переменных.
-int COUNT_LEGO_FUNCTIONS = 20; // Количество задействованных функций Всего их будет 20 не считая 3-х которые реализованы в init, rquireRobot, freeRobot
+int COUNT_LEGO_FUNCTIONS = 20; 
 int COUNT_AXIS = 3;
 
-char *PATH_TO_CONFIG = "robot_modules/config.ini"; // Это путь к ini файлу в котором содержится инфа о том к какому порту подключаться и т.д.
+char *PATH_TO_CONFIG = "robot_modules/config.ini"; 
 
 
-////////// Теперь сделаем поределения макросов чтобы добавлять наши функции лего модуля
-// Опишем макрос который будет заполнять наш массив структур с информацией о функциях. Ия функции, Присваивает уникальный индекс, число параметров и дает ли исключение.
 #define ADD_LEGO_FUNCTION(FUNCTION_NAME, COUNT_PARAMS, GIVE_EXCEPTION) \
 	lego_functions[function_id] = new FunctionData; \
 	lego_functions[function_id]->command_index = function_id + 1; \
@@ -42,7 +36,6 @@ char *PATH_TO_CONFIG = "robot_modules/config.ini"; // Это путь к ini ф�
 	function_id++;
 // Конец макроса
 
-// Опишем макросс который все наши функции заполнит/ Добавил Функцию - Увеличивай их число COUNT_MATH_FUNCTIONS. А то удалишь нафиг какой-нить процесс в памяти.
 #define DEFINE_ALL_FUNCTIONS \
 	ADD_LEGO_FUNCTION("motorBreak", 2, false)\
 	ADD_LEGO_FUNCTION("motorGetDirection", 2, false)\
@@ -64,8 +57,6 @@ char *PATH_TO_CONFIG = "robot_modules/config.ini"; // Это путь к ini ф�
 	ADD_LEGO_FUNCTION("trackVehicleTurnLeftReverse", 3, false)\
 	ADD_LEGO_FUNCTION("trackVehicleTurnRightForward", 3, false)\
 	ADD_LEGO_FUNCTION("trackVehicleTurnRightForward", 3, false);
-
-
 // Конец макроса
 
 ///////////////// Добавим Оси роботов
@@ -84,31 +75,26 @@ ADD_ROBOT_AXIS("straight", 2, 0)\
 ADD_ROBOT_AXIS("rotation", 2, 0);
 // Конец макроса
 
-// Для начала самое простое - getUID
 const char* LegoRobotModule::getUID() {
 	return "Lego_Functions_dll";
 };
 
-// возвращает указатель на указатель на массив наших функций.
 FunctionData** LegoRobotModule::getFunctions(int *count_functions) {
 	*count_functions = COUNT_LEGO_FUNCTIONS;
 	return lego_functions;
 };
 
-// Описание конструктора нашего класса
 LegoRobotModule::LegoRobotModule() {
 	srand(time(NULL));
-	lego_functions = new FunctionData*[COUNT_LEGO_FUNCTIONS]; // Создание нового массива наших функций
-	regval function_id = 0; // задаем начальный индекс функций
-	DEFINE_ALL_FUNCTIONS // Макрос создания наших функций
+	lego_functions = new FunctionData*[COUNT_LEGO_FUNCTIONS]; 
+	regval function_id = 0; 
+	DEFINE_ALL_FUNCTIONS 
 	
-	// Определим еще и оси
 	robot_axis = new AxisData*[COUNT_AXIS];
 	regval axis_id = 0;
 	DEFINE_ALL_AXIS
 };
 
-// Описание Деструктора
 void LegoRobotModule::destroy() {
 	for (int j = 0; j < COUNT_LEGO_FUNCTIONS; ++j) {
 		delete lego_functions[j];
@@ -117,7 +103,6 @@ void LegoRobotModule::destroy() {
 	delete this;
 };
 
-// Метод инициализации !!!!!!!!!!!!!!!!!!!!!!    Пока это просто скопировано из lego_track_robot
 int LegoRobotModule::init(){
 	printf("init from dll\n");
 
@@ -165,20 +150,20 @@ int LegoRobotModule::init(){
 	return 0;
 };
 
-// Метода Запроса робота
+
 Robot* LegoRobotModule::robotRequire(){
 	EnterCriticalSection(&LRM_cs); // Вход в критическую секцию
 	printf("DLL: new robot require\n");
 
 	for (m_connections::iterator i = aviable_connections.begin(); i != aviable_connections.end(); ++i) {
-		if (i->second->isAviable) { // Похоже это такая хитрая штука что карта avaliable_connections воспринимается как пара значений pair  и поэтому можно обратиться к второй части пары через ->second-> и это у нас будет объект класса LegoRobot у него будет свойство IsAvaliable
+		if (i->second->isAviable) { 
 			printf("DLL: finded free robot: %p\n", i->second);
 
-			LegoRobot *lego_robot = i->second; // Здесь мы нашему указателю на объект передаем адрес свободного объекта типа LegoRobot
-			lego_robot->isAviable = false; // И теперь мы его застолбили
+			LegoRobot *lego_robot = i->second; 
+			lego_robot->isAviable = false; 
 
-			Robot *robot = lego_robot; // Теперь указателю на объект класса Robot присваиваем адрес оъекта класса LegoRobot
-			LeaveCriticalSection(&LRM_cs); // Выходим из критической секции
+			Robot *robot = lego_robot;
+			LeaveCriticalSection(&LRM_cs); 
 			return robot;
 		};
 	};
@@ -186,9 +171,7 @@ Robot* LegoRobotModule::robotRequire(){
 	return NULL;
 };
 
-// Метод освобождения робота
 void LegoRobotModule::robotFree(Robot *robot){
-	// На всякий случай сделаем выход из критической секции
 	EnterCriticalSection(&LRM_cs); // Вход в критическую секцию
 	LegoRobot *lego_robot = reinterpret_cast<LegoRobot*>(robot); // Эта функция пзволяет преобразовать указатель Robot *robot к виду казателя на LegoRobot.
 
@@ -201,13 +184,11 @@ void LegoRobotModule::robotFree(Robot *robot){
 	LeaveCriticalSection(&LRM_cs); // Выходим из критической секции
 };
 
-// метод получения Осей Возвращает указатель на указатель на структуру которая содержит инфу об осях робота, так же как и FunctionDAta
 AxisData **LegoRobotModule::getAxis(int *count_axis){
 	(*count_axis) = COUNT_AXIS;
 	return robot_axis;
 };
 
-// Метод завершения. Завершает вообще работу с роботами
 void LegoRobotModule::final(){
 	lego_communication_library::lego_brick^ singletoneBrick = lego_communication_library::lego_brick::getInstance(); // Здесь обращение к внешней библиотеке на C#, поэтому есть ^ - Это значит что система будет заниматься выделением под него памяти
 	for (m_connections::iterator i = aviable_connections.begin(); i != aviable_connections.end(); ++i) {
@@ -217,7 +198,6 @@ void LegoRobotModule::final(){
 	aviable_connections.clear();
 };
 
-// Метод Управления осями, относится к LegoRobot
 void LegoRobot::axisControl(regval axis_index, regval value){
 	bool need_send = false;
 	if (axis_index == 1) {
@@ -248,8 +228,6 @@ void LegoRobotModule::prepare(colorPrintf_t *colorPrintf_p, colorPrintfVA_t *col
 	colorPrintf = colorPrintf_p;
 }
 
-//Теперь самое интересное - executeFunction
-// Здесь в зависимости от введенного пара метра через оператор switch будем выполнять разные функции из проекта Lego_communication
 FunctionResult* LegoRobot::executeFunction(regval functionId, regval *args) {
 	if ((functionId < 1) || (functionId > 21)) {
 		return NULL;
@@ -306,8 +284,6 @@ FunctionResult* LegoRobot::executeFunction(regval functionId, regval *args) {
 		break;
 	}
 	case 11: {
-
-		// Теперь надо сделать чтобы в зависимости от принятого 
 		lego_communication_library::lego_brick::getInstance()->waitMultiMotorsToStop(*args, (wchar_t)*(args + 1), (wchar_t)*(args + 2), (wchar_t)*(args + 3), (wchar_t)*(args + 4)); // Тут проблема с тем чсто в аргументе должен быть массив символов
 		
 		break;
