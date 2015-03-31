@@ -19,20 +19,20 @@ namespace lego_communication_library
         private int iteratorConnectIndex;
         private static lego_brick instance;
 
-        private Motor getMotorByLitera(Brick<Sensor, Sensor, Sensor, Sensor> brick, int motor) // вместо литер числа
+        private Motor getMotorByLitera(Brick<Sensor, Sensor, Sensor, Sensor> brick, char motor) // вместо литер числа
         {
             switch (motor)
             {
-                case 1:
+                case 'A':
                     return brick.MotorA;
-                case 2:
+                case 'B': 
                     return brick.MotorB;
-                case 3:
+                case 'C':
                     return brick.MotorC;
-                case 4:
+                case 'D':
                     return brick.MotorD;
                 default:
-                    throw new Exception("Недопустимая литера мотора!");
+                    throw new Exception("Недопустимая литера мотора! " );
             }
         }
 
@@ -46,7 +46,7 @@ namespace lego_communication_library
             return (Brick<Sensor, Sensor, Sensor, Sensor>) connectedBricks[(Object) indexBrick];
         }
 
-        private Motor getMotorByIndexBreakAndLitera(int indexBrick, int motor)
+        private Motor getMotorByIndexBreakAndLitera(int indexBrick, char motor)
         {
             Brick<Sensor, Sensor, Sensor, Sensor> brick = getBrickByIndex(indexBrick);
             Motor brickMotor = getMotorByLitera(brick, motor);
@@ -98,85 +98,85 @@ namespace lego_communication_library
             getBrickByIndex(indexBrick).Connection.Close();
         }
 
-        public void motorSetSpeed(int indexBrick, int motor , sbyte speed)
+        public void motorSetSpeed(int indexBrick, char motor , sbyte speed)
         {
             Motor brickMotor = getMotorByIndexBreakAndLitera(indexBrick, motor);
             brickMotor.On(speed);
         }
 
-        public void motorOff(int indexBrick, int motor)
+        public void motorOff(int indexBrick, char motor)
         {
             Motor brickMotor = getMotorByIndexBreakAndLitera(indexBrick, motor);
             brickMotor.Off();
         }
 
-        public void motorBreak(int indexBrick, int motor)
+        public void motorBreak(int indexBrick, char motor)
         {
             Motor brickMotor = getMotorByIndexBreakAndLitera(indexBrick, motor);
             brickMotor.Brake();
         }
 
-        public void motorSetDirection(int indexBrick, int motor, bool isForward)
+        public void motorSetDirection(int indexBrick, char motor, bool isForward)
         {
             Motor brickMotor = getMotorByIndexBreakAndLitera(indexBrick, motor);
             brickMotor.Reverse = isForward;
         }
 
-        public bool motorGetDirection(int indexBrick, int motor)
+        public bool motorGetDirection(int indexBrick, char motor)
         {
             Motor brickMotor = getMotorByIndexBreakAndLitera(indexBrick, motor);
             return brickMotor.Reverse;
         }
 
-        public void motorResetTacho(int indexBrick, int motor)
+        public void motorResetTacho(int indexBrick, char motor)
         {
             Motor brickMotor = getMotorByIndexBreakAndLitera(indexBrick, motor);
             brickMotor.ResetTacho();
         }
 
-        public int motorGetTacho(int indexBrick, int motor)
+        public int motorGetTacho(int indexBrick, char motor)
         {
             Motor brickMotor = getMotorByIndexBreakAndLitera(indexBrick, motor);
             return brickMotor.GetTachoCount();
         }
 
-        public void motorMoveTo(int indexBrick, int motor, sbyte speed, int position, bool brake)
+        public void motorMoveTo(int indexBrick, char motor, sbyte speed, int position, bool brake)
         {
             Motor brickMotor = getMotorByIndexBreakAndLitera(indexBrick, motor);
             brickMotor.MoveTo((byte)speed, position, brake);
         }
 
-        public void setTrackVehicle(int indexBrick, int leftMotor, int rightMotor, bool leftReverse, bool rightReverse)
+        public void setTrackVehicle(int indexBrick, char leftMotor, char rightMotor, bool leftReverse, bool rightReverse)
         {
             Vehicle vehicle = getVehicleByIndexBrick(indexBrick);
             switch (leftMotor)
             {
-                case 1:
+                case 'A':
                     vehicle.LeftPort = MotorPort.OutA;
                     break;
-                case 2:
+                case 'B':
                     vehicle.LeftPort = MotorPort.OutB;
                     break;
-                case 3:
+                case 'C':
                     vehicle.LeftPort = MotorPort.OutC;
                     break;
-                case 4:
+                case 'D':
                     vehicle.LeftPort = MotorPort.OutD;
                     break;
             }
 
             switch (rightMotor)
             {
-                case 1:
+                case 'A':
                     vehicle.RightPort = MotorPort.OutA;
                     break;
-                case 2:
+                case 'B':
                     vehicle.RightPort = MotorPort.OutB;
                     break;
-                case 3:
+                case 'C':
                     vehicle.RightPort = MotorPort.OutC;
                     break;
-                case 4:
+                case 'D':
                     vehicle.RightPort = MotorPort.OutD;
                     break;
             }
@@ -240,7 +240,7 @@ namespace lego_communication_library
             vehicle.Off();
         }
 
-        public void waitMotorToStop(int indexBrick, int motor)
+        public void waitMotorToStop(int indexBrick, char motor)
         {
             Motor brickMotor = getMotorByIndexBreakAndLitera(indexBrick, motor);
             
@@ -252,24 +252,24 @@ namespace lego_communication_library
         }
 
         //public void waitMultiMotorsToStop(int indexBrick, char[] motors)
-        public void waitMultiMotorsToStop(int indexBrick, int MotorA, int MotorB, int MotorC, int MotorD)
-        {
+        public void waitMultiMotorsToStop(int indexBrick, char MotorA, char MotorB, char MotorC, char MotorD){
+        
             Thread.Sleep(500);
 
             //char[] motors = new char[0];
 
-            List<int> motors = new  List<int> ();
+            List<char> motors = new  List<char> ();
 
-            if (MotorA == 1) { motors.Add(1); };
-            if (MotorB == 1) { motors.Add(2); };
-            if (MotorC == 1) { motors.Add(3); };
-            if (MotorD == 1) { motors.Add(4); };
+            if (MotorA == 1) { motors.Add('A'); };
+            if (MotorB == 1) { motors.Add('B'); };
+            if (MotorC == 1) { motors.Add('C'); };
+            if (MotorD == 1) { motors.Add('D'); };
 
             bool allMotorsStopped;
             do {
                 allMotorsStopped = true;
                 Thread.Sleep(50);
-                foreach (int motor in motors)
+                foreach (char motor in motors)
                 {
                     Motor brickMotor = getMotorByIndexBreakAndLitera(indexBrick, motor);
                 

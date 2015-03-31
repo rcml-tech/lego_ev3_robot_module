@@ -16,19 +16,16 @@
 #include "robot_module.h"
 #include "lego_module.h"
 
-//#include "g:\VSProjects\LegoProxyFuncTest1\simpleini-master\SimpleIni.h"
 #include "SimpleIni.h"
-
 
 using namespace std;
 
-// Начнем потихоньку добавлять наши методы класса 
 
 ////////////// Установка Глобальных переменных.
 int COUNT_LEGO_FUNCTIONS = 20; // Количество задействованных функций Всего их будет 20 не считая 3-х которые реализованы в init, rquireRobot, freeRobot
-int COUNT_AXIS = 3;
+int COUNT_AXIS = 12;
 
-char *PATH_TO_CONFIG = "robot_modules/config.ini"; // Это путь к ini файлу в котором содержится инфа о том к какому порту подключаться и т.д.
+char *PATH_TO_CONFIG = "robot_modules/lego/config.ini"; // Это путь к ini файлу в котором содержится инфа о том к какому порту подключаться и т.д.
 
 
 ////////// Теперь сделаем поределения макросов чтобы добавлять наши функции лего модуля
@@ -44,28 +41,26 @@ char *PATH_TO_CONFIG = "robot_modules/config.ini"; // Это путь к ini ф�
 
 // Опишем макросс который все наши функции заполнит/ Добавил Функцию - Увеличивай их число COUNT_MATH_FUNCTIONS. А то удалишь нафиг какой-нить процесс в памяти.
 #define DEFINE_ALL_FUNCTIONS \
-	ADD_LEGO_FUNCTION("motorBreak", 2, false)\
-	ADD_LEGO_FUNCTION("motorGetDirection", 2, false)\
-	ADD_LEGO_FUNCTION("motorGetTacho", 2, false)\
-	ADD_LEGO_FUNCTION("motorMoveTo", 5, false)\
-	ADD_LEGO_FUNCTION("motorOff", 2, false)\
-	ADD_LEGO_FUNCTION("motorResetTacho", 2, false)\
-	ADD_LEGO_FUNCTION("motorSetDirection", 3, false)\
-	ADD_LEGO_FUNCTION("motorSetSpeed", 3, false)\
-	ADD_LEGO_FUNCTION("setTrackVehicle", 5, false)\
-	ADD_LEGO_FUNCTION("waitMotorToStop", 2, false)\
-	ADD_LEGO_FUNCTION("waitMultiMotorsToStop", 5, false)\
-	ADD_LEGO_FUNCTION("trackVehicleBackward", 2, false)\
-	ADD_LEGO_FUNCTION("trackVehicleForward", 2, false)\
-	ADD_LEGO_FUNCTION("trackVehicleOff", 1, false)\
-	ADD_LEGO_FUNCTION("trackVehicleSpinLeft", 2, false)\
-	ADD_LEGO_FUNCTION("trackVehicleSpinRight", 2, false)\
-	ADD_LEGO_FUNCTION("trackVehicleTurnLeftForward", 3, false)\
-	ADD_LEGO_FUNCTION("trackVehicleTurnLeftReverse", 3, false)\
-	ADD_LEGO_FUNCTION("trackVehicleTurnRightForward", 3, false)\
-	ADD_LEGO_FUNCTION("trackVehicleTurnRightForward", 3, false);
-
-
+	ADD_LEGO_FUNCTION("motorBreak", 1, false)\
+	ADD_LEGO_FUNCTION("motorGetDirection", 1, false)\
+	ADD_LEGO_FUNCTION("motorGetTacho", 1, false)\
+	ADD_LEGO_FUNCTION("motorMoveTo", 4, false)\
+	ADD_LEGO_FUNCTION("motorOff", 1, false)\
+	ADD_LEGO_FUNCTION("motorResetTacho", 1, false)\
+	ADD_LEGO_FUNCTION("motorSetDirection", 2, false)\
+	ADD_LEGO_FUNCTION("motorSetSpeed", 2, false)\
+	ADD_LEGO_FUNCTION("setTrackVehicle", 4, false)\
+	ADD_LEGO_FUNCTION("waitMotorToStop", 1, false)\
+	ADD_LEGO_FUNCTION("waitMultiMotorsToStop", 4, false)\
+	ADD_LEGO_FUNCTION("trackVehicleBackward", 1, false)\
+	ADD_LEGO_FUNCTION("trackVehicleForward", 1, false)\
+	ADD_LEGO_FUNCTION("trackVehicleOff", 0, false)\
+	ADD_LEGO_FUNCTION("trackVehicleSpinLeft", 1, false)\
+	ADD_LEGO_FUNCTION("trackVehicleSpinRight", 1, false)\
+	ADD_LEGO_FUNCTION("trackVehicleTurnLeftForward", 2, false)\
+	ADD_LEGO_FUNCTION("trackVehicleTurnLeftReverse", 2, false)\
+	ADD_LEGO_FUNCTION("trackVehicleTurnRightForward", 2, false)\
+	ADD_LEGO_FUNCTION("trackVehicleTurnRightForward", 2, false);
 // Конец макроса
 
 ///////////////// Добавим Оси роботов
@@ -80,8 +75,16 @@ axis_id++;
 
 #define DEFINE_ALL_AXIS \
 ADD_ROBOT_AXIS("locked", 1, 0)\
-ADD_ROBOT_AXIS("straight", 2, 0)\
-ADD_ROBOT_AXIS("rotation", 2, 0);
+ADD_ROBOT_AXIS("speedMotorA", 100, -100)\
+ADD_ROBOT_AXIS("speedMotorB", 100, -100)\
+ADD_ROBOT_AXIS("speedMotorC", 100, -100)\
+ADD_ROBOT_AXIS("speedMotorD", 100, -100)\
+ADD_ROBOT_AXIS("moveMotorA", 1000, -1000)\
+ADD_ROBOT_AXIS("moveMotorB", 1000, -1000)\
+ADD_ROBOT_AXIS("moveMotorC", 1000, -1000)\
+ADD_ROBOT_AXIS("moveMotorD", 1000, -1000)\
+ADD_ROBOT_AXIS("straight", -100, 100)\
+ADD_ROBOT_AXIS("rotation", -100, 100);
 // Конец макроса
 
 // Для начала самое простое - getUID
@@ -108,6 +111,25 @@ LegoRobotModule::LegoRobotModule() {
 	DEFINE_ALL_AXIS
 };
 
+
+char numToMotorLitera(regval num){
+	switch (num){
+		case 1:{
+			return 'A';
+		};
+		case 2:{
+			return 'B';
+		};
+		case 3:{
+			return 'C';
+		};
+		case 4:{	
+			return 'A';
+		};
+	};
+
+};
+
 // Описание Деструктора
 void LegoRobotModule::destroy() {
 	for (int j = 0; j < COUNT_LEGO_FUNCTIONS; ++j) {
@@ -117,7 +139,7 @@ void LegoRobotModule::destroy() {
 	delete this;
 };
 
-// Метод инициализации !!!!!!!!!!!!!!!!!!!!!!    Пока это просто скопировано из lego_track_robot
+// Метод инициализации !!!!!!!!!!!!!!!!!!!!!!  
 int LegoRobotModule::init(){
 	printf("init from dll\n");
 
@@ -149,11 +171,11 @@ int LegoRobotModule::init(){
 
 		try {
 			singletoneBrick->connectBrick(index_robot); // Здесь создаем соединение с лего Brick
-
+			cout << index_robot << endl;
 			LegoRobot *lego_robot = new LegoRobot(index_robot);
 
 			printf("DLL: connected to %s robot %p\n", connection.c_str(), lego_robot);
-
+			OccRobot = lego_robot;
 			aviable_connections[connection] = lego_robot; // Записываем найденного таким образом указатель на объект класса LegoRobot в нашу карту доступных подключений
 		}
 		catch (...) {
@@ -201,13 +223,12 @@ void LegoRobotModule::robotFree(Robot *robot){
 	LeaveCriticalSection(&LRM_cs); // Выходим из критической секции
 };
 
-// метод получения Осей Возвращает указатель на указатель на структуру которая содержит инфу об осях робота, так же как и FunctionDAta
 AxisData **LegoRobotModule::getAxis(int *count_axis){
 	(*count_axis) = COUNT_AXIS;
+	cout << "AxisGo!" << endl;
 	return robot_axis;
 };
 
-// Метод завершения. Завершает вообще работу с роботами
 void LegoRobotModule::final(){
 	lego_communication_library::lego_brick^ singletoneBrick = lego_communication_library::lego_brick::getInstance(); // Здесь обращение к внешней библиотеке на C#, поэтому есть ^ - Это значит что система будет заниматься выделением под него памяти
 	for (m_connections::iterator i = aviable_connections.begin(); i != aviable_connections.end(); ++i) {
@@ -219,32 +240,80 @@ void LegoRobotModule::final(){
 
 // Метод Управления осями, относится к LegoRobot
 void LegoRobot::axisControl(regval axis_index, regval value){
-	bool need_send = false;
-	if (axis_index == 1) {
-		if (
-			((is_locked) && (!value))
-			|| ((!is_locked) && (value))
-			) {
-			is_locked = (bool)value;
-			need_send = true;
-		}
-	}
-	else {
-		need_send = (!is_locked) && (axis_state[axis_index - 1] != value);
-	}
-	if (need_send) {
-		axis_state[axis_index - 1] = value;
-		std::string command_for_robot = "H";
-		command_for_robot += std::to_string(axis_index);
-		command_for_robot += std::to_string(value);
-		command_for_robot += "&";
-		//send(socket, command_for_robot.c_str(), command_for_robot.length(), 0); // Пока закомментил чтобы не мешалась функция, с ней надо подумать потому что сокета пока нет. точнее он есть но я не уверен в верности формата
-		printf("%s\n", command_for_robot.c_str());
-	}
 
+	switch (axis_index){
+	case 1:{
+		is_locked = (bool)value;
+		break;
+	};
+
+	case 2:
+	case 3:
+	case 4:
+	case 5:{ // speedMotorA .B.C.D
+		if (!is_locked){
+			lego_communication_library::lego_brick::getInstance()->motorSetSpeed(robot_index, (wchar_t)(63+axis_index), value);
+		}// End If
+		else {
+			cout << "robot is locked!" << endl;
+		} // End else
+		break;
+	};
+	case 6:
+	case 7:
+	case 8:
+	case 9:{ // moveMotorA ,B,C,D                                           // (int indexBrick, char motor, sbyte speed, int position, bool brake)       
+		if (!is_locked){
+			lego_communication_library::lego_brick::getInstance()->motorMoveTo(robot_index, (wchar_t)(59+axis_index), 1, value, false); // 
+		}
+		else {
+			cout << "robot is locked!" << endl;
+		} // End else
+		break;
+	};
+	case 10:{
+		if (!is_locked){
+			if (value > 0){ // в принципе работать должно, оставим пока так
+				lego_communication_library::lego_brick::getInstance()->trackVehicleForward(robot_index, value);
+			}
+			else{
+				lego_communication_library::lego_brick::getInstance()->trackVehicleBackward(robot_index, value);
+			}; //end If
+
+			if (value == 0) {
+				lego_communication_library::lego_brick::getInstance()->trackVehicleOff(robot_index); //   1 аргументов
+			};
+		} // End If
+		else {
+			cout << "robot is locked!" << endl;
+		} // End else
+		break;
+	};
+	case 11:{
+		if (!is_locked){
+			if (value > 0){ // в принципе работать должно, оставим пока так
+				lego_communication_library::lego_brick::getInstance()->trackVehicleSpinRight(robot_index, value);
+			}
+			else{
+				lego_communication_library::lego_brick::getInstance()->trackVehicleSpinLeft(robot_index, value);
+			}; //end If
+
+			if (value == 0) {
+				lego_communication_library::lego_brick::getInstance()->trackVehicleOff(robot_index); //   1 аргументов
+			};
+		} // End If
+		else {
+			cout << "robot is locked!" << endl;
+		} // End else
+		break;
+	};
+
+	}; // end Switch
 };
 
-
+void LegoRobotModule::prepare(colorPrintf_t *colorPrintf_p, colorPrintfVA_t *colorPrintfVA_p) {
+	colorPrintf = colorPrintf_p;
+}
 
 //Теперь самое интересное - executeFunction
 // Здесь в зависимости от введенного пара метра через оператор switch будем выполнять разные функции из проекта Lego_communication
@@ -256,120 +325,102 @@ FunctionResult* LegoRobot::executeFunction(regval functionId, regval *args) {
 	bool throw_exception = false;
 	switch (functionId) {
 	case 1: {
-		lego_communication_library::lego_brick::getInstance()->motorBreak(*args,*(args+1) ); //   2 аргументов // По идее символы можно получить из чисел а значит массива int нам достаточно
-		rez->result = *args;
+
+		lego_communication_library::lego_brick::getInstance()->motorBreak(robot_index, numToMotorLitera(*args)); //   2 аргументов // По идее символы можно получить из чисел а значит массива int нам достаточно
+		 
 		break;
 	}
 	case 2: {
-		rez->result = lego_communication_library::lego_brick::getInstance()->motorGetDirection(*args, *(args + 1)); //   2 аргументов// возвращает bool
+		rez->result = lego_communication_library::lego_brick::getInstance()->motorGetDirection(robot_index, numToMotorLitera(*args)); //   2 аргументов// возвращает bool
 		break;
 	}
 	case 3: {
-		rez->result = lego_communication_library::lego_brick::getInstance()->motorGetTacho(*args, *(args + 1)); //   2 аргументов// возвращает Int
+		rez->result = lego_communication_library::lego_brick::getInstance()->motorGetTacho(robot_index, numToMotorLitera(*args)); //   2 аргументов// возвращает Int
 		break;
 	}
 	case 4: {
-		lego_communication_library::lego_brick::getInstance()->motorMoveTo(*args, *(args + 1), *(args + 2), *(args + 3), *(args + 4) ); //   5 аргументов // Естественно надо потом будет все поментяь но теперь все видно хотя бы сколько аргументов ти т.д. и т.п.
-		
-		rez->result = *args;
+		lego_communication_library::lego_brick::getInstance()->motorMoveTo(robot_index, numToMotorLitera(*args), *(args + 1), *(args + 2), *(args + 3) ); //   5 аргументов // Естественно надо потом будет все поментяь но теперь все видно хотя бы сколько аргументов ти т.д. и т.п.
 		break;
 	}
 	case 5: {
-		lego_communication_library::lego_brick::getInstance()->motorOff(*args, *(args + 1) );//   2 аргументов
+
+		lego_communication_library::lego_brick::getInstance()->motorOff(robot_index, numToMotorLitera(*args));//   2 аргументов
 		
-		rez->result = *args;
 		break;
 	}
 	case 6: {
-		lego_communication_library::lego_brick::getInstance()->motorResetTacho(*args, *(args + 1) ); //   2 аргументов
+		lego_communication_library::lego_brick::getInstance()->motorResetTacho(robot_index, numToMotorLitera(*args) ); //   2 аргументов
 		
-		rez->result = *args;
 		break;
 	}
 	case 7: {
-		lego_communication_library::lego_brick::getInstance()->motorSetDirection(*args, *(args + 1), *(args + 2) ); //   3 аргументов
+		lego_communication_library::lego_brick::getInstance()->motorSetDirection(robot_index, numToMotorLitera(*args), *(args + 1) ); //   3 аргументов
 		
-		rez->result = *args;
 		break;
 	}
 	case 8: {
-		lego_communication_library::lego_brick::getInstance()->motorSetSpeed(*args, *(args + 1), *(args + 2) ); //   3 аргументов
+		lego_communication_library::lego_brick::getInstance()->motorSetSpeed(robot_index, numToMotorLitera(*args), *(args + 1)); //   3 аргументов
 		
-		rez->result = *args;
 		break;
 	}
 	case 9: {
-		lego_communication_library::lego_brick::getInstance()->setTrackVehicle(*args, *(args + 1), *(args + 2), *(args + 3), *(args + 4) ); //   5 аргументов
+		lego_communication_library::lego_brick::getInstance()->setTrackVehicle(robot_index, numToMotorLitera(*args), numToMotorLitera(*(args + 1)), *(args + 2), *(args + 3)); //   5 аргументов
 		
-		rez->result = *args;
 		break;
 	}
 	case 10: {
-		lego_communication_library::lego_brick::getInstance()->waitMotorToStop(*args, *(args + 1)); //   2 аргументов
+		lego_communication_library::lego_brick::getInstance()->waitMotorToStop(robot_index, numToMotorLitera(*args)); //   2 аргументов
 		
-		rez->result = *args;
 		break;
 	}
 	case 11: {
-
-		// Теперь надо сделать чтобы в зависимости от принятого 
-		lego_communication_library::lego_brick::getInstance()->waitMultiMotorsToStop(*args, *(args + 1), *(args + 2), *(args + 3), *(args + 4)); // Тут проблема с тем чсто в аргументе должен быть массив символов
+		lego_communication_library::lego_brick::getInstance()->waitMultiMotorsToStop(robot_index, numToMotorLitera(*args), numToMotorLitera(*(args + 1)), numToMotorLitera(*(args + 2)), numToMotorLitera(*(args + 3))); // Тут проблема с тем чсто в аргументе должен быть массив символов
 		
-		rez->result = *args;
 		break;
 	}
 	case 12: {
-		lego_communication_library::lego_brick::getInstance()->trackVehicleBackward(*args, *(args + 1)); //   2 аргументов
+		lego_communication_library::lego_brick::getInstance()->trackVehicleBackward(robot_index,  *args); //   2 аргументов
 		
-		rez->result = *args;
 		break;
 	}
 	case 13: {
-		lego_communication_library::lego_brick::getInstance()->trackVehicleForward(*args, *(args + 1));//   2 аргументов
+		lego_communication_library::lego_brick::getInstance()->trackVehicleForward(robot_index,  *args);//   2 аргументов
 		
-		rez->result = *args;
 		break;
 	}
 	case 14: {
-		lego_communication_library::lego_brick::getInstance()->trackVehicleOff(*args); //   1 аргументов
-		//cout << "works@" << endl;
-		rez->result = *args;
+		lego_communication_library::lego_brick::getInstance()->trackVehicleOff(robot_index); //   1 аргументов
+		 
 		break;
 	}
 	case 15: {
-		lego_communication_library::lego_brick::getInstance()->trackVehicleSpinLeft(*args, *(args + 1)); //   2 аргументов
+		lego_communication_library::lego_brick::getInstance()->trackVehicleSpinLeft(robot_index,  *args); //   2 аргументов
 			
-		rez->result = *args;
 		break;
 	}
 	case 16: {
-		lego_communication_library::lego_brick::getInstance()->trackVehicleSpinRight(*args, *(args + 1)); //   2 аргументов
+		lego_communication_library::lego_brick::getInstance()->trackVehicleSpinRight(robot_index, *args); //   2 аргументов
 			
-		rez->result = *args;
 		break;
 	}
 	case 17: {
-		lego_communication_library::lego_brick::getInstance()->trackVehicleTurnLeftForward(*args, *(args + 1), *(args + 2)); //   3 аргументов
+		lego_communication_library::lego_brick::getInstance()->trackVehicleTurnLeftForward(robot_index, *(args + 1), *(args + 2)); //   3 аргументов
 			
-		rez->result = *args;
 		break;
 	}
 	case 18: { 
-		lego_communication_library::lego_brick::getInstance()->trackVehicleTurnLeftReverse(*args, *(args + 1), *(args + 2)); //   3 аргументов
+		lego_communication_library::lego_brick::getInstance()->trackVehicleTurnLeftReverse(robot_index, *(args + 1), *(args + 2)); //   3 аргументов
 			
-		rez->result = *args;
 		break;
 	}
 	case 19: {
-		lego_communication_library::lego_brick::getInstance()->trackVehicleTurnRightForward(*args, *(args + 1), *(args + 2)); //   3 аргументов
+		lego_communication_library::lego_brick::getInstance()->trackVehicleTurnRightForward(robot_index, *(args + 1), *(args + 2)); //   3 аргументов
 			
-		rez->result = *args;
 		break;
 	}
 	case 20: {
-		lego_communication_library::lego_brick::getInstance()->trackVehicleTurnRightForward(*args, *(args + 1), *(args + 2)); //   3 аргументов
+		lego_communication_library::lego_brick::getInstance()->trackVehicleTurnRightForward(robot_index, *(args + 1), *(args + 2)); //   3 аргументов
 		
-		rez->result = *args;
 		break;
 	}
 	};// End Switch

@@ -8,31 +8,35 @@
 
 class LegoRobot : public Robot {
 public:
-	bool isAviable;  //ВВели 3 дополнительных свойства // Для занимания и освобождения робота
-	int robot_index; //ВВели 2 дополнительных свойства // Для нумерованяи роботов
+	bool isAviable;  
+	int robot_index; 
 
-	bool is_locked; // Для осей
-	std::vector<regval> axis_state; // Ввели опять для осей, содержит инфу об их состоянии
+	bool is_locked; 
+	std::vector<regval> axis_state; 
 
-	LegoRobot(int robot_index) : robot_index(robot_index), isAviable(true) {} // Это описан конструктор с Инициализацией, такая форма записи иногда лучше и помогает некоторые моменты обойти. Точнее не помню.
+	LegoRobot(int robot_index) : robot_index(robot_index), isAviable(true) {} 
 
 	FunctionResult* executeFunction(regval command_index, regval *args);
-	void axisControl(regval axis_index, regval value);  // Пока закомментил чтобы не мешалось не знаю нужно ли оно здесь
+	void axisControl(regval axis_index, regval value); 
 	~LegoRobot() {};
 };
 
-// Здесь сделаем описание типов которые будем использовать
-typedef std::map<std::string, LegoRobot*> m_connections; // Таким образом создадим карту которая строке в соответствие ставит адрес объекта LegoRobot. Это хитрая такая штука потому что переопределены типы
+typedef std::map<std::string, LegoRobot*> m_connections; // Таким образом создадим карту которая строке из config.ini в соответствие ставит адрес объекта LegoRobot. 
 
 
 class LegoRobotModule : public RobotModule{
 public:
 	CRITICAL_SECTION LRM_cs; // Критическая секция для LegoRobotModule
-	m_connections aviable_connections; //Создаем карту возможных подключений к роботу
+	m_connections aviable_connections; 
 	FunctionData **lego_functions;
-	AxisData **robot_axis; // Введем пока набор Осей, так же как и набор функций, пока заполним.
+	AxisData **robot_axis; 
+	colorPrintf_t *colorPrintf;
+	LegoRobot *OccRobot;
+
+	LegoRobotModule();
 
 	const char *getUID();
+	void prepare(colorPrintf_t *colorPrintf_p, colorPrintfVA_t *colorPrintfVA_p);
 	int init();
 	FunctionData** getFunctions(int *count_functions);
 	AxisData** getAxis(int *count_axis) ;
@@ -40,7 +44,6 @@ public:
 	void robotFree(Robot *robot) ;
 	void final();
 	void destroy() ;
-	LegoRobotModule();
 	~LegoRobotModule() {};
 };
 
