@@ -23,16 +23,16 @@ namespace lego_communication_library
         {
             switch (motor)
             {
-                case '1':
+                case 'A':
                     return brick.MotorA;
-                case '2':
+                case 'B': 
                     return brick.MotorB;
-                case '3':
+                case 'C':
                     return brick.MotorC;
-                case '4':
+                case 'D':
                     return brick.MotorD;
                 default:
-                    throw new Exception("Недопустимая литера мотора!");
+                    throw new Exception("Недопустимая литера мотора! " );
             }
         }
 
@@ -151,32 +151,32 @@ namespace lego_communication_library
             Vehicle vehicle = getVehicleByIndexBrick(indexBrick);
             switch (leftMotor)
             {
-                case '1':
+                case 'A':
                     vehicle.LeftPort = MotorPort.OutA;
                     break;
-                case '2':
+                case 'B':
                     vehicle.LeftPort = MotorPort.OutB;
                     break;
-                case '3':
+                case 'C':
                     vehicle.LeftPort = MotorPort.OutC;
                     break;
-                case '4':
+                case 'D':
                     vehicle.LeftPort = MotorPort.OutD;
                     break;
             }
 
             switch (rightMotor)
             {
-                case '1':
+                case 'A':
                     vehicle.RightPort = MotorPort.OutA;
                     break;
-                case '2':
+                case 'B':
                     vehicle.RightPort = MotorPort.OutB;
                     break;
-                case '3':
+                case 'C':
                     vehicle.RightPort = MotorPort.OutC;
                     break;
-                case '4':
+                case 'D':
                     vehicle.RightPort = MotorPort.OutD;
                     break;
             }
@@ -260,10 +260,10 @@ namespace lego_communication_library
 
             List<char> motors = new  List<char> ();
 
-            if (MotorA == 1) { motors.Add('1'); };
-            if (MotorB == 1) { motors.Add('2'); };
-            if (MotorC == 1) { motors.Add('3'); };
-            if (MotorD == 1) { motors.Add('4'); };
+            if (MotorA == 1) { motors.Add('A'); };
+            if (MotorB == 1) { motors.Add('B'); };
+            if (MotorC == 1) { motors.Add('C'); };
+            if (MotorD == 1) { motors.Add('D'); };
 
             bool allMotorsStopped;
             do {
