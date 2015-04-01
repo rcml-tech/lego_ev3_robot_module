@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -42,6 +42,9 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
+    <IncludePath>C:\robot_project\source\module_headers;C:\robot_project\simpleini;$(IncludePath)</IncludePath>
+    <OutDir>..\..\..\bin\robot_modules\lego</OutDir>
+    <TargetName>lego_module</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -79,16 +82,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Исходный код.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="function_module.h" />
-    <ClInclude Include="module.h" />
-    <ClInclude Include="robot_module.h" />
-    <ClInclude Include="lego_module.h" />
-    <ClInclude Include="SimpleIni.h" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\lego_communication_library\lego_communication_library.csproj">
       <Project>{7b70c921-11b2-4dde-9cd5-fd6e4b58c863}</Project>
       <Private>true</Private>
@@ -97,6 +90,12 @@
       <LinkLibraryDependencies>true</LinkLibraryDependencies>
       <UseLibraryDependencyInputs>true</UseLibraryDependencyInputs>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="lego_robot_module.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="lego_robot_module.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -32,7 +32,7 @@ namespace lego_communication_library
                 case 'D':
                     return brick.MotorD;
                 default:
-                    throw new Exception("Недопустимая литера мотора! " );
+                    throw new Exception("Недопустимая литера мотора!");
             }
         }
 
@@ -240,30 +240,30 @@ namespace lego_communication_library
             vehicle.Off();
         }
 
+        public void trackVehicleBrake(int indexBrick)
+        {
+            Vehicle vehicle = getVehicleByIndexBrick(indexBrick);
+            vehicle.Brake();
+        }
+
         public void waitMotorToStop(int indexBrick, char motor)
         {
             Motor brickMotor = getMotorByIndexBreakAndLitera(indexBrick, motor);
             
-            Thread.Sleep(500);
             while (brickMotor.IsRunning())
             {
                 Thread.Sleep(50);
             }
         }
 
-        //public void waitMultiMotorsToStop(int indexBrick, char[] motors)
-        public void waitMultiMotorsToStop(int indexBrick, char MotorA, char MotorB, char MotorC, char MotorD){
-        
-            Thread.Sleep(500);
-
-            //char[] motors = new char[0];
-
+        public void waitMultiMotorsToStop(int indexBrick, bool MotorA, bool MotorB, bool MotorC, bool MotorD)
+        {
             List<char> motors = new  List<char> ();
 
-            if (MotorA == 1) { motors.Add('A'); };
-            if (MotorB == 1) { motors.Add('B'); };
-            if (MotorC == 1) { motors.Add('C'); };
-            if (MotorD == 1) { motors.Add('D'); };
+            if (MotorA) { motors.Add('A'); };
+            if (MotorB) { motors.Add('B'); };
+            if (MotorC) { motors.Add('C'); };
+            if (MotorD) { motors.Add('D'); };
 
             bool allMotorsStopped;
             do {
