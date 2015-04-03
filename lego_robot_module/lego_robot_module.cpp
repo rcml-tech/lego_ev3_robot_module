@@ -7,14 +7,18 @@
 #include <time.h>
 #include <vector>
 #include <map>
-#include <iostream>
+//#include <iostream>
+#include <windows.system.h>
 #include "module.h"
 #include "robot_module.h"
 #include "lego_robot_module.h"
 #include "SimpleIni.h"
 
+EXTERN_C IMAGE_DOS_HEADER __ImageBase;
+
 const unsigned int COUNT_LEGO_FUNCTIONS = 22;
 const unsigned int COUNT_AXIS = 11;
+
 
 #define ADD_LEGO_FUNCTION(FUNCTION_NAME, COUNT_PARAMS, GIVE_EXCEPTION) \
 lego_functions[function_id] = new FunctionData; \
@@ -48,7 +52,7 @@ ADD_LEGO_FUNCTION("trackVehicleTurnLeftReverse", 2, false)\
 ADD_LEGO_FUNCTION("trackVehicleTurnRightForward", 2, false)\
 ADD_LEGO_FUNCTION("trackVehicleTurnRightForward", 2, false)\
 ADD_LEGO_FUNCTION("trackVehicleBrake", 0, false)\
-ADD_LEGO_FUNCTION("readIRSensor", 0, false);
+ADD_LEGO_FUNCTION("readSensor", 2, false);
 
 #define ADD_ROBOT_AXIS(AXIS_NAME, UPPER_VALUE, LOWER_VALUE) \
 robot_axis[axis_id] = new AxisData; \
@@ -102,45 +106,61 @@ char numToMotorLitera(variable_value num){
 		return 'D';
 	}
 	else {
-		throw;
+		throw std::exception();
 	}
 };
 
-bool isSpeed(variable_value num){
-	if ((num >= (-100)) && (num <= 100)) 
+inline void isSpeed(variable_value num){
+	if ((num < (-100)) || (num > 100)) 
 	{
-		return true;
-	}
-	else
-	{
-		return false;
+		throw std::exception();
 	}
 };
-bool isPercent(variable_value num){
-	if ((num >= 0) && (num <= 100))
+
+inline void isPercent(variable_value num){
+	if ((num < 0) || (num > 100))
 	{
-		return true;
-	}
-	else
-	{
-		return false;
+		throw std::exception();
 	}
 };
-char isMotor(variable_value num){
-	if (num == 1.0) {
-		return true;
+
+inline void isMotor(variable_value num){
+	switch ((int)num)
+	{
+	case 1:
+	case 2:
+	case 3:
+	case 4:{
+		break;
 	}
-	else if (num == 2.0) {
-		return true;
+	default:
+		throw std::exception();
 	}
-	else if (num == 3.0) {
-		return true;
+};
+
+inline void isSensor(variable_value num){
+	switch ((int)num)
+	{
+	case 1:
+	case 2:
+	case 3:
+	case 4:{
+		break;
 	}
-	else if (num == 4.0) {
-		return true;
+	default:
+		throw std::exception();
 	}
-	else {
-		return false;
+};
+inline void isMode(variable_value num){
+	switch ((int)num)
+	{
+	case 1:
+	case 2:
+	case 3:{
+		break;
+	}
+	default:
+		throw std::exception();
 	}
 };
 
@@ -164,7 +184,21 @@ int LegoRobotModule::init(){
 
 	lr_handle = GetModuleHandleW(L"lego_module.dll");
 
+	/*
+	LPWSTR buff1=L" ";
+	DWORD pth = MAX_PATH;
+	DWORD tst = GetDllDirectoryW(pth,buff1);
+
+	char tmpch[80];
+
+	for (int i = 0; i < 80; i++){
+		tmpch[i] = (char)buff1[i];
+	};
+	colorPrintf(this, ConsoleColor(ConsoleColor::green), tmpch);
+	*/
 	WCHAR DllPath[MAX_PATH] = { 0 };
+	
+	//GetModuleFileNameW((HINSTANCE)&__ImageBase, DllPath, _countof(DllPath));
 	GetModuleFileNameW(lr_handle, DllPath, _countof(DllPath));
 	WCHAR *tmp = wcsrchr(DllPath, L'\\');
 	WCHAR ConfigPath[MAX_PATH] = { 0 };
@@ -185,7 +219,7 @@ int LegoRobotModule::init(){
 		System::String^ connection_c = gcnew System::String(connection.c_str());
 		lego_communication_library::lego_brick^ singletoneBrick = lego_communication_library::lego_brick::getInstance();
 		int index_robot = singletoneBrick->createBrick(connection_c);
-		std::cout << "ini works" << std::endl;
+		//std::cout << "ini works" << std::endl;
 		colorPrintf(this, ConsoleColor(ConsoleColor::white), "Attemp to connect: %s\n", connection.c_str());
 		try {
 			singletoneBrick->connectBrick(index_robot);
@@ -283,194 +317,168 @@ FunctionResult* LegoRobot::executeFunction(system_value functionId, variable_val
 		return NULL;
 	}
 	
-	variable_value rez;
+	variable_value rez=0;
 	bool throw_exception = false;
-
-	switch (functionId) {
-	case 1: {
-		if (isMotor(*args)) {
-			lego_communication_library::lego_brick::getInstance()->motorBreak(robot_index, numToMotorLitera(*args));
+	try {
+		switch (functionId) {
+		case 1: {
+			isMotor(*args);
+				lego_communication_library::lego_brick::getInstance()->motorBreak(robot_index, numToMotorLitera(*args));
+			
+			break;
 		}
-		else{ throw_exception = true; };
-		break;
-	}
-	case 2: {
-		if (isMotor(*args)) {
-			rez = lego_communication_library::lego_brick::getInstance()->motorGetDirection(robot_index, numToMotorLitera(*args));
+		case 2: {
+			isMotor(*args);
+				rez = lego_communication_library::lego_brick::getInstance()->motorGetDirection(robot_index, numToMotorLitera(*args));
+			break;
 		}
-		else{ throw_exception = true; };
-		break;
-	}
-	case 3: {
-		if (isMotor(*args)) {
-			rez = lego_communication_library::lego_brick::getInstance()->motorGetTacho(robot_index, numToMotorLitera(*args));
+		case 3: {
+			isMotor(*args);
+				rez = lego_communication_library::lego_brick::getInstance()->motorGetTacho(robot_index, numToMotorLitera(*args));
+			break;
 		}
-		else{ throw_exception = true; };
-		break;
-	}
-	case 4: {
-		if (isSpeed(*(args + 1)) && isMotor(*args)) {
-			lego_communication_library::lego_brick::getInstance()->motorMoveTo(robot_index, numToMotorLitera(*args), *(args + 1), *(args + 2), !!(*(args + 3))); // speed 
+		case 4: {
+				isSpeed(*(args + 1));
+				isMotor(*args);
+				lego_communication_library::lego_brick::getInstance()->motorMoveTo(robot_index, numToMotorLitera(*args), *(args + 1), *(args + 2), !!(*(args + 3))); // speed 
+			break;
 		}
-		else{ throw_exception = true; };
-		break;
-	}
-	case 5: {
-		if (isMotor(*args)) {
-			lego_communication_library::lego_brick::getInstance()->motorOff(robot_index, numToMotorLitera(*args));
+		case 5: {
+			isMotor(*args);
+				lego_communication_library::lego_brick::getInstance()->motorOff(robot_index, numToMotorLitera(*args));
+			 
+			break;
 		}
-		else{ throw_exception = true; };
-		break;
-	}
-	case 6: {
-		if (isMotor(*args)) {
-			lego_communication_library::lego_brick::getInstance()->motorResetTacho(robot_index, numToMotorLitera(*args));
+		case 6: {
+			isMotor(*args);
+				lego_communication_library::lego_brick::getInstance()->motorResetTacho(robot_index, numToMotorLitera(*args)); 
+			break;
 		}
-		else{ throw_exception = true; };
-		break;
-	}
-	case 7: {
-		if (isMotor(*args)) {
-			lego_communication_library::lego_brick::getInstance()->motorSetDirection(robot_index, numToMotorLitera(*args), !!(*(args + 1)));
+		case 7: {
+			isMotor(*args);
+				lego_communication_library::lego_brick::getInstance()->motorSetDirection(robot_index, numToMotorLitera(*args), !!(*(args + 1)));
+			break;
 		}
-		else{ throw_exception = true; };
-		break;
-	}
-	case 8: {
-		if (isMotor(*args) && isSpeed(*(args + 1))) {
-			lego_communication_library::lego_brick::getInstance()->motorSetSpeed(robot_index, numToMotorLitera(*args), *(args + 1)); // speed
+		case 8: {
+			isMotor(*args);
+			isSpeed(*(args + 1));
+			lego_communication_library::lego_brick::getInstance()->motorSetSpeed(robot_index, numToMotorLitera(*args), *(args + 1)); // speed 
+			break;
 		}
-		else{ throw_exception = true; };
-		break;
-	}
-	case 9: {
-		if (isMotor(*args) && isMotor(*(args + 1)) ) {
-			if (*(args+1) != *(args+2)) {
-				lego_communication_library::lego_brick::getInstance()->setTrackVehicle(robot_index, numToMotorLitera(*args), numToMotorLitera(*(args + 1)),(bool) (*(args + 2)),(bool) (*(args + 3)) );
+		case 9: {
+			isMotor(*args);
+			isMotor(*(args + 1));
+			if (*(args + 1) != *(args + 2)) {
+				lego_communication_library::lego_brick::getInstance()->setTrackVehicle(robot_index, numToMotorLitera(*args), numToMotorLitera(*(args + 1)), (bool)(*(args + 2)), (bool)(*(args + 3)));
 				is_trackVehicleOn = true;
 			}
-			else{ throw_exception = true; };
+			else{ throw std::exception(); };
+			break;
 		}
-		else{ throw_exception = true; };
-		break;
-	}
-	case 10: {
-		if (isMotor(*args)) {
-			lego_communication_library::lego_brick::getInstance()->waitMotorToStop(robot_index, numToMotorLitera(*args));
+		case 10: {
+			isMotor(*args);
+				lego_communication_library::lego_brick::getInstance()->waitMotorToStop(robot_index, numToMotorLitera(*args));
+			break;
 		}
-		else{ throw_exception = true; };
-		break;
-	}
-	case 11: {
-		lego_communication_library::lego_brick::getInstance()->waitMultiMotorsToStop(robot_index, !!(*args), !!(*(args + 1)), !!(*(args + 2)), !!(*(args + 3)));
-		break;
-	}
-	case 12: {
-		if (isSpeed(*args)) {
+		case 11: {
+			lego_communication_library::lego_brick::getInstance()->waitMultiMotorsToStop(robot_index, !!(*args), !!(*(args + 1)), !!(*(args + 2)), !!(*(args + 3)));
+			break;
+		}
+		case 12: {
+				isSpeed(*args);
+				if (is_trackVehicleOn){
+					lego_communication_library::lego_brick::getInstance()->trackVehicleBackward(robot_index, *args); // speed
+				}
+				else{ throw std::exception(); };
+			break;
+		}
+		case 13: {
+				isSpeed(*args);
+				if (is_trackVehicleOn){
+					lego_communication_library::lego_brick::getInstance()->trackVehicleForward(robot_index, *args);  // speed
+				}
+				else{ throw std::exception(); };
+			break;
+		}
+		case 14: {
 			if (is_trackVehicleOn){
-				lego_communication_library::lego_brick::getInstance()->trackVehicleBackward(robot_index, *args); // speed
+				lego_communication_library::lego_brick::getInstance()->trackVehicleOff(robot_index);
 			}
-			else{ throw_exception = true; };
+			else{ throw std::exception(); };
+			break;
 		}
-		else{ throw_exception = true; };
-		break;
-	}
-	case 13: {
-		if (isSpeed(*args)) {
-			if (is_trackVehicleOn){
-				lego_communication_library::lego_brick::getInstance()->trackVehicleForward(robot_index, *args);  // speed
-			}
-			else{ throw_exception = true; };
-		}
-		else{ throw_exception = true; };
-		break;
-	}
-	case 14: {
-		if (is_trackVehicleOn){
-			lego_communication_library::lego_brick::getInstance()->trackVehicleOff(robot_index);
-		}
-		else{ throw_exception = true; };
-		break;
-	}
-	case 15: {
-		if (isSpeed(*args)) {
+		case 15: {
+
+			isSpeed(*args);
 			if (is_trackVehicleOn){
 				lego_communication_library::lego_brick::getInstance()->trackVehicleSpinLeft(robot_index, *args); // speed
 			}
-			else{ throw_exception = true; };
+			else{ throw std::exception(); };
+			break;
 		}
-		else{ throw_exception = true; };
-		break;
-	}
-	case 16: {
-		if (isSpeed(*args)) {
+		case 16: {
+				isSpeed(*args);
+				if (is_trackVehicleOn){
+					lego_communication_library::lego_brick::getInstance()->trackVehicleSpinRight(robot_index, *args); // speed
+				}
+				else{ throw std::exception(); };
+			break;
+		}
+		case 17: {
+				isSpeed(*args);
+				isPercent(*(args + 1));
+				if (is_trackVehicleOn){
+					lego_communication_library::lego_brick::getInstance()->trackVehicleTurnLeftForward(robot_index, *args, *(args + 1));  // speed, percent
+				}
+				else{ throw std::exception(); };
+			break;
+		}
+		case 18: {
+				isPercent(*(args + 1));
+				isSpeed(*args);
+				if (is_trackVehicleOn){
+					lego_communication_library::lego_brick::getInstance()->trackVehicleTurnLeftReverse(robot_index, *args, *(args + 1));  // speed, percent
+				}
+				else{ throw std::exception(); };
+			break;
+		}
+		case 19: {
+			isSpeed(*args) ; 
+			isPercent(*(args + 1));
+				if (is_trackVehicleOn){
+					lego_communication_library::lego_brick::getInstance()->trackVehicleTurnRightForward(robot_index, *args, *(args + 1));  // speed, percent
+				}
+				else{ throw std::exception(); };
+			break;
+		}
+		case 20: {
+			isSpeed(*args) ; 
+			isPercent(*(args + 1));
+				if (is_trackVehicleOn){
+					lego_communication_library::lego_brick::getInstance()->trackVehicleTurnRightForward(robot_index, *args, *(args + 1));  // speed, percent
+				}
+				else{ throw std::exception(); };
+			break;
+		}
+		case 21: {
 			if (is_trackVehicleOn){
-				lego_communication_library::lego_brick::getInstance()->trackVehicleSpinRight(robot_index, *args); // speed
+				lego_communication_library::lego_brick::getInstance()->trackVehicleBrake(robot_index);
 			}
-			else{ throw_exception = true; };
+			else{ throw std::exception(); };
+			break;
 		}
-		else{ throw_exception = true; };
-		break;
-	}
-	case 17: {
-		if (isSpeed(*args) && isPercent(*(args + 1))) {
-			if (is_trackVehicleOn){
-				lego_communication_library::lego_brick::getInstance()->trackVehicleTurnLeftForward(robot_index, *args, *(args + 1));  // speed, percent
-			}
-			else{ throw_exception = true; };
+		case 22:{
+			isSensor(*args);
+			isMode(*(args + 1));
+			rez = lego_communication_library::lego_brick::getInstance()->readSensor(robot_index, *args, *(args + 1));
+			break;
 		}
-		else{ throw_exception = true; };
-		break;
-	}
-	case 18: {
-		if (isSpeed(*args) && isPercent(*(args + 1))) {
-			if (is_trackVehicleOn){
-				lego_communication_library::lego_brick::getInstance()->trackVehicleTurnLeftReverse(robot_index, *args, *(args + 1));  // speed, percent
-			}
-			else{ throw_exception = true; };
-		}
-		else{ throw_exception = true; };
-		break;
-	}
-	case 19: {
-		if (isSpeed(*args) && isPercent(*(args + 1))) {
-			if (is_trackVehicleOn){
-				lego_communication_library::lego_brick::getInstance()->trackVehicleTurnRightForward(robot_index, *args, *(args + 1));  // speed, percent
-			}
-			else{ throw_exception = true; };
-		}
-		else{ throw_exception = true; };
-		break;
-	}
-	case 20: {
-		if (isSpeed(*args) && isPercent(*(args + 1))) {
-			if (is_trackVehicleOn){
-				lego_communication_library::lego_brick::getInstance()->trackVehicleTurnRightForward(robot_index, *args, *(args + 1));  // speed, percent
-			}
-			else{ throw_exception = true; };
-		}
-		else{ throw_exception = true; };
-		break;
-	}
-	case 21: {
-		if (is_trackVehicleOn){
-			lego_communication_library::lego_brick::getInstance()->trackVehicleBrake(robot_index);
-		}
-
-		break;
-	}
-	case 22:{
-		lego_communication_library::lego_brick::getInstance()->readIRSensor(robot_index);
-	
-	}
-	};
-
-	if (throw_exception){
-		return new FunctionResult(0);
-	}
-	else{
+		};
 		return new FunctionResult(1, rez);
 	}
+	catch (...){
+		return new FunctionResult(0);
+	};
 };
 
 __declspec(dllexport) RobotModule* getRobotModuleObject() {
