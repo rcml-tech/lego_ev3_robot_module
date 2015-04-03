@@ -469,8 +469,10 @@ FunctionResult* LegoRobot::executeFunction(system_value functionId, variable_val
 		}
 		case 22:{
 			isSensor(*args);
-			isMode(*(args + 1));
-			rez = lego_communication_library::lego_brick::getInstance()->readSensor(robot_index, *args, *(args + 1));
+			if (lego_communication_library::lego_brick::getInstance()->testSensorMode(robot_index, *args, *(args + 1)) ) {
+				rez = lego_communication_library::lego_brick::getInstance()->readSensor(robot_index, *args, *(args + 1));
+			}
+			else{ throw std::exception(); };
 			break;
 		}
 		};
