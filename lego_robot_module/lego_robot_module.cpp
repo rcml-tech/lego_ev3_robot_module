@@ -7,8 +7,7 @@
 #include <time.h>
 #include <vector>
 #include <map>
-//#include <iostream>
-#include <windows.system.h>
+
 #include "module.h"
 #include "robot_module.h"
 #include "lego_robot_module.h"
@@ -138,32 +137,6 @@ inline void isMotor(variable_value num){
 	}
 };
 
-inline void isSensor(variable_value num){
-	switch ((int)num)
-	{
-	case 1:
-	case 2:
-	case 3:
-	case 4:{
-		break;
-	}
-	default:
-		throw std::exception();
-	}
-};
-inline void isMode(variable_value num){
-	switch ((int)num)
-	{
-	case 1:
-	case 2:
-	case 3:{
-		break;
-	}
-	default:
-		throw std::exception();
-	}
-};
-
 void LegoRobotModule::destroy() {
 	for (unsigned int j = 0; j < COUNT_LEGO_FUNCTIONS; ++j) {
 		delete lego_functions[j];
@@ -184,18 +157,6 @@ int LegoRobotModule::init(){
 
 	lr_handle = GetModuleHandleW(L"lego_module.dll");
 
-	/*
-	LPWSTR buff1=L" ";
-	DWORD pth = MAX_PATH;
-	DWORD tst = GetDllDirectoryW(pth,buff1);
-
-	char tmpch[80];
-
-	for (int i = 0; i < 80; i++){
-		tmpch[i] = (char)buff1[i];
-	};
-	colorPrintf(this, ConsoleColor(ConsoleColor::green), tmpch);
-	*/
 	WCHAR DllPath[MAX_PATH] = { 0 };
 	
 	//GetModuleFileNameW((HINSTANCE)&__ImageBase, DllPath, _countof(DllPath));
@@ -468,7 +429,6 @@ FunctionResult* LegoRobot::executeFunction(system_value functionId, variable_val
 			break;
 		}
 		case 22:{
-			isSensor(*args);
 			if (lego_communication_library::lego_brick::getInstance()->testSensorMode(robot_index, *args, *(args + 1)) ) {
 				rez = lego_communication_library::lego_brick::getInstance()->readSensor(robot_index, *args, *(args + 1));
 			}
