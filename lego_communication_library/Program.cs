@@ -32,7 +32,7 @@ namespace lego_communication_library
                 case 'D':
                     return brick.MotorD;
                 default:
-                    throw new Exception("Недопустимая литера мотора!");
+                    throw new Exception("Недопустимая литера мотора! " );
             }
         }
 
@@ -250,20 +250,26 @@ namespace lego_communication_library
         {
             Motor brickMotor = getMotorByIndexBreakAndLitera(indexBrick, motor);
             
+            Thread.Sleep(500);
             while (brickMotor.IsRunning())
             {
                 Thread.Sleep(50);
             }
         }
 
-        public void waitMultiMotorsToStop(int indexBrick, bool MotorA, bool MotorB, bool MotorC, bool MotorD)
-        {
+        //public void waitMultiMotorsToStop(int indexBrick, char[] motors)
+        public void waitMultiMotorsToStop(int indexBrick, char MotorA, char MotorB, char MotorC, char MotorD){
+        
+            Thread.Sleep(500);
+
+            //char[] motors = new char[0];
+
             List<char> motors = new  List<char> ();
 
-            if (MotorA) { motors.Add('A'); };
-            if (MotorB) { motors.Add('B'); };
-            if (MotorC) { motors.Add('C'); };
-            if (MotorD) { motors.Add('D'); };
+            if (MotorA == 1) { motors.Add('A'); };
+            if (MotorB == 1) { motors.Add('B'); };
+            if (MotorC == 1) { motors.Add('C'); };
+            if (MotorD == 1) { motors.Add('D'); };
 
             bool allMotorsStopped;
             do {
@@ -283,78 +289,13 @@ namespace lego_communication_library
 
         public void testSensor(int indexBrick)
         {
-            Brick<Sensor, Sensor, Sensor, Sensor> brick = getBrickByIndex(indexBrick);
-            //brick.Sensor1 = new UltrasonicSensor(UltrasonicMode.Centimeter);
-            brick.Sensor1 = new IRSensor(IRMode.Seek);
-            Console.WriteLine(brick.Sensor1.ReadAsString());
-
-        }
-        public void readIRSensor(int indexBrick)
-        {
             Brick<Sensor, Sensor, Sensor, Sensor> brick = getBrickByIndex(indexBrick); // Записали в переменную типа Brick наш созданный brick
             //brick.Sensor1 = new UltrasonicSensor(UltrasonicMode.Centimeter);
-            brick.Sensor1 = new IRSensor(IRMode.Proximity);  // Создаем в нашем Brick сенсор. Это свойство/поле Sensor1.  Создаем объект Инфракрасный сенсор.
+            brick.Sensor1 = new IRSensor(IRMode.Seek);  // Создаем в нашем Brick сенсор. Это свойство/поле Sensor1.  Создаем объект Инфракрасный сенсор.
             Console.WriteLine(brick.Sensor1.ReadAsString());
-            brick.Sensor2 = new UltrasonicSensor(UltrasonicMode.Centimeter);
-            Console.WriteLine(brick.Sensor2.ReadAsString());
-            brick.Sensor3 = new GyroSensor(GyroMode.Angle);
-            Console.WriteLine(brick.Sensor3.ReadAsString());
-            brick.Sensor3 = new GyroSensor(GyroMode.AngularVelocity);
-            Console.WriteLine(brick.Sensor3.ReadAsString());
-            brick.Sensor4 = new ColorSensor(ColorMode.Color);
-            Console.WriteLine(brick.Sensor4.ReadAsString());
-            brick.Sensor4 = new ColorSensor(ColorMode.Raw);
-            Console.WriteLine(brick.Sensor4.ReadAsString());
-            brick.Sensor4 = new ColorSensor(ColorMode.Reflection);
-            Console.WriteLine(brick.Sensor4.ReadAsString());
-            // Определяем тип сенсора 1
-
-             Brick<Sensor, Sensor, Sensor, Sensor> brick2 = getBrickByIndex(indexBrick);
-
-             switch ( Convert.ToString( brick2.Sensor2.GetSensorType() ) )
-             {
-                 case "UltraSonic": 
-                    {
-                        Console.WriteLine("UltraSonic");
-
-                        brick2.Sensor2 = new UltrasonicSensor(UltrasonicMode.Centimeter);
-                        string temps;
-                        temps = Convert.ToString( brick2.Sensor2.ReadAsString() ) ;
-                        double tempi;
-                        int tsi = temps.IndexOf('c');
-                        temps = temps.Remove(tsi-1,3);
-                        //Console.WriteLine(temps.IndexOf('c'));
-                        Console.WriteLine(temps);
-                        tempi = Convert.ToDouble(temps);
-                        Console.WriteLine(tempi);
-
-                        break;
-                    }
-                 case "IR": 
-                    {
-                        Console.WriteLine("IR");
-                        brick2.Sensor2 = new UltrasonicSensor(UltrasonicMode.Centimeter);
-                        
-
-
-                        break;
-                    }
-                 case "Color": 
-                    {
-                        Console.WriteLine("Color");
-                        break;
-                    }
-                 case "Gyro":
-                    {
-                        Console.WriteLine("Gyro");
-                        break;
-                    }
-
-             };
-
-
-        } // End ReadIRSensor
-
+            //brick.Sensor2 = new IRSensor(IRMode.Proximity);
+            //Console.WriteLine(brick.Sensor2.ReadAsString());
+        }
 
         private Sensor getSensorObject(SensorType typeIndexSensor, int mode) 
         {
@@ -414,7 +355,6 @@ namespace lego_communication_library
             }; // End Switch
         } // End Func
 
-
         protected double resultMod(string str) {
             switch (str) {
                 case "Black": { return 1; }
@@ -427,9 +367,7 @@ namespace lego_communication_library
                     {
                         string temps;
                         temps = str;
-                        int tempi = 0;
-
-                        tempi = temps.Length;
+                        int tempi = temps.Length;
 
                         if (temps.IndexOf(' ') > 0)
                         {
@@ -439,6 +377,7 @@ namespace lego_communication_library
                     }
             }
         }
+
         private bool isURMode(int mod) {
             switch (mod) {
                case 1:
@@ -482,7 +421,7 @@ namespace lego_communication_library
              }
         }
         // Returns False if mode is wrong
-        public bool testSensorMode(int indexBrick, int indexSensor, int mode) 
+        public bool testSensorMode(int indexBrick, int indexSensor, int mode) // Пусть возвращает False если ввели неверное значение
         {
             Brick<Sensor, Sensor, Sensor, Sensor> brick2 = getBrickByIndex(indexBrick);
             switch (indexSensor)
@@ -505,9 +444,8 @@ namespace lego_communication_library
                     }
                 default: { return false; }
             };
-
         } // end test SensorMode
-        
+
         public double readSensor(int indexBrick, int indexSensor, int mode)
         {
             Brick<Sensor, Sensor, Sensor, Sensor> brick2 = getBrickByIndex(indexBrick);
