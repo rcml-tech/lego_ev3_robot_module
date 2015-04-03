@@ -289,5 +289,15 @@ namespace lego_communication_library
             Console.WriteLine(brick.Sensor1.ReadAsString());
 
         }
+        public void readIRSensor(int indexBrick)
+        {
+            Brick<Sensor, Sensor, Sensor, Sensor> brick = getBrickByIndex(indexBrick); // Записали в переменную типа Brick наш созданный brick
+            //brick.Sensor1 = new UltrasonicSensor(UltrasonicMode.Centimeter);
+            brick.Sensor1 = new IRSensor(IRMode.Proximity);  // Создаем в нашем Brick сенсор. Это свойство/поле Sensor1.  Создаем объект Инфракрасный сенсор.
+            Console.WriteLine(brick.Sensor1.GetSensorType());
+            brick.Sensor2 = new UltrasonicSensor(UltrasonicMode.Centimeter);
+            Console.WriteLine(brick.Sensor2.GetSensorType());
+            // Определяем тип сенсора 1
+        }
     }
 }
