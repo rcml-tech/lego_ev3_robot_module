@@ -439,7 +439,75 @@ namespace lego_communication_library
                     }
             }
         }
+        private bool isURMode(int mod) {
+            switch (mod) {
+               case 1:
+               case 2:
+               case 3:
+                   {return true;}
+                default :{return false;}
+            }
+        }
+        private bool isGTMode(int mod) {
+            switch (mod) {
+               case 1:
+               case 2:
+                   {return true;}
+                default : {return false;}
+            }
+        }
+        private bool isColorMode(int mod) {
+            switch (mod) {
+               case 1:
+               case 2:
+               case 3:
+               case 4:
+                   {return true;}
+                default: {return false;}
+            }
+        }
 
+        private bool isSensorMode(SensorType senst,int mode )
+        {
+            switch (senst){
+               case SensorType.UltraSonic:
+               case SensorType.IR:        
+                   { return isURMode(mode);}
+               case SensorType.Gyro:
+               case SensorType.Touch:
+                   {return isGTMode(mode); }
+               case SensorType.Color:
+                   {return isColorMode(mode);}
+                default: {return false;}
+             }
+        }
+        // Returns False if mode is wrong
+        public bool testSensorMode(int indexBrick, int indexSensor, int mode) 
+        {
+            Brick<Sensor, Sensor, Sensor, Sensor> brick2 = getBrickByIndex(indexBrick);
+            switch (indexSensor)
+            {
+                case 1:
+                    {
+                        return isSensorMode(brick2.Sensor1.GetSensorType(),mode);
+                    }
+                case 2:
+                    {
+                        return isSensorMode(brick2.Sensor2.GetSensorType(),mode);
+                    }
+                case 3:
+                    {
+                        return isSensorMode(brick2.Sensor3.GetSensorType(),mode);
+                    }
+                case 4:
+                    {
+                        return isSensorMode(brick2.Sensor4.GetSensorType(), mode);
+                    }
+                default: { return false; }
+            };
+
+        } // end test SensorMode
+        
         public double readSensor(int indexBrick, int indexSensor, int mode)
         {
             Brick<Sensor, Sensor, Sensor, Sensor> brick2 = getBrickByIndex(indexBrick);
