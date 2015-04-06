@@ -319,6 +319,7 @@ namespace lego_communication_library
                             case 1: { return new ColorSensor(ColorMode.Ambient); }
                             case 2: { return new ColorSensor(ColorMode.Color); }
                             case 3: { return new ColorSensor(ColorMode.Raw); }
+                            case 4: { return new ColorSensor(ColorMode.Reflection); }
                             default: { return null; };
                         }
                     }
@@ -328,7 +329,6 @@ namespace lego_communication_library
                         {
                             case 1: { return new GyroSensor(GyroMode.Angle); }
                             case 2: { return new GyroSensor(GyroMode.AngularVelocity); }
-                            case 3: { return new GyroSensor(GyroMode.Angle); }
                             default: { return null; };
 
                         }
@@ -340,7 +340,6 @@ namespace lego_communication_library
                         {
                             case 1: { return new TouchSensor(TouchMode.Boolean); }
                             case 2: { return new TouchSensor(TouchMode.Count); }
-                            case 3: { return new TouchSensor(TouchMode.Boolean); }
                             default: { return null; };
                         }
                     }
