@@ -280,15 +280,6 @@ namespace lego_communication_library
                 }
             } while (!allMotorsStopped);
         }
-
-        public void testSensor(int indexBrick)
-        {
-            Brick<Sensor, Sensor, Sensor, Sensor> brick = getBrickByIndex(indexBrick);
-            //brick.Sensor1 = new UltrasonicSensor(UltrasonicMode.Centimeter);
-            brick.Sensor1 = new IRSensor(IRMode.Seek);
-            Console.WriteLine(brick.Sensor1.ReadAsString());
-
-        }
     
         private Sensor getSensorObject(SensorType typeIndexSensor, int mode) 
         {
