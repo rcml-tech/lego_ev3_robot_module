@@ -164,8 +164,8 @@ int LegoRobotModule::init(){
 	WCHAR *tmp = wcsrchr(DllPath, L'\\');
 	WCHAR ConfigPath[MAX_PATH] = { 0 };
 	size_t path_len = tmp - DllPath;
-	wcsncpy(ConfigPath, DllPath, path_len); // VStudio Reccomends wcsncpy_s() instead
-	wcscat(ConfigPath, L"\\config.ini");
+	wcsncpy_s(ConfigPath, DllPath, path_len);
+	wcscat_s(ConfigPath, L"\\config.ini");
 
 	if (ini.LoadFile(ConfigPath) < 0) {
 		printf("Can't load '%s' file!\n", ConfigPath);
