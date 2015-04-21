@@ -55,93 +55,93 @@ LegoRobotModule::LegoRobotModule() {
 	system_value function_id = 0;
 
 	//DEFINE FUNCTIONS with string
-	FunctionData::ParamTypes *motorBreakParams = new FunctionData::ParamTypes[1];
-	motorBreakParams[0] = FunctionData::STRING;
-	lego_functions[function_id] = new FunctionData(function_id+1, 1, motorBreakParams, "motorBreak");
+	FunctionData::ParamTypes *Params = new FunctionData::ParamTypes[1];
+	Params[0] = FunctionData::STRING;
+	lego_functions[function_id] = new FunctionData(function_id+1, 1, Params, "motorBreak");
 	function_id++;
 
 
-	FunctionData::ParamTypes *motorGetDirectionParams = new FunctionData::ParamTypes[1];
-	motorGetDirectionParams[0] = FunctionData::STRING;
-	lego_functions[function_id] = new FunctionData(function_id+1, 1, motorGetDirectionParams, "motorGetDirection");
+	Params = new FunctionData::ParamTypes[1];
+	Params[0] = FunctionData::STRING;
+	lego_functions[function_id] = new FunctionData(function_id+1, 1, Params, "motorGetDirection");
 	function_id++;
 
 
-	FunctionData::ParamTypes *motorGetTachoParams = new FunctionData::ParamTypes[1];
-	motorGetTachoParams[0] = FunctionData::STRING;
-	lego_functions[function_id] = new FunctionData(function_id+1, 1, motorGetTachoParams, "motorGetTacho");
+	Params = new FunctionData::ParamTypes[1];
+	Params[0] = FunctionData::STRING;
+	lego_functions[function_id] = new FunctionData(function_id+1, 1, Params, "motorGetTacho");
 	function_id++;
 
 
-	FunctionData::ParamTypes *motorMoveToParams = new FunctionData::ParamTypes[4];
-	motorMoveToParams[0] = FunctionData::STRING;
-	motorMoveToParams[1] = FunctionData::FLOAT;
-	motorMoveToParams[2] = FunctionData::FLOAT;
-	motorMoveToParams[3] = FunctionData::FLOAT;
-	lego_functions[function_id] = new FunctionData(function_id+1, 4, motorMoveToParams, "motorMoveTo");
+	Params = new FunctionData::ParamTypes[4];
+	Params[0] = FunctionData::STRING;
+	Params[1] = FunctionData::FLOAT;
+	Params[2] = FunctionData::FLOAT;
+	Params[3] = FunctionData::FLOAT;
+	lego_functions[function_id] = new FunctionData(function_id+1, 4, Params, "motorMoveTo");
 	function_id++;
 
 
-	FunctionData::ParamTypes *motorOffParams = new FunctionData::ParamTypes[1];
-	motorOffParams[0] = FunctionData::STRING;
-	lego_functions[function_id] = new FunctionData(function_id+1, 1, motorOffParams, "motorOff");
+	Params = new FunctionData::ParamTypes[1];
+	Params[0] = FunctionData::STRING;
+	lego_functions[function_id] = new FunctionData(function_id+1, 1, Params, "motorOff");
 	function_id++;
 
 
-	FunctionData::ParamTypes *motorResetTachoParams = new FunctionData::ParamTypes[1];
-	motorResetTachoParams[0] = FunctionData::STRING;
-	lego_functions[function_id] = new FunctionData(function_id+1, 1, motorResetTachoParams, "motorResetTacho");
+	Params = new FunctionData::ParamTypes[1];
+	Params[0] = FunctionData::STRING;
+	lego_functions[function_id] = new FunctionData(function_id+1, 1, Params, "motorResetTacho");
 	function_id++;
 
 
-	FunctionData::ParamTypes *motorSetDirectionParams = new FunctionData::ParamTypes[2];
-	motorSetDirectionParams[0] = FunctionData::STRING;
-	motorSetDirectionParams[1] = FunctionData::FLOAT;
-	lego_functions[function_id] = new FunctionData(function_id+1, 2, motorSetDirectionParams,"motorSetDirection");
+	Params = new FunctionData::ParamTypes[2];
+	Params[0] = FunctionData::STRING;
+	Params[1] = FunctionData::FLOAT;
+	lego_functions[function_id] = new FunctionData(function_id+1, 2, Params,"motorSetDirection");
 	function_id++;
 
 
-	FunctionData::ParamTypes *motorSetSpeedParams = new FunctionData::ParamTypes[2];
-	motorSetSpeedParams[0] = FunctionData::STRING;
-	motorSetSpeedParams[1] = FunctionData::FLOAT;
-	lego_functions[function_id] = new FunctionData(function_id+1, 2, motorSetSpeedParams,"motorSetSpeed");
+	Params = new FunctionData::ParamTypes[2];
+	Params[0] = FunctionData::STRING;
+	Params[1] = FunctionData::FLOAT;
+	lego_functions[function_id] = new FunctionData(function_id+1, 2, Params,"motorSetSpeed");
 	function_id++;
 
 
-	FunctionData::ParamTypes *setTrackVehicleParams = new FunctionData::ParamTypes[4];
-	setTrackVehicleParams[0] = FunctionData::STRING;
-	setTrackVehicleParams[1] = FunctionData::STRING;
-	setTrackVehicleParams[2] = FunctionData::FLOAT;
-	setTrackVehicleParams[3] = FunctionData::FLOAT;
-	lego_functions[function_id] = new FunctionData(function_id + 1, 4, setTrackVehicleParams, "setTrackVehicle");
+	Params = new FunctionData::ParamTypes[4];
+	Params[0] = FunctionData::STRING;
+	Params[1] = FunctionData::STRING;
+	Params[2] = FunctionData::FLOAT;
+	Params[3] = FunctionData::FLOAT;
+	lego_functions[function_id] = new FunctionData(function_id + 1, 4, Params, "setTrackVehicle");
 	function_id++;
 
 
-	FunctionData::ParamTypes *waitMotorToStopParams = new FunctionData::ParamTypes[1];
-	waitMotorToStopParams[0] = FunctionData::STRING;
-	lego_functions[function_id] = new FunctionData(function_id+1, 1, waitMotorToStopParams, "waitMotorToStop");
+	Params = new FunctionData::ParamTypes[1];
+	Params[0] = FunctionData::STRING;
+	lego_functions[function_id] = new FunctionData(function_id+1, 1, Params, "waitMotorToStop");
 	function_id++;
 
 
 	// Define functions without string parameters
-	FunctionData::ParamTypes *waitMultiMotorsToStopParams = new FunctionData::ParamTypes[4];
-	waitMultiMotorsToStopParams[0] = FunctionData::FLOAT;
-	waitMultiMotorsToStopParams[1] = FunctionData::FLOAT;
-	waitMultiMotorsToStopParams[2] = FunctionData::FLOAT;
-	waitMultiMotorsToStopParams[3] = FunctionData::FLOAT;
-	lego_functions[function_id] = new FunctionData(function_id+1, 4, waitMultiMotorsToStopParams, "waitMultiMotorsToStop");
+	Params = new FunctionData::ParamTypes[4];
+	Params[0] = FunctionData::FLOAT;
+	Params[1] = FunctionData::FLOAT;
+	Params[2] = FunctionData::FLOAT;
+	Params[3] = FunctionData::FLOAT;
+	lego_functions[function_id] = new FunctionData(function_id+1, 4, Params, "waitMultiMotorsToStop");
 	function_id++;
 
 
-	FunctionData::ParamTypes *trackVehicleBackwardParams = new FunctionData::ParamTypes[1];
-	trackVehicleBackwardParams[0] = FunctionData::FLOAT;
-	lego_functions[function_id] = new FunctionData(function_id+1, 1, trackVehicleBackwardParams, "trackVehicleBackward");
+	Params = new FunctionData::ParamTypes[1];
+	Params[0] = FunctionData::FLOAT;
+	lego_functions[function_id] = new FunctionData(function_id+1, 1, Params, "trackVehicleBackward");
 	function_id++;
 
 
-	FunctionData::ParamTypes *trackVehicleForwardParams = new FunctionData::ParamTypes[1];
-	trackVehicleForwardParams[0] = FunctionData::FLOAT;
-	lego_functions[function_id] = new FunctionData(function_id+1, 1, trackVehicleForwardParams, "trackVehicleForward");
+	Params = new FunctionData::ParamTypes[1];
+	Params[0] = FunctionData::FLOAT;
+	lego_functions[function_id] = new FunctionData(function_id+1, 1, Params, "trackVehicleForward");
 	function_id++;
 
 
@@ -150,43 +150,43 @@ LegoRobotModule::LegoRobotModule() {
 	function_id++;
 
 
-	FunctionData::ParamTypes *trackVehicleSpinLeftParams = new FunctionData::ParamTypes[1];
-	trackVehicleSpinLeftParams[0] = FunctionData::FLOAT;
-	lego_functions[function_id] = new FunctionData(function_id+1, 1, trackVehicleSpinLeftParams, "trackVehicleSpinLeft");
+	Params = new FunctionData::ParamTypes[1];
+	Params[0] = FunctionData::FLOAT;
+	lego_functions[function_id] = new FunctionData(function_id+1, 1, Params, "trackVehicleSpinLeft");
 	function_id++;
 
 
-	FunctionData::ParamTypes *trackVehicleSpinRightParams = new FunctionData::ParamTypes[1];
-	trackVehicleSpinRightParams[0] = FunctionData::FLOAT;
-	lego_functions[function_id] = new FunctionData(function_id+1, 1, trackVehicleSpinRightParams, "trackVehicleSpinRight");
+	Params = new FunctionData::ParamTypes[1];
+	Params[0] = FunctionData::FLOAT;
+	lego_functions[function_id] = new FunctionData(function_id+1, 1, Params, "trackVehicleSpinRight");
 	function_id++;
 
 
-	FunctionData::ParamTypes *trackVehicleTurnLeftForwardParams = new FunctionData::ParamTypes[2];
-	trackVehicleTurnLeftForwardParams[0] = FunctionData::FLOAT;
-	trackVehicleTurnLeftForwardParams[0] = FunctionData::FLOAT;
-	lego_functions[function_id] = new FunctionData(function_id+1, 2, trackVehicleTurnLeftForwardParams, "trackVehicleTurnLeftForward");
+	Params = new FunctionData::ParamTypes[2];
+	Params[0] = FunctionData::FLOAT;
+	Params[0] = FunctionData::FLOAT;
+	lego_functions[function_id] = new FunctionData(function_id+1, 2, Params, "trackVehicleTurnLeftForward");
 	function_id++;
 
 
-	FunctionData::ParamTypes *trackVehicleTurnLeftReverseParams = new FunctionData::ParamTypes[2];
-	trackVehicleTurnLeftReverseParams[0] = FunctionData::FLOAT;
-	trackVehicleTurnLeftReverseParams[0] = FunctionData::FLOAT;
-	lego_functions[function_id] = new FunctionData(function_id+1, 2, trackVehicleTurnLeftReverseParams, "trackVehicleTurnLeftReverse");
+	Params = new FunctionData::ParamTypes[2];
+	Params[0] = FunctionData::FLOAT;
+	Params[0] = FunctionData::FLOAT;
+	lego_functions[function_id] = new FunctionData(function_id+1, 2, Params, "trackVehicleTurnLeftReverse");
 	function_id++;
 
 
-	FunctionData::ParamTypes *trackVehicleTurnRightForwardParams = new FunctionData::ParamTypes[2];
-	trackVehicleTurnRightForwardParams[0] = FunctionData::FLOAT;
-	trackVehicleTurnRightForwardParams[0] = FunctionData::FLOAT;
-	lego_functions[function_id] = new FunctionData(function_id+1, 2, trackVehicleTurnRightForwardParams, "trackVehicleTurnRightForward");
+	Params = new FunctionData::ParamTypes[2];
+	Params[0] = FunctionData::FLOAT;
+	Params[0] = FunctionData::FLOAT;
+	lego_functions[function_id] = new FunctionData(function_id+1, 2, Params, "trackVehicleTurnRightForward");
 	function_id++;
 
 
-	FunctionData::ParamTypes *trackVehicleTurnRightReverseParams = new FunctionData::ParamTypes[2];
-	trackVehicleTurnRightReverseParams[0] = FunctionData::FLOAT;
-	trackVehicleTurnRightReverseParams[0] = FunctionData::FLOAT;
-	lego_functions[function_id] = new FunctionData(function_id+1, 2, trackVehicleTurnRightReverseParams, "trackVehicleTurnRightReverse");
+	Params = new FunctionData::ParamTypes[2];
+	Params[0] = FunctionData::FLOAT;
+	Params[0] = FunctionData::FLOAT;
+	lego_functions[function_id] = new FunctionData(function_id+1, 2, Params, "trackVehicleTurnRightReverse");
 	function_id++;
 
 
@@ -194,10 +194,10 @@ LegoRobotModule::LegoRobotModule() {
 	function_id++;
 
 
-	FunctionData::ParamTypes *readSensorParams = new FunctionData::ParamTypes[2];
-	readSensorParams[0] = FunctionData::FLOAT;
-	readSensorParams[0] = FunctionData::FLOAT;
-	lego_functions[function_id] = new FunctionData(function_id+1, 2, readSensorParams, "readSensor");
+	Params = new FunctionData::ParamTypes[2];
+	Params[0] = FunctionData::FLOAT;
+	Params[0] = FunctionData::FLOAT;
+	lego_functions[function_id] = new FunctionData(function_id+1, 2, Params, "readSensor");
 
 	// define robot axis
 	robot_axis = new AxisData*[COUNT_AXIS];
