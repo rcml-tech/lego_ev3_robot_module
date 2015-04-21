@@ -19,40 +19,6 @@ const unsigned int COUNT_LEGO_FUNCTIONS = 22;
 const unsigned int COUNT_AXIS = 11;
 
 
-#define ADD_LEGO_FUNCTION(FUNCTION_NAME, COUNT_PARAMS, GIVE_EXCEPTION) \
-lego_functions[function_id] = new FunctionData; \
-lego_functions[function_id]->command_index = function_id + 1; \
-lego_functions[function_id]->count_params = COUNT_PARAMS; \
-lego_functions[function_id]->give_exception = GIVE_EXCEPTION; \
-lego_functions[function_id]->name = FUNCTION_NAME; \
-function_id++;
-// Конец макроса
-
-// Опишем макросс который все наши функции заполнит/ Добавил Функцию - Увеличивай их число COUNT_MATH_FUNCTIONS. А то удалишь нафиг какой-нить процесс в памяти.
-#define DEFINE_ALL_FUNCTIONS \
-ADD_LEGO_FUNCTION("motorBreak", 1, false)\
-ADD_LEGO_FUNCTION("motorGetDirection", 1, false)\
-ADD_LEGO_FUNCTION("motorGetTacho", 1, false)\
-ADD_LEGO_FUNCTION("motorMoveTo", 4, false)\
-ADD_LEGO_FUNCTION("motorOff", 1, false)\
-ADD_LEGO_FUNCTION("motorResetTacho", 1, false)\
-ADD_LEGO_FUNCTION("motorSetDirection", 2, false)\
-ADD_LEGO_FUNCTION("motorSetSpeed", 2, false)\
-ADD_LEGO_FUNCTION("setTrackVehicle", 4, false)\
-ADD_LEGO_FUNCTION("waitMotorToStop", 1, false)\
-ADD_LEGO_FUNCTION("waitMultiMotorsToStop", 4, false)\
-ADD_LEGO_FUNCTION("trackVehicleBackward", 1, false)\
-ADD_LEGO_FUNCTION("trackVehicleForward", 1, false)\
-ADD_LEGO_FUNCTION("trackVehicleOff", 0, false)\
-ADD_LEGO_FUNCTION("trackVehicleSpinLeft", 1, false)\
-ADD_LEGO_FUNCTION("trackVehicleSpinRight", 1, false)\
-ADD_LEGO_FUNCTION("trackVehicleTurnLeftForward", 2, false)\
-ADD_LEGO_FUNCTION("trackVehicleTurnLeftReverse", 2, false)\
-ADD_LEGO_FUNCTION("trackVehicleTurnRightForward", 2, false)\
-ADD_LEGO_FUNCTION("trackVehicleTurnRightForward", 2, false)\
-ADD_LEGO_FUNCTION("trackVehicleBrake", 0, false)\
-ADD_LEGO_FUNCTION("readSensor", 2, false);
-
 #define ADD_ROBOT_AXIS(AXIS_NAME, UPPER_VALUE, LOWER_VALUE) \
 robot_axis[axis_id] = new AxisData; \
 robot_axis[axis_id]->axis_index = axis_id + 1; \
@@ -82,31 +48,161 @@ FunctionData** LegoRobotModule::getFunctions(unsigned int *count_functions) {
 	*count_functions = COUNT_LEGO_FUNCTIONS;
 	return lego_functions;
 };
+
 LegoRobotModule::LegoRobotModule() {
 	srand(time(NULL));
 	lego_functions = new FunctionData*[COUNT_LEGO_FUNCTIONS];
 	system_value function_id = 0;
-	DEFINE_ALL_FUNCTIONS
-		robot_axis = new AxisData*[COUNT_AXIS];
+
+	//DEFINE FUNCTIONS with string
+	FunctionData::ParamTypes *motorBreakParams = new FunctionData::ParamTypes[1];
+	motorBreakParams[0] = FunctionData::STRING;
+	lego_functions[function_id] = new FunctionData(function_id+1, 1, motorBreakParams, "motorBreak");
+	function_id++;
+
+
+	FunctionData::ParamTypes *motorGetDirectionParams = new FunctionData::ParamTypes[1];
+	motorGetDirectionParams[0] = FunctionData::STRING;
+	lego_functions[function_id] = new FunctionData(function_id+1, 1, motorGetDirectionParams, "motorGetDirection");
+	function_id++;
+
+
+	FunctionData::ParamTypes *motorGetTachoParams = new FunctionData::ParamTypes[1];
+	motorGetTachoParams[0] = FunctionData::STRING;
+	lego_functions[function_id] = new FunctionData(function_id+1, 1, motorGetTachoParams, "motorGetTacho");
+	function_id++;
+
+
+	FunctionData::ParamTypes *motorMoveToParams = new FunctionData::ParamTypes[4];
+	motorMoveToParams[0] = FunctionData::STRING;
+	motorMoveToParams[1] = FunctionData::FLOAT;
+	motorMoveToParams[2] = FunctionData::FLOAT;
+	motorMoveToParams[3] = FunctionData::FLOAT;
+	lego_functions[function_id] = new FunctionData(function_id+1, 4, motorMoveToParams, "motorMoveTo");
+	function_id++;
+
+
+	FunctionData::ParamTypes *motorOffParams = new FunctionData::ParamTypes[1];
+	motorOffParams[0] = FunctionData::STRING;
+	lego_functions[function_id] = new FunctionData(function_id+1, 1, motorOffParams, "motorOff");
+	function_id++;
+
+
+	FunctionData::ParamTypes *motorResetTachoParams = new FunctionData::ParamTypes[1];
+	motorResetTachoParams[0] = FunctionData::STRING;
+	lego_functions[function_id] = new FunctionData(function_id+1, 1, motorResetTachoParams, "motorResetTacho");
+	function_id++;
+
+
+	FunctionData::ParamTypes *motorSetDirectionParams = new FunctionData::ParamTypes[2];
+	motorSetDirectionParams[0] = FunctionData::STRING;
+	motorSetDirectionParams[1] = FunctionData::FLOAT;
+	lego_functions[function_id] = new FunctionData(function_id+1, 2, motorSetDirectionParams,"motorSetDirection");
+	function_id++;
+
+
+	FunctionData::ParamTypes *motorSetSpeedParams = new FunctionData::ParamTypes[2];
+	motorSetSpeedParams[0] = FunctionData::STRING;
+	motorSetSpeedParams[1] = FunctionData::FLOAT;
+	lego_functions[function_id] = new FunctionData(function_id+1, 2, motorSetSpeedParams,"motorSetSpeed");
+	function_id++;
+
+
+	FunctionData::ParamTypes *setTrackVehicleParams = new FunctionData::ParamTypes[4];
+	setTrackVehicleParams[0] = FunctionData::STRING;
+	setTrackVehicleParams[1] = FunctionData::STRING;
+	setTrackVehicleParams[2] = FunctionData::FLOAT;
+	setTrackVehicleParams[3] = FunctionData::FLOAT;
+	lego_functions[function_id] = new FunctionData(function_id + 1, 4, setTrackVehicleParams, "setTrackVehicle");
+	function_id++;
+
+
+	FunctionData::ParamTypes *waitMotorToStopParams = new FunctionData::ParamTypes[1];
+	waitMotorToStopParams[0] = FunctionData::STRING;
+	lego_functions[function_id] = new FunctionData(function_id+1, 1, waitMotorToStopParams, "waitMotorToStop");
+	function_id++;
+
+
+	// Define functions without string parameters
+	FunctionData::ParamTypes *waitMultiMotorsToStopParams = new FunctionData::ParamTypes[4];
+	waitMultiMotorsToStopParams[0] = FunctionData::FLOAT;
+	waitMultiMotorsToStopParams[1] = FunctionData::FLOAT;
+	waitMultiMotorsToStopParams[2] = FunctionData::FLOAT;
+	waitMultiMotorsToStopParams[3] = FunctionData::FLOAT;
+	lego_functions[function_id] = new FunctionData(function_id+1, 4, waitMultiMotorsToStopParams, "waitMultiMotorsToStop");
+	function_id++;
+
+
+	FunctionData::ParamTypes *trackVehicleBackwardParams = new FunctionData::ParamTypes[1];
+	trackVehicleBackwardParams[0] = FunctionData::FLOAT;
+	lego_functions[function_id] = new FunctionData(function_id+1, 1, trackVehicleBackwardParams, "trackVehicleBackward");
+	function_id++;
+
+
+	FunctionData::ParamTypes *trackVehicleForwardParams = new FunctionData::ParamTypes[1];
+	trackVehicleForwardParams[0] = FunctionData::FLOAT;
+	lego_functions[function_id] = new FunctionData(function_id+1, 1, trackVehicleForwardParams, "trackVehicleForward");
+	function_id++;
+
+
+
+	lego_functions[function_id] = new FunctionData(function_id+1, 0, NULL, "trackVehicleOff");
+	function_id++;
+
+
+	FunctionData::ParamTypes *trackVehicleSpinLeftParams = new FunctionData::ParamTypes[1];
+	trackVehicleSpinLeftParams[0] = FunctionData::FLOAT;
+	lego_functions[function_id] = new FunctionData(function_id+1, 1, trackVehicleSpinLeftParams, "trackVehicleSpinLeft");
+	function_id++;
+
+
+	FunctionData::ParamTypes *trackVehicleSpinRightParams = new FunctionData::ParamTypes[1];
+	trackVehicleSpinRightParams[0] = FunctionData::FLOAT;
+	lego_functions[function_id] = new FunctionData(function_id+1, 1, trackVehicleSpinRightParams, "trackVehicleSpinRight");
+	function_id++;
+
+
+	FunctionData::ParamTypes *trackVehicleTurnLeftForwardParams = new FunctionData::ParamTypes[2];
+	trackVehicleTurnLeftForwardParams[0] = FunctionData::FLOAT;
+	trackVehicleTurnLeftForwardParams[0] = FunctionData::FLOAT;
+	lego_functions[function_id] = new FunctionData(function_id+1, 2, trackVehicleTurnLeftForwardParams, "trackVehicleTurnLeftForward");
+	function_id++;
+
+
+	FunctionData::ParamTypes *trackVehicleTurnLeftReverseParams = new FunctionData::ParamTypes[2];
+	trackVehicleTurnLeftReverseParams[0] = FunctionData::FLOAT;
+	trackVehicleTurnLeftReverseParams[0] = FunctionData::FLOAT;
+	lego_functions[function_id] = new FunctionData(function_id+1, 2, trackVehicleTurnLeftReverseParams, "trackVehicleTurnLeftReverse");
+	function_id++;
+
+
+	FunctionData::ParamTypes *trackVehicleTurnRightForwardParams = new FunctionData::ParamTypes[2];
+	trackVehicleTurnRightForwardParams[0] = FunctionData::FLOAT;
+	trackVehicleTurnRightForwardParams[0] = FunctionData::FLOAT;
+	lego_functions[function_id] = new FunctionData(function_id+1, 2, trackVehicleTurnRightForwardParams, "trackVehicleTurnRightForward");
+	function_id++;
+
+
+	FunctionData::ParamTypes *trackVehicleTurnRightReverseParams = new FunctionData::ParamTypes[2];
+	trackVehicleTurnRightReverseParams[0] = FunctionData::FLOAT;
+	trackVehicleTurnRightReverseParams[0] = FunctionData::FLOAT;
+	lego_functions[function_id] = new FunctionData(function_id+1, 2, trackVehicleTurnRightReverseParams, "trackVehicleTurnRightReverse");
+	function_id++;
+
+
+	lego_functions[function_id] = new FunctionData(function_id+1, 0, NULL, "trackVehicleBrake");
+	function_id++;
+
+
+	FunctionData::ParamTypes *readSensorParams = new FunctionData::ParamTypes[2];
+	readSensorParams[0] = FunctionData::FLOAT;
+	readSensorParams[0] = FunctionData::FLOAT;
+	lego_functions[function_id] = new FunctionData(function_id+1, 2, readSensorParams, "readSensor");
+
+	// define robot axis
+	robot_axis = new AxisData*[COUNT_AXIS];
 	system_value axis_id = 0;
 	DEFINE_ALL_AXIS
-};
-char numToMotorLitera(variable_value num){
-	if (num == 1.0) {
-		return 'A';
-	}
-	else if (num == 2.0) {
-		return 'B';
-	}
-	else if (num == 3.0) {
-		return 'C';
-	}
-	else if (num == 4.0) {
-		return 'D';
-	}
-	else {
-		throw std::exception();
-	}
 };
 
 inline void isSpeed(variable_value num){
@@ -123,13 +219,13 @@ inline void isPercent(variable_value num){
 	}
 };
 
-inline void isMotor(variable_value num){
-	switch ((int)num)
+inline void isMotor(wchar_t num){
+	switch (num)
 	{
-	case 1:
-	case 2:
-	case 3:
-	case 4:{
+	case 'A':
+	case 'B':
+	case 'C':
+	case 'D':{
 		break;
 	}
 	default:
@@ -149,7 +245,7 @@ void LegoRobotModule::destroy() {
 	delete this;
 };
 int LegoRobotModule::init(){
-	InitializeCriticalSection(&LRM_cs); // Инициализируем критическую секцию
+	InitializeCriticalSection(&LRM_cs);
 	CSimpleIniA ini;
 	ini.SetMultiKey(true);
 
@@ -164,8 +260,8 @@ int LegoRobotModule::init(){
 	WCHAR *tmp = wcsrchr(DllPath, L'\\');
 	WCHAR ConfigPath[MAX_PATH] = { 0 };
 	size_t path_len = tmp - DllPath;
-	wcsncpy_s(ConfigPath, DllPath, path_len);
-	wcscat_s(ConfigPath, L"\\config.ini");
+	wcsncpy(ConfigPath, DllPath, path_len); // VStudio Reccomends wcsncpy_s() instead
+	wcscat(ConfigPath, L"\\config.ini");
 
 	if (ini.LoadFile(ConfigPath) < 0) {
 		printf("Can't load '%s' file!\n", ConfigPath);
@@ -180,7 +276,6 @@ int LegoRobotModule::init(){
 		System::String^ connection_c = gcnew System::String(connection.c_str());
 		lego_communication_library::lego_brick^ singletoneBrick = lego_communication_library::lego_brick::getInstance();
 		int index_robot = singletoneBrick->createBrick(connection_c);
-		//std::cout << "ini works" << std::endl;
 		colorPrintf(this, ConsoleColor(ConsoleColor::white), "Attemp to connect: %s\n", connection.c_str());
 		try {
 			singletoneBrick->connectBrick(index_robot);
@@ -241,7 +336,7 @@ void LegoRobot::axisControl(system_value axis_index, variable_value value){
 	case 2:
 	case 3:
 	case 4:
-	case 5:{ // speedMotor A.B.C.D
+	case 5:{// setSpeedMotor A.B.C.D
 		if (!is_locked){
 			lego_communication_library::lego_brick::getInstance()->motorSetSpeed(robot_index, (wchar_t)(63 + axis_index), (int)value);
 		}
@@ -273,7 +368,13 @@ void LegoRobot::axisControl(system_value axis_index, variable_value value){
 void LegoRobotModule::prepare(colorPrintf_t *colorPrintf_p, colorPrintfVA_t *colorPrintfVA_p) {
 	colorPrintf = colorPrintf_p;
 }
-FunctionResult* LegoRobot::executeFunction(system_value functionId, variable_value *args) {
+
+void *LegoRobotModule::writePC(unsigned int *buffer_length) {
+	*buffer_length = 0;
+	return NULL;
+}
+
+FunctionResult* LegoRobot::executeFunction(system_value functionId, void **args) {
 	if ((functionId < 1) || (functionId > COUNT_LEGO_FUNCTIONS)) {
 		return NULL;
 	}
@@ -283,80 +384,107 @@ FunctionResult* LegoRobot::executeFunction(system_value functionId, variable_val
 	try {
 		switch (functionId) {
 		case 1: {
-			isMotor(*args);
-				lego_communication_library::lego_brick::getInstance()->motorBreak(robot_index, numToMotorLitera(*args));
+			wchar_t input1 = *(const char *)(*args);
+			isMotor(input1);
+			lego_communication_library::lego_brick::getInstance()->motorBreak(robot_index, input1);
 			
 			break;
 		}
 		case 2: {
-			isMotor(*args);
-				rez = lego_communication_library::lego_brick::getInstance()->motorGetDirection(robot_index, numToMotorLitera(*args));
+			wchar_t input1 = *(const char *)(*args);
+			isMotor(input1);
+				rez = lego_communication_library::lego_brick::getInstance()->motorGetDirection(robot_index, input1);
 			break;
 		}
 		case 3: {
-			isMotor(*args);
-				rez = lego_communication_library::lego_brick::getInstance()->motorGetTacho(robot_index, numToMotorLitera(*args));
+			wchar_t input1 = *(const char *)(*args);
+
+			isMotor(input1);
+				rez = lego_communication_library::lego_brick::getInstance()->motorGetTacho(robot_index, input1);
 			break;
 		}
 		case 4: {
-				isSpeed(*(args + 1));
-				isMotor(*args);
-				lego_communication_library::lego_brick::getInstance()->motorMoveTo(robot_index, numToMotorLitera(*args), *(args + 1), *(args + 2), !!(*(args + 3))); // speed 
+			wchar_t input1 = *(const char *)(*args);
+			variable_value *input2 = (variable_value *)(*(args + 1));
+
+			isSpeed(*input2);
+			isMotor(input1);
+			variable_value *input3 = (variable_value *)(*(args + 2));
+			variable_value *input4 = (variable_value *)(*(args + 3));
+			lego_communication_library::lego_brick::getInstance()->motorMoveTo(robot_index, input1, *input2, *input3, !!(*input4)); 
 			break;
 		}
 		case 5: {
-			isMotor(*args);
-				lego_communication_library::lego_brick::getInstance()->motorOff(robot_index, numToMotorLitera(*args));
+			wchar_t input1 = *(const char *)(*args);
+			isMotor(input1);
+			lego_communication_library::lego_brick::getInstance()->motorOff(robot_index, input1);
 			 
 			break;
 		}
 		case 6: {
-			isMotor(*args);
-				lego_communication_library::lego_brick::getInstance()->motorResetTacho(robot_index, numToMotorLitera(*args)); 
+			wchar_t input1 = *(const char *)(*args);
+			isMotor(input1);
+			lego_communication_library::lego_brick::getInstance()->motorResetTacho(robot_index, input1);
 			break;
 		}
 		case 7: {
-			isMotor(*args);
-				lego_communication_library::lego_brick::getInstance()->motorSetDirection(robot_index, numToMotorLitera(*args), !!(*(args + 1)));
+			wchar_t input1 = *(const char *)(*args);
+			variable_value *input2 = (variable_value *)(*(args + 1));
+			isMotor(input1);
+			lego_communication_library::lego_brick::getInstance()->motorSetDirection(robot_index, input1, !!(*input2));
 			break;
 		}
 		case 8: {
-			isMotor(*args);
-			isSpeed(*(args + 1));
-			lego_communication_library::lego_brick::getInstance()->motorSetSpeed(robot_index, numToMotorLitera(*args), *(args + 1)); // speed 
+			wchar_t input1 = *(const char *)(*args);
+			variable_value *input2 = (variable_value *)(*(args + 1));
+			isMotor(input1);
+			isSpeed(*input2);
+			lego_communication_library::lego_brick::getInstance()->motorSetSpeed(robot_index, input1, *input2); 
 			break;
 		}
 		case 9: {
-			isMotor(*args);
-			isMotor(*(args + 1));
-			if (*(args + 1) != *(args + 2)) {
-				lego_communication_library::lego_brick::getInstance()->setTrackVehicle(robot_index, numToMotorLitera(*args), numToMotorLitera(*(args + 1)), (bool)(*(args + 2)), (bool)(*(args + 3)));
+			wchar_t input1 = *(const char *)(*args);
+			wchar_t input2 = *(const char *)(*(args + 1));
+
+			isMotor(input1);
+			isMotor(input2);
+			variable_value *input3 = (variable_value *)(*(args + 2));
+			variable_value *input4 = (variable_value *)(*(args + 3));
+			if (input1 != input2) {
+				lego_communication_library::lego_brick::getInstance()->setTrackVehicle(robot_index, input1, input2, (bool)(*input3), (bool)(*input4));
 				is_trackVehicleOn = true;
 			}
 			else{ throw std::exception(); };
 			break;
 		}
 		case 10: {
-			isMotor(*args);
-				lego_communication_library::lego_brick::getInstance()->waitMotorToStop(robot_index, numToMotorLitera(*args));
+			wchar_t input1 = *(const char *)(*args);
+			isMotor(input1);
+			lego_communication_library::lego_brick::getInstance()->waitMotorToStop(robot_index, input1);
 			break;
 		}
 		case 11: {
-			lego_communication_library::lego_brick::getInstance()->waitMultiMotorsToStop(robot_index, !!(*args), !!(*(args + 1)), !!(*(args + 2)), !!(*(args + 3)));
+			variable_value *input1 = (variable_value *)(*args);
+			variable_value *input2 = (variable_value *)(*(args + 1));
+			variable_value *input3 = (variable_value *)(*(args + 2));
+			variable_value *input4 = (variable_value *)(*(args + 3));
+			lego_communication_library::lego_brick::getInstance()->waitMultiMotorsToStop(robot_index, !!(*input1), !!(*input2), !!(*input3), !!(*input4));
 			break;
 		}
 		case 12: {
-				isSpeed(*args);
+				variable_value *input1 = (variable_value *)(*args);
+				isSpeed(*input1);
 				if (is_trackVehicleOn){
-					lego_communication_library::lego_brick::getInstance()->trackVehicleBackward(robot_index, *args); // speed
+					lego_communication_library::lego_brick::getInstance()->trackVehicleBackward(robot_index, *input1); 
 				}
 				else{ throw std::exception(); };
 			break;
 		}
 		case 13: {
-				isSpeed(*args);
+				variable_value *input1 = (variable_value *)(*args);
+				isSpeed(*input1);
 				if (is_trackVehicleOn){
-					lego_communication_library::lego_brick::getInstance()->trackVehicleForward(robot_index, *args);  // speed
+					lego_communication_library::lego_brick::getInstance()->trackVehicleForward(robot_index, *input1);  
 				}
 				else{ throw std::exception(); };
 			break;
@@ -369,54 +497,63 @@ FunctionResult* LegoRobot::executeFunction(system_value functionId, variable_val
 			break;
 		}
 		case 15: {
-
-			isSpeed(*args);
+			variable_value *input1 = (variable_value *)(*args);
+			isSpeed(*input1);
 			if (is_trackVehicleOn){
-				lego_communication_library::lego_brick::getInstance()->trackVehicleSpinLeft(robot_index, *args); // speed
+				lego_communication_library::lego_brick::getInstance()->trackVehicleSpinLeft(robot_index, *input1); 
 			}
 			else{ throw std::exception(); };
 			break;
 		}
 		case 16: {
-				isSpeed(*args);
+			variable_value *input1 = (variable_value *)(*args);
+				isSpeed(*input1);
 				if (is_trackVehicleOn){
-					lego_communication_library::lego_brick::getInstance()->trackVehicleSpinRight(robot_index, *args); // speed
+					lego_communication_library::lego_brick::getInstance()->trackVehicleSpinRight(robot_index, *input1); 
 				}
 				else{ throw std::exception(); };
 			break;
 		}
 		case 17: {
-				isSpeed(*args);
-				isPercent(*(args + 1));
+			variable_value *input1 = (variable_value *)(*args);
+			variable_value *input2 = (variable_value *)(*(args + 1));
+				isSpeed(*input1);
+				isPercent(*input2);
 				if (is_trackVehicleOn){
-					lego_communication_library::lego_brick::getInstance()->trackVehicleTurnLeftForward(robot_index, *args, *(args + 1));  // speed, percent
+					lego_communication_library::lego_brick::getInstance()->trackVehicleTurnLeftForward(robot_index, *input1, *input2);  
 				}
 				else{ throw std::exception(); };
 			break;
 		}
 		case 18: {
-				isPercent(*(args + 1));
-				isSpeed(*args);
+			variable_value *input1 = (variable_value *)(*args);
+			variable_value *input2 = (variable_value *)(*(args + 1));
+				isPercent(*input2);
+				isSpeed(*input1);
 				if (is_trackVehicleOn){
-					lego_communication_library::lego_brick::getInstance()->trackVehicleTurnLeftReverse(robot_index, *args, *(args + 1));  // speed, percent
+					lego_communication_library::lego_brick::getInstance()->trackVehicleTurnLeftReverse(robot_index, *input1, *input2);  
 				}
 				else{ throw std::exception(); };
 			break;
 		}
 		case 19: {
-			isSpeed(*args) ; 
-			isPercent(*(args + 1));
+			variable_value *input1 = (variable_value *)(*args);
+			variable_value *input2 = (variable_value *)(*(args + 1));
+			isSpeed(*input1);
+			isPercent(*input2);
 				if (is_trackVehicleOn){
-					lego_communication_library::lego_brick::getInstance()->trackVehicleTurnRightForward(robot_index, *args, *(args + 1));  // speed, percent
+					lego_communication_library::lego_brick::getInstance()->trackVehicleTurnRightForward(robot_index, *input1, *input2);  
 				}
 				else{ throw std::exception(); };
 			break;
 		}
 		case 20: {
-			isSpeed(*args) ; 
-			isPercent(*(args + 1));
+			variable_value *input1 = (variable_value *)(*args);
+			variable_value *input2 = (variable_value *)(*(args + 1));
+			isSpeed(*input1);
+			isPercent(*input2);
 				if (is_trackVehicleOn){
-					lego_communication_library::lego_brick::getInstance()->trackVehicleTurnRightForward(robot_index, *args, *(args + 1));  // speed, percent
+					lego_communication_library::lego_brick::getInstance()->trackVehicleTurnRightForward(robot_index, *input1, *input2);  
 				}
 				else{ throw std::exception(); };
 			break;
@@ -429,8 +566,10 @@ FunctionResult* LegoRobot::executeFunction(system_value functionId, variable_val
 			break;
 		}
 		case 22:{
-			if (lego_communication_library::lego_brick::getInstance()->testSensorMode(robot_index, *args, *(args + 1)) ) {
-				rez = lego_communication_library::lego_brick::getInstance()->readSensor(robot_index, *args, *(args + 1));
+			variable_value *input1 = (variable_value *)(*args);
+			variable_value *input2 = (variable_value *)(*(args + 1));
+			if (lego_communication_library::lego_brick::getInstance()->testSensorMode(robot_index, *input1, *input2)) {
+				rez = lego_communication_library::lego_brick::getInstance()->readSensor(robot_index, *input1, *input2);
 			}
 			else{ throw std::exception(); };
 			break;
@@ -442,6 +581,15 @@ FunctionResult* LegoRobot::executeFunction(system_value functionId, variable_val
 		return new FunctionResult(0);
 	};
 };
+
+int LegoRobotModule::startProgram(int uniq_index, void *buffer, unsigned int buffer_length) {
+	return 0;
+}
+
+int LegoRobotModule::endProgram(int uniq_index) {
+	return 0;
+}
+
 
 __declspec(dllexport) RobotModule* getRobotModuleObject() {
 	return new LegoRobotModule();
