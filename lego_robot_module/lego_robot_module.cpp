@@ -3,6 +3,9 @@
 * Author: m79lol, iskinmike
 *
 */
+
+#define _CRT_SECURE_NO_WARNINGS
+
 #include <windows.h>
 #include <time.h>
 #include <vector>
