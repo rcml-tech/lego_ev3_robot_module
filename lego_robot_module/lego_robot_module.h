@@ -14,7 +14,7 @@ public:
 
 	std::vector<variable_value> axis_state;
 	LegoRobot(int robot_index) : robot_index(robot_index), isAviable(true), is_trackVehicleOn(false), is_locked(false){}
-	FunctionResult* executeFunction(system_value command_index, variable_value *args);
+	FunctionResult* executeFunction(system_value command_index, void **args);
 	void axisControl(system_value axis_index, variable_value value);
 	~LegoRobot() {};
 };
@@ -27,14 +27,27 @@ public:
 	AxisData **robot_axis;
 	colorPrintf_t *colorPrintf;
 	LegoRobotModule();
+
+	//init
 	const char *getUID();
 	void prepare(colorPrintf_t *colorPrintf_p, colorPrintfVA_t *colorPrintfVA_p);
-	int init();
+
+	//compiler only
 	FunctionData** getFunctions(unsigned int *count_functions);
 	AxisData** getAxis(unsigned int *count_axis);
+	virtual void *writePC(unsigned int *buffer_length);
+
+	//intepreter - devices
+	int init();
 	Robot* robotRequire();
 	void robotFree(Robot *robot);
 	void final();
+
+	//intepreter - program
+	int startProgram(int uniq_index, void *buffer, unsigned int buffer_length);
+	int endProgram(int uniq_index);
+
+	//destructor
 	void destroy();
 	~LegoRobotModule() {};
 };
