@@ -404,7 +404,7 @@ namespace lego_communication_library
              }
         }
         // Returns False if mode is wrong
-        public bool testSensorMode(int indexBrick, int indexSensor, int mode) // Пусть возвращает False если ввели неверное значение
+        public bool testSensorMode(int indexBrick, int indexSensor, int mode) 
         {
             Brick<Sensor, Sensor, Sensor, Sensor> brick2 = getBrickByIndex(indexBrick);
             switch (indexSensor)
