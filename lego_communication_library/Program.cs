@@ -10,16 +10,17 @@ using MonoBrick.EV3;//use this to run the example on the EV3
 
 namespace lego_communication_library
 {
-    public class lego_brick
+
+    public class EV3_brick
     {
         private OrderedDictionary connectedBricks;
         private OrderedDictionary connectedPoints;
 
-        //IDictionary<string, int> dict = new Dictionary<string, int>();
         private int iteratorConnectIndex;
-        private static lego_brick instance;
+        private static EV3_brick instance;
 
-        private Motor getMotorByLitera(Brick<Sensor, Sensor, Sensor, Sensor> brick, char motor) // РІРјРµСЃС‚Рѕ Р»РёС‚РµСЂ С‡РёСЃР»Р°
+
+        private Motor getMotorByLitera(Brick<Sensor, Sensor, Sensor, Sensor> brick, char motor) // вместо литер числа
         {
             switch (motor)
             {
@@ -32,7 +33,7 @@ namespace lego_communication_library
                 case 'D':
                     return brick.MotorD;
                 default:
-                    throw new Exception("РќРµРґРѕРїСѓСЃС‚РёРјР°СЏ Р»РёС‚РµСЂР° РјРѕС‚РѕСЂР°!");
+                    throw new Exception("Недопустимая литера мотора! " );
             }
         }
 
@@ -40,7 +41,7 @@ namespace lego_communication_library
         {
             if (!connectedBricks.Contains((Object) indexBrick))
             {
-                throw new Exception("Р‘Р»РѕРє СЃ Р·Р°РїСЂР°С€РёРІР°РµРјС‹Рј РёРЅРґРµРєСЃРѕРј РЅРµ РїРѕРґРєР»СЋС‡РµРЅ!");
+                throw new Exception("Блок с запрашиваемым индексом не подключен!");
             }
 
             return (Brick<Sensor, Sensor, Sensor, Sensor>) connectedBricks[(Object) indexBrick];
@@ -59,17 +60,17 @@ namespace lego_communication_library
             return brick.Vehicle;
         }
 
-        private lego_brick()
+        private EV3_brick()
         {
             connectedBricks = new OrderedDictionary();
             connectedPoints = new OrderedDictionary();
             iteratorConnectIndex = 0;
         }
 
-        public static lego_brick getInstance()
+        public static EV3_brick getInstance()
         {
             if (instance == null) {
-                instance = new lego_brick();
+                instance = new EV3_brick();
             }
             return instance;
         }
@@ -203,7 +204,6 @@ namespace lego_communication_library
             vehicle.SpinRight(speed);
         }
 
-
         public void trackVehicleSpinLeft(int indexBrick, sbyte speed)
         {
             Vehicle vehicle = getVehicleByIndexBrick(indexBrick);
@@ -280,7 +280,7 @@ namespace lego_communication_library
                 }
             } while (!allMotorsStopped);
         }
-    
+
         private Sensor getSensorObject(SensorType typeIndexSensor, int mode) 
         {
             switch (typeIndexSensor) {
@@ -338,7 +338,6 @@ namespace lego_communication_library
             }; // End Switch
         } // End Func
 
-
         protected double resultMod(string str) {
             switch (str) {
                 case "Black": { return 1; }
@@ -351,9 +350,7 @@ namespace lego_communication_library
                     {
                         string temps;
                         temps = str;
-                        int tempi = 0;
-
-                        tempi = temps.Length;
+                        int tempi = temps.Length;
 
                         if (temps.IndexOf(' ') > 0)
                         {
@@ -363,6 +360,7 @@ namespace lego_communication_library
                     }
             }
         }
+
         private bool isURMode(int mod) {
             switch (mod) {
                case 1:
@@ -406,7 +404,7 @@ namespace lego_communication_library
              }
         }
         // Returns False if mode is wrong
-        public bool testSensorMode(int indexBrick, int indexSensor, int mode) 
+        public bool testSensorMode(int indexBrick, int indexSensor, int mode) // Пусть возвращает False если ввели неверное значение
         {
             Brick<Sensor, Sensor, Sensor, Sensor> brick2 = getBrickByIndex(indexBrick);
             switch (indexSensor)
@@ -429,9 +427,8 @@ namespace lego_communication_library
                     }
                 default: { return false; }
             };
-
         } // end test SensorMode
-        
+
         public double readSensor(int indexBrick, int indexSensor, int mode)
         {
             Brick<Sensor, Sensor, Sensor, Sensor> brick2 = getBrickByIndex(indexBrick);

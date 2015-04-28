@@ -712,7 +712,7 @@ namespace MonoBrick.NXT
         public override string ReadAsString()
         {
             RGBColor color = ReadRGBColor();
-            return "Red:" + color.Red + " green:" + color.Green + " blue:" + color.Blue;
+            return "$" + color.Red + "%" + color.Green + "+" + color.Blue + "&";
         }
     }
     #endregion
@@ -825,7 +825,7 @@ namespace MonoBrick.NXT
         public override string ReadAsString()
         {
             Position pos = ReadPosition();
-            return "x:" + pos.X + " y:" + pos.Y + " z:" + pos.Z;
+            return "$" + pos.X + "%" + pos.Y + "+" + pos.Z + "&";
         }
 
     }
@@ -876,7 +876,7 @@ namespace MonoBrick.NXT
 		/// </returns>
         public override string ReadAsString()
         {
-            return "Degrees: " + ReadDirection();
+            return ReadDirection() + " Degrees" ;
         }
 
     }
