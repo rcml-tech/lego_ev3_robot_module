@@ -20,7 +20,7 @@ namespace lego_communication_library
         private static EV3_brick instance;
 
 
-        private Motor getMotorByLitera(Brick<Sensor, Sensor, Sensor, Sensor> brick, char motor) // вместо литер числа
+        private Motor getMotorByLitera(Brick<Sensor, Sensor, Sensor, Sensor> brick, char motor)
         {
             switch (motor)
             {
@@ -33,7 +33,7 @@ namespace lego_communication_library
                 case 'D':
                     return brick.MotorD;
                 default:
-                    throw new Exception("Недопустимая литера мотора! " );
+                    throw new Exception("Wrong motor litera! " );
             }
         }
 
@@ -41,7 +41,7 @@ namespace lego_communication_library
         {
             if (!connectedBricks.Contains((Object) indexBrick))
             {
-                throw new Exception("Блок с запрашиваемым индексом не подключен!");
+                throw new Exception("Brick not connected!");
             }
 
             return (Brick<Sensor, Sensor, Sensor, Sensor>) connectedBricks[(Object) indexBrick];
