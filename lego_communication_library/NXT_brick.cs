@@ -240,65 +240,37 @@ namespace lego_communication_library
         public void waitMotorToStop(int indexBrick, char motor)
         {
             Motor brickMotor = getMotorByIndexBreakAndLitera(indexBrick, motor);
-            
-            Thread.Sleep(500);
+
             while (brickMotor.IsRunning())
             {
                 Thread.Sleep(50);
             }
         }
 
-        public void waitMultiMotorsToStop(int indexBrick, char MotorA, char MotorB, char MotorC){
-        
-            Thread.Sleep(500);
+        public void waitMultiMotorsToStop(int indexBrick, bool MotorA, bool MotorB, bool MotorC)
+        {
+            List<char> motors = new List<char>();
 
-            List<char> motors = new  List<char> ();
+            if (MotorA) { motors.Add('A'); };
+            if (MotorB) { motors.Add('B'); };
+            if (MotorC) { motors.Add('C'); };
 
-            if (MotorA == 1) { motors.Add('A'); };
-            if (MotorB == 1) { motors.Add('B'); };
-            if (MotorC == 1) { motors.Add('C'); };
 
             bool allMotorsStopped;
-            do {
+            do
+            {
                 allMotorsStopped = true;
                 Thread.Sleep(50);
                 foreach (char motor in motors)
                 {
                     Motor brickMotor = getMotorByIndexBreakAndLitera(indexBrick, motor);
-                
+
                     if (brickMotor.IsRunning())
                     {
                         allMotorsStopped = false;
                     }
                 }
             } while (!allMotorsStopped);
-        }
-
-
-        // Work with Sensors
-        protected double resultMod(string str)
-        {
-            switch (str)
-            {
-                case "Black": { return 1; }
-                case "White": { return 2; }
-                case "Blue": { return 3; }
-                case "Green": { return 4; }
-                case "Yellow": { return 5; }
-                case "Red": { return 6; }
-                default:
-                    {
-                        string temps;
-                        temps = str;
-                        int tempi = temps.Length;
-
-                        if (temps.IndexOf(' ') > 0)
-                        {
-                            temps = temps.Remove(temps.IndexOf(' '), tempi - temps.IndexOf(' '));
-                        }
-                        return Convert.ToDouble(temps);
-                    }
-            }
         }
 
 
@@ -322,25 +294,25 @@ namespace lego_communication_library
                 case 1:
                     {
                         brick2.Sensor1 = getNXTTouchSensor(mode);
-                        rez = resultMod(brick2.Sensor1.ReadAsString());
+                        rez = brick2.Sensor1.ReadAsInt();
                         break;
                     }
                 case 2:
                     {
                         brick2.Sensor2 = getNXTTouchSensor(mode);
-                        rez = resultMod(brick2.Sensor2.ReadAsString());
+                        rez = brick2.Sensor2.ReadAsInt();
                         break;
                     }
                 case 3:
                     {
                         brick2.Sensor3 = getNXTTouchSensor(mode);
-                        rez = resultMod(brick2.Sensor3.ReadAsString());
+                        rez = brick2.Sensor3.ReadAsInt();
                         break;
                     }
                 case 4:
                     {
                         brick2.Sensor4 = getNXTTouchSensor(mode);
-                        rez = resultMod(brick2.Sensor4.ReadAsString());
+                        rez = brick2.Sensor4.ReadAsInt();
                         break;
                     }
             }
@@ -355,6 +327,12 @@ namespace lego_communication_library
                     { return new NXTColorSensor(ColorMode.Full, SensorMode.Raw); }
                 case 2:
                     { return new NXTColorSensor(ColorMode.Red, SensorMode.Percent); }
+                case 4:
+                    { return new NXTColorSensor(ColorMode.Green, SensorMode.Percent); }
+                case 5:
+                    { return new NXTColorSensor(ColorMode.Blue, SensorMode.Percent); }
+                case 6:
+                    { return new NXTColorSensor(ColorMode.None, SensorMode.Percent); }
             }
         }
         public double readNXTColor(int indexBrick, int indexSensor, int mode)
@@ -366,25 +344,25 @@ namespace lego_communication_library
                 case 1:
                     {
                         brick2.Sensor1 = getNXTColorSensor(mode);
-                        rez = resultMod(brick2.Sensor1.ReadAsString());
+                        rez = brick2.Sensor1.ReadAsInt();
                         break;
                     }
                 case 2:
                     {
                         brick2.Sensor2 = getNXTColorSensor(mode);
-                        rez = resultMod(brick2.Sensor2.ReadAsString());
+                        rez = brick2.Sensor2.ReadAsInt();
                         break;
                     }
                 case 3:
                     {
                         brick2.Sensor3 = getNXTColorSensor(mode);
-                        rez = resultMod(brick2.Sensor3.ReadAsString());
+                        rez = brick2.Sensor3.ReadAsInt();
                         break;
                     }
                 case 4:
                     {
                         brick2.Sensor4 = getNXTColorSensor(mode);
-                        rez = resultMod(brick2.Sensor4.ReadAsString());
+                        rez = brick2.Sensor4.ReadAsInt();
                         break;
                     }
             }
@@ -409,30 +387,31 @@ namespace lego_communication_library
         {
             Brick<Sensor, Sensor, Sensor, Sensor> brick2 = getBrickByIndex(indexBrick);
             double rez = 0;
+    
             switch (indexSensor)
             {
                 case 1:
                     {
                         brick2.Sensor1 = getNXTLightSensor(mode);
-                        rez = resultMod(brick2.Sensor1.ReadAsString());
+                        rez = brick2.Sensor1.ReadAsInt();
                         break;
                     }
                 case 2:
                     {
                         brick2.Sensor2 = getNXTLightSensor(mode);
-                        rez = resultMod(brick2.Sensor2.ReadAsString());
+                        rez = brick2.Sensor2.ReadAsInt();
                         break;
                     }
                 case 3:
                     {
                         brick2.Sensor3 = getNXTLightSensor(mode);
-                        rez = resultMod(brick2.Sensor3.ReadAsString());
+                        rez = brick2.Sensor3.ReadAsInt();
                         break;
                     }
                 case 4:
                     {
                         brick2.Sensor4 = getNXTLightSensor(mode);
-                        rez = resultMod(brick2.Sensor4.ReadAsString());
+                        rez = brick2.Sensor4.ReadAsInt();
                         break;
                     }
             }
@@ -458,25 +437,25 @@ namespace lego_communication_library
                 case 1:
                     {
                         brick2.Sensor1 = getNXTSoundSensor(mode);
-                        rez = resultMod(brick2.Sensor1.ReadAsString());
+                        rez = brick2.Sensor1.ReadAsInt();
                         break;
                     }
                 case 2:
                     {
                         brick2.Sensor2 = getNXTSoundSensor(mode);
-                        rez = resultMod(brick2.Sensor2.ReadAsString());
+                        rez = brick2.Sensor2.ReadAsInt();
                         break;
                     }
                 case 3:
                     {
                         brick2.Sensor3 = getNXTSoundSensor(mode);
-                        rez = resultMod(brick2.Sensor3.ReadAsString());
+                        rez = brick2.Sensor3.ReadAsInt();
                         break;
                     }
                 case 4:
                     {
                         brick2.Sensor4 = getNXTSoundSensor(mode);
-                        rez = resultMod(brick2.Sensor4.ReadAsString());
+                        rez = brick2.Sensor4.ReadAsInt();
                         break;
                     }
             }
@@ -502,25 +481,25 @@ namespace lego_communication_library
                 case 1:
                     {
                         brick2.Sensor1 = getNXTSonarSensor(mode);
-                        rez = resultMod(brick2.Sensor1.ReadAsString());
+                        rez = brick2.Sensor1.ReadAsInt();
                         break;
                     }
                 case 2:
                     {
                         brick2.Sensor2 = getNXTSonarSensor(mode);
-                        rez = resultMod(brick2.Sensor2.ReadAsString());
+                        rez = brick2.Sensor2.ReadAsInt();
                         break;
                     }
                 case 3:
                     {
                         brick2.Sensor3 = getNXTSonarSensor(mode);
-                        rez = resultMod(brick2.Sensor3.ReadAsString());
+                        rez = brick2.Sensor3.ReadAsInt();
                         break;
                     }
                 case 4:
                     {
                         brick2.Sensor4 = getNXTSonarSensor(mode);
-                        rez = resultMod(brick2.Sensor4.ReadAsString());
+                        rez = brick2.Sensor4.ReadAsInt();
                         break;
                     }
             }
@@ -529,45 +508,6 @@ namespace lego_communication_library
 
 
         // HiTech SENSORS
-        private double resultModForHiTecSensor(string str, int mode)
-        {
-            char first; 
-            char second;
-
-            switch (mode)
-            {
-                default:
-                    {
-                        first = '$';
-                        second = '%';
-                        break;
-                    }
-                case 2:
-                    {
-                        first = '%';
-                        second = '+';
-                        break;
-                    }
-                case 3:
-                    {
-                        first = '+';
-                        second = '&';
-                        break;
-                    }
-
-            }
-
-            string temps = str;
-            string tempsubs;
-            int pos, len;
-
-            pos = temps.IndexOf(first) + 1;
-            len = temps.IndexOf(second) - pos;
-            tempsubs = temps.Substring(pos,len);
-
-            return Convert.ToDouble(tempsubs);
-        }
-
         // Color
         private HiTecColor getHiTecColorSensor()
         {
@@ -583,25 +523,25 @@ namespace lego_communication_library
                 case 1:
                     {
                         brick2.Sensor1 = getHiTecColorSensor();
-                        rez = resultModForHiTecSensor( brick2.Sensor1.ReadAsString(),mode );
+                        rez = brick2.Sensor1.ReadAsInt(mode);
                         break;
                     }
                 case 2:
                     {
                         brick2.Sensor2 = getHiTecColorSensor();
-                        rez = resultModForHiTecSensor( brick2.Sensor2.ReadAsString(), mode );
+                        rez = brick2.Sensor2.ReadAsInt(mode);
                         break;
                     }
                 case 3:
                     {
                         brick2.Sensor3 = getHiTecColorSensor();
-                        rez = resultModForHiTecSensor( brick2.Sensor3.ReadAsString(), mode );
+                        rez = brick2.Sensor3.ReadAsInt(mode);
                         break;
                     }
                 case 4:
                     {
                         brick2.Sensor4 = getHiTecColorSensor();
-                        rez = resultModForHiTecSensor( brick2.Sensor4.ReadAsString(), mode );
+                        rez = brick2.Sensor4.ReadAsInt(mode);
                         break;
                     }
             }
@@ -622,25 +562,25 @@ namespace lego_communication_library
                 case 1:
                     {
                         brick2.Sensor1 = getHiTecCompassSensor();
-                        rez = resultMod(brick2.Sensor1.ReadAsString());
+                        rez = brick2.Sensor1.ReadAsInt();
                         break;
                     }
                 case 2:
                     {
                         brick2.Sensor2 = getHiTecCompassSensor();
-                        rez = resultMod(brick2.Sensor2.ReadAsString());
+                        rez = brick2.Sensor2.ReadAsInt();
                         break;
                     }
                 case 3:
                     {
                         brick2.Sensor3 = getHiTecCompassSensor();
-                        rez = resultMod(brick2.Sensor3.ReadAsString());
+                        rez = brick2.Sensor3.ReadAsInt();
                         break;
                     }
                 case 4:
                     {
                         brick2.Sensor4 = getHiTecCompassSensor();
-                        rez = resultMod(brick2.Sensor4.ReadAsString());
+                        rez = brick2.Sensor4.ReadAsInt();
                         break;
                     }
             }
@@ -661,25 +601,25 @@ namespace lego_communication_library
                 case 1:
                     {
                         brick2.Sensor1 = getHiTecGyroSensor();
-                        rez = resultMod(brick2.Sensor1.ReadAsString());
+                        rez = brick2.Sensor1.ReadAsInt();
                         break;
                     }
                 case 2:
                     {
                         brick2.Sensor2 = getHiTecGyroSensor();
-                        rez = resultMod(brick2.Sensor2.ReadAsString());
+                        rez = brick2.Sensor2.ReadAsInt();
                         break;
                     }
                 case 3:
                     {
                         brick2.Sensor3 = getHiTecGyroSensor();
-                        rez = resultMod(brick2.Sensor3.ReadAsString());
+                        rez = brick2.Sensor3.ReadAsInt();
                         break;
                     }
                 case 4:
                     {
                         brick2.Sensor4 = getHiTecGyroSensor();
-                        rez = resultMod(brick2.Sensor4.ReadAsString());
+                        rez = brick2.Sensor4.ReadAsInt();
                         break;
                     }
             }
@@ -700,25 +640,25 @@ namespace lego_communication_library
                 case 1:
                     {
                         brick2.Sensor1 = getHiTecTiltSensor();
-                        rez = resultModForHiTecSensor(brick2.Sensor1.ReadAsString(), mode);
+                        rez = brick2.Sensor1.ReadAsInt(mode);
                         break;
                     }
                 case 2:
                     {
                         brick2.Sensor2 = getHiTecTiltSensor();
-                        rez = resultModForHiTecSensor(brick2.Sensor2.ReadAsString(), mode);
+                        rez = brick2.Sensor2.ReadAsInt(mode);
                         break;
                     }
                 case 3:
                     {
                         brick2.Sensor3 = getHiTecTiltSensor();
-                        rez = resultModForHiTecSensor(brick2.Sensor3.ReadAsString(), mode);
+                        rez = brick2.Sensor3.ReadAsInt(mode);
                         break;
                     }
                 case 4:
                     {
                         brick2.Sensor4 = getHiTecTiltSensor();
-                        rez = resultModForHiTecSensor(brick2.Sensor4.ReadAsString(), mode);
+                        rez = brick2.Sensor4.ReadAsInt(mode);
                         break;
                     }
             }
@@ -741,25 +681,25 @@ namespace lego_communication_library
                 case 1:
                     {
                         brick2.Sensor1 = getHiTecGyroSensor();
-                        rez = resultMod(brick2.Sensor1.ReadAsString());
+                        rez = brick2.Sensor1.ReadAsInt();
                         break;
                     }
                 case 2:
                     {
                         brick2.Sensor2 = getHiTecGyroSensor();
-                        rez = resultMod(brick2.Sensor2.ReadAsString());
+                        rez = brick2.Sensor2.ReadAsInt();
                         break;
                     }
                 case 3:
                     {
                         brick2.Sensor3 = getHiTecGyroSensor();
-                        rez = resultMod(brick2.Sensor3.ReadAsString());
+                        rez = brick2.Sensor3.ReadAsInt();
                         break;
                     }
                 case 4:
                     {
                         brick2.Sensor4 = getHiTecGyroSensor();
-                        rez = resultMod(brick2.Sensor4.ReadAsString());
+                        rez = brick2.Sensor4.ReadAsInt();
                         break;
                     }
             }
@@ -785,25 +725,25 @@ namespace lego_communication_library
                 case 1:
                     {
                         brick2.Sensor1 = getRCXLightSensor(mode);
-                        rez = resultMod(brick2.Sensor1.ReadAsString());
+                        rez = brick2.Sensor1.ReadAsInt();
                         break;
                     }
                 case 2:
                     {
                         brick2.Sensor2 = getRCXLightSensor(mode);
-                        rez = resultMod(brick2.Sensor2.ReadAsString());
+                        rez = brick2.Sensor2.ReadAsInt();
                         break;
                     }
                 case 3:
                     {
                         brick2.Sensor3 = getRCXLightSensor(mode);
-                        rez = resultMod(brick2.Sensor3.ReadAsString());
+                        rez = brick2.Sensor3.ReadAsInt();
                         break;
                     }
                 case 4:
                     {
                         brick2.Sensor4 = getRCXLightSensor(mode);
-                        rez = resultMod(brick2.Sensor4.ReadAsString());
+                        rez = brick2.Sensor4.ReadAsInt();
                         break;
                     }
             }
@@ -829,25 +769,25 @@ namespace lego_communication_library
                 case 1:
                     {
                         brick2.Sensor1 = getRCXTemperatureSensor(mode);
-                        rez = resultMod(brick2.Sensor1.ReadAsString());
+                        rez = brick2.Sensor1.ReadAsInt();
                         break;
                     }
                 case 2:
                     {
                         brick2.Sensor2 = getRCXTemperatureSensor(mode);
-                        rez = resultMod(brick2.Sensor2.ReadAsString());
+                        rez = brick2.Sensor2.ReadAsInt();
                         break;
                     }
                 case 3:
                     {
                         brick2.Sensor3 = getRCXTemperatureSensor(mode);
-                        rez = resultMod(brick2.Sensor3.ReadAsString());
+                        rez = brick2.Sensor3.ReadAsInt();
                         break;
                     }
                 case 4:
                     {
                         brick2.Sensor4 = getRCXTemperatureSensor(mode);
-                        rez = resultMod(brick2.Sensor4.ReadAsString());
+                        rez = brick2.Sensor4.ReadAsInt();
                         break;
                     }
             }

@@ -21,6 +21,27 @@ EXTERN_C IMAGE_DOS_HEADER __ImageBase;
 const unsigned int COUNT_LEGO_FUNCTIONS = 33;
 const unsigned int COUNT_AXIS = 11;
 
+#define ADD_SENSOR_FUNCTION(FUNCTION_NAME) \
+	function_id++; \
+	Params = new FunctionData::ParamTypes[2];\
+	Params[0] = FunctionData::FLOAT; \
+	Params[0] = FunctionData::FLOAT; \
+	lego_functions[function_id] = new FunctionData(function_id + 1, 2, Params, FUNCTION_NAME); 
+
+#define DEFINE_ALL_SENSOR_FUNCTIONS \
+    ADD_SENSOR_FUNCTION("readHiTecColor")\
+    ADD_SENSOR_FUNCTION("readHiTecCompass")\
+    ADD_SENSOR_FUNCTION("readHiTecGyro")\
+    ADD_SENSOR_FUNCTION("readHiTecTilt")\
+    ADD_SENSOR_FUNCTION("readNXTColor")\
+    ADD_SENSOR_FUNCTION("readNXTLight")\
+    ADD_SENSOR_FUNCTION("readNXTSonar")\
+    ADD_SENSOR_FUNCTION("readNXTSound")\
+    ADD_SENSOR_FUNCTION("readNXTTouch")\
+    ADD_SENSOR_FUNCTION("readRCXLight")\
+    ADD_SENSOR_FUNCTION("readRCXRotation")\
+    ADD_SENSOR_FUNCTION("readRCXTemperature");
+
 
 #define ADD_ROBOT_AXIS(AXIS_NAME, UPPER_VALUE, LOWER_VALUE) \
 robot_axis[axis_id] = new AxisData; \
@@ -194,90 +215,9 @@ LegoRobotModule::LegoRobotModule() {
 
 
 	lego_functions[function_id] = new FunctionData(function_id+1, 0, NULL, "trackVehicleBrake");
-	function_id++;
-
-
-	Params = new FunctionData::ParamTypes[2];
-	Params[0] = FunctionData::FLOAT;
-	Params[0] = FunctionData::FLOAT;
-	lego_functions[function_id] = new FunctionData(function_id + 1, 2, Params, "readHiTecColor");
-	function_id++;
-
-
-	Params = new FunctionData::ParamTypes[2];
-	Params[0] = FunctionData::FLOAT;
-	Params[0] = FunctionData::FLOAT;
-	lego_functions[function_id] = new FunctionData(function_id + 1, 2, Params, "readHiTecCompass");
-	function_id++;
-
-
-	Params = new FunctionData::ParamTypes[2];
-	Params[0] = FunctionData::FLOAT;
-	Params[0] = FunctionData::FLOAT;
-	lego_functions[function_id] = new FunctionData(function_id + 1, 2, Params, "readHiTecGyro");
-	function_id++;
-
-
-	Params = new FunctionData::ParamTypes[2];
-	Params[0] = FunctionData::FLOAT;
-	Params[0] = FunctionData::FLOAT;
-	lego_functions[function_id] = new FunctionData(function_id + 1, 2, Params, "readHiTecTilt");
-	function_id++;
-
-
-	Params = new FunctionData::ParamTypes[2];
-	Params[0] = FunctionData::FLOAT;
-	Params[0] = FunctionData::FLOAT;
-	lego_functions[function_id] = new FunctionData(function_id + 1, 2, Params, "readNXTColor");
-	function_id++;
-
-
-	Params = new FunctionData::ParamTypes[2];
-	Params[0] = FunctionData::FLOAT;
-	Params[0] = FunctionData::FLOAT;
-	lego_functions[function_id] = new FunctionData(function_id + 1, 2, Params, "readNXTLight");
-	function_id++;
-
-
-	Params = new FunctionData::ParamTypes[2];
-	Params[0] = FunctionData::FLOAT;
-	Params[0] = FunctionData::FLOAT;
-	lego_functions[function_id] = new FunctionData(function_id + 1, 2, Params, "readNXTSonar");
-	function_id++;
-
-
-	Params = new FunctionData::ParamTypes[2];
-	Params[0] = FunctionData::FLOAT;
-	Params[0] = FunctionData::FLOAT;
-	lego_functions[function_id] = new FunctionData(function_id + 1, 2, Params, "readNXTSound");
-	function_id++;
-
-
-	Params = new FunctionData::ParamTypes[2];
-	Params[0] = FunctionData::FLOAT;
-	Params[0] = FunctionData::FLOAT;
-	lego_functions[function_id] = new FunctionData(function_id + 1, 2, Params, "readNXTTouch");
-	function_id++;
-
-
-	Params = new FunctionData::ParamTypes[2];
-	Params[0] = FunctionData::FLOAT;
-	Params[0] = FunctionData::FLOAT;
-	lego_functions[function_id] = new FunctionData(function_id + 1, 2, Params, "readRCXLight");
-	function_id++;
-
-
-	Params = new FunctionData::ParamTypes[2];
-	Params[0] = FunctionData::FLOAT;
-	Params[0] = FunctionData::FLOAT;
-	lego_functions[function_id] = new FunctionData(function_id + 1, 2, Params, "readRCXRotation");
-	function_id++;
-
-
-	Params = new FunctionData::ParamTypes[2];
-	Params[0] = FunctionData::FLOAT;
-	Params[0] = FunctionData::FLOAT;
-	lego_functions[function_id] = new FunctionData(function_id + 1, 2, Params, "readRCXTemperature");
+	
+	// Sensors
+	DEFINE_ALL_SENSOR_FUNCTIONS
 
 
 	// define robot axis

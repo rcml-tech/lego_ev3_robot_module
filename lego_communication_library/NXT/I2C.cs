@@ -593,6 +593,11 @@ namespace MonoBrick.NXT
                 s = s + " centimeters";
             return s;
         }
+
+        public override int ReadAsInt()
+        {
+            return ReadDistance();
+        }
         
     }
     #endregion //Sonar Sensor
@@ -712,8 +717,21 @@ namespace MonoBrick.NXT
         public override string ReadAsString()
         {
             RGBColor color = ReadRGBColor();
-            return "$" + color.Red + "%" + color.Green + "+" + color.Blue + "&";
+            return "Red:" + color.Red + " green:" + color.Green + " blue:" + color.Blue;
         }
+
+        public override int ReadAsInt(int mode)
+        {
+            RGBColor color = ReadRGBColor();
+            switch (mode)
+            {
+                case 1: { return color.Red; }
+                case 2: { return color.Green; }
+                case 3: { return color.Blue; }
+                default: { return color.Red; }
+            }
+        }
+
     }
     #endregion
 
@@ -825,8 +843,21 @@ namespace MonoBrick.NXT
         public override string ReadAsString()
         {
             Position pos = ReadPosition();
-            return "$" + pos.X + "%" + pos.Y + "+" + pos.Z + "&";
+            return "x:" + pos.X + " y:" + pos.Y + " z:" + pos.Z;
         }
+
+        public override int ReadAsInt(int mode)
+        {
+            Position pos = ReadPosition();
+            switch (mode)
+            {
+                case 1:  { return pos.X; }
+                case 2:  { return pos.Y; }
+                case 3:  { return pos.Z; }
+                default: { return pos.X; }
+            }
+        }
+
 
     }
 
@@ -878,6 +909,12 @@ namespace MonoBrick.NXT
         {
             return ReadDirection() + " Degrees" ;
         }
+
+        public override int ReadAsInt()
+        {
+            return ReadDirection();
+        }
+
 
     }
 
