@@ -509,10 +509,6 @@ namespace lego_communication_library
 
         // HiTech SENSORS
         // Color
-        private HiTecColor getHiTecColorSensor()
-        {
-            return new HiTecColor(); 
-        }
         public double readHiTecColor(int indexBrick, int indexSensor, int mode) 
         {
             Brick<Sensor, Sensor, Sensor, Sensor> brick2 = getBrickByIndex(indexBrick);
@@ -522,25 +518,25 @@ namespace lego_communication_library
                 default: { break; }
                 case 1:
                     {
-                        brick2.Sensor1 = getHiTecColorSensor();
+                        brick2.Sensor1 = new HiTecColor(); 
                         rez = brick2.Sensor1.ReadAsInt(mode);
                         break;
                     }
                 case 2:
                     {
-                        brick2.Sensor2 = getHiTecColorSensor();
+                        brick2.Sensor2 = new HiTecColor(); 
                         rez = brick2.Sensor2.ReadAsInt(mode);
                         break;
                     }
                 case 3:
                     {
-                        brick2.Sensor3 = getHiTecColorSensor();
+                        brick2.Sensor3 = new HiTecColor(); 
                         rez = brick2.Sensor3.ReadAsInt(mode);
                         break;
                     }
                 case 4:
                     {
-                        brick2.Sensor4 = getHiTecColorSensor();
+                        brick2.Sensor4 = new HiTecColor(); 
                         rez = brick2.Sensor4.ReadAsInt(mode);
                         break;
                     }
@@ -548,11 +544,7 @@ namespace lego_communication_library
             return rez;
         }
         // Compass
-        private HiTecCompass getHiTecCompassSensor()
-        {
-            return new HiTecCompass();
-        }
-        public double readHiTecCompass(int indexBrick, int indexSensor, int mode)
+        public double readHiTecCompass(int indexBrick, int indexSensor)
         {
             Brick<Sensor, Sensor, Sensor, Sensor> brick2 = getBrickByIndex(indexBrick);
             double rez = 0;
@@ -561,25 +553,25 @@ namespace lego_communication_library
                 default: { break; }
                 case 1:
                     {
-                        brick2.Sensor1 = getHiTecCompassSensor();
+                        brick2.Sensor1 = new HiTecCompass();
                         rez = brick2.Sensor1.ReadAsInt();
                         break;
                     }
                 case 2:
                     {
-                        brick2.Sensor2 = getHiTecCompassSensor();
+                        brick2.Sensor2 = new HiTecCompass();
                         rez = brick2.Sensor2.ReadAsInt();
                         break;
                     }
                 case 3:
                     {
-                        brick2.Sensor3 = getHiTecCompassSensor();
+                        brick2.Sensor3 = new HiTecCompass();
                         rez = brick2.Sensor3.ReadAsInt();
                         break;
                     }
                 case 4:
                     {
-                        brick2.Sensor4 = getHiTecCompassSensor();
+                        brick2.Sensor4 = new HiTecCompass();
                         rez = brick2.Sensor4.ReadAsInt();
                         break;
                     }
@@ -587,11 +579,7 @@ namespace lego_communication_library
             return rez;
         }
         // Gyro
-        private HiTecGyro getHiTecGyroSensor()
-        {
-            return new HiTecGyro(); 
-        }
-        public double readHiTecGyro(int indexBrick, int indexSensor, int mode)
+        public double readHiTecGyro(int indexBrick, int indexSensor)
         {
             Brick<Sensor, Sensor, Sensor, Sensor> brick2 = getBrickByIndex(indexBrick);
             double rez = 0;
@@ -600,25 +588,25 @@ namespace lego_communication_library
                 default: { break; }
                 case 1:
                     {
-                        brick2.Sensor1 = getHiTecGyroSensor();
+                        brick2.Sensor1 = new HiTecGyro(); 
                         rez = brick2.Sensor1.ReadAsInt();
                         break;
                     }
                 case 2:
                     {
-                        brick2.Sensor2 = getHiTecGyroSensor();
+                        brick2.Sensor2 = new HiTecGyro(); 
                         rez = brick2.Sensor2.ReadAsInt();
                         break;
                     }
                 case 3:
                     {
-                        brick2.Sensor3 = getHiTecGyroSensor();
+                        brick2.Sensor3 = new HiTecGyro(); 
                         rez = brick2.Sensor3.ReadAsInt();
                         break;
                     }
                 case 4:
                     {
-                        brick2.Sensor4 = getHiTecGyroSensor();
+                        brick2.Sensor4 = new HiTecGyro(); 
                         rez = brick2.Sensor4.ReadAsInt();
                         break;
                     }
@@ -626,10 +614,6 @@ namespace lego_communication_library
             return rez;
         }
         // Tilt
-        private HiTecTilt getHiTecTiltSensor()
-        {
-            return new HiTecTilt();
-        }
         public double readHiTecTilt(int indexBrick, int indexSensor, int mode)
         {
             Brick<Sensor, Sensor, Sensor, Sensor> brick2 = getBrickByIndex(indexBrick);
@@ -639,25 +623,25 @@ namespace lego_communication_library
                 default: { break; }
                 case 1:
                     {
-                        brick2.Sensor1 = getHiTecTiltSensor();
+                        brick2.Sensor1 = new HiTecTilt();
                         rez = brick2.Sensor1.ReadAsInt(mode);
                         break;
                     }
                 case 2:
                     {
-                        brick2.Sensor2 = getHiTecTiltSensor();
+                        brick2.Sensor2 = new HiTecTilt();
                         rez = brick2.Sensor2.ReadAsInt(mode);
                         break;
                     }
                 case 3:
                     {
-                        brick2.Sensor3 = getHiTecTiltSensor();
+                        brick2.Sensor3 = new HiTecTilt();
                         rez = brick2.Sensor3.ReadAsInt(mode);
                         break;
                     }
                 case 4:
                     {
-                        brick2.Sensor4 = getHiTecTiltSensor();
+                        brick2.Sensor4 = new HiTecTilt();
                         rez = brick2.Sensor4.ReadAsInt(mode);
                         break;
                     }
@@ -665,13 +649,9 @@ namespace lego_communication_library
             return rez;
         }
 
-        //RCX Sensors
+        //RCX SENSORS
         //Angle
-        private RCXRotationSensor getRCXRotationSensor()
-        {
-            return new RCXRotationSensor();
-        }
-        public double readRCXRotation(int indexBrick, int indexSensor, int mode)
+        public double readRCXRotation(int indexBrick, int indexSensor)
         {
             Brick<Sensor, Sensor, Sensor, Sensor> brick2 = getBrickByIndex(indexBrick);
             double rez = 0;
@@ -680,25 +660,25 @@ namespace lego_communication_library
                 default: { break; }
                 case 1:
                     {
-                        brick2.Sensor1 = getHiTecGyroSensor();
+                        brick2.Sensor1 = new RCXRotationSensor();
                         rez = brick2.Sensor1.ReadAsInt();
                         break;
                     }
                 case 2:
                     {
-                        brick2.Sensor2 = getHiTecGyroSensor();
+                        brick2.Sensor2 = new RCXRotationSensor();
                         rez = brick2.Sensor2.ReadAsInt();
                         break;
                     }
                 case 3:
                     {
-                        brick2.Sensor3 = getHiTecGyroSensor();
+                        brick2.Sensor3 = new RCXRotationSensor();
                         rez = brick2.Sensor3.ReadAsInt();
                         break;
                     }
                 case 4:
                     {
-                        brick2.Sensor4 = getHiTecGyroSensor();
+                        brick2.Sensor4 = new RCXRotationSensor();
                         rez = brick2.Sensor4.ReadAsInt();
                         break;
                     }
