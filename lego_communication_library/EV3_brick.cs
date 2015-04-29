@@ -4,9 +4,7 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Threading;
 
-using MonoBrick.EV3;//use this to run the example on the EV3
-
-//using MonoBrick.NXT;//use this to run the example on the NXT
+using MonoBrick.EV3;
 
 namespace lego_communication_library
 {
@@ -26,25 +24,25 @@ namespace lego_communication_library
             {
                 case 'A':
                     return brick.MotorA;
-                case 'B': 
+                case 'B':
                     return brick.MotorB;
                 case 'C':
                     return brick.MotorC;
                 case 'D':
                     return brick.MotorD;
                 default:
-                    throw new Exception("Wrong motor litera! " );
+                    throw new Exception("Wrong motor litera! ");
             }
         }
 
-        private Brick<Sensor, Sensor, Sensor, Sensor> getBrickByIndex(int indexBrick) 
+        private Brick<Sensor, Sensor, Sensor, Sensor> getBrickByIndex(int indexBrick)
         {
-            if (!connectedBricks.Contains((Object) indexBrick))
+            if (!connectedBricks.Contains((Object)indexBrick))
             {
                 throw new Exception("Brick not connected!");
             }
 
-            return (Brick<Sensor, Sensor, Sensor, Sensor>) connectedBricks[(Object) indexBrick];
+            return (Brick<Sensor, Sensor, Sensor, Sensor>)connectedBricks[(Object)indexBrick];
         }
 
         private Motor getMotorByIndexBreakAndLitera(int indexBrick, char motor)
@@ -69,21 +67,22 @@ namespace lego_communication_library
 
         public static EV3_brick getInstance()
         {
-            if (instance == null) {
+            if (instance == null)
+            {
                 instance = new EV3_brick();
             }
             return instance;
         }
 
-        public int createBrick(string connectPoint) 
+        public int createBrick(string connectPoint)
         {
             if (connectedPoints.Contains(connectPoint))
             {
-                return (int) connectedPoints[connectPoint];
+                return (int)connectedPoints[connectPoint];
             }
 
             iteratorConnectIndex++;
-            connectedBricks.Add((Object) iteratorConnectIndex, new Brick<Sensor, Sensor, Sensor, Sensor>(connectPoint));
+            connectedBricks.Add((Object)iteratorConnectIndex, new Brick<Sensor, Sensor, Sensor, Sensor>(connectPoint));
             connectedPoints.Add(connectPoint, iteratorConnectIndex);
 
             return iteratorConnectIndex;
@@ -99,7 +98,7 @@ namespace lego_communication_library
             getBrickByIndex(indexBrick).Connection.Close();
         }
 
-        public void motorSetSpeed(int indexBrick, char motor , sbyte speed)
+        public void motorSetSpeed(int indexBrick, char motor, sbyte speed)
         {
             Motor brickMotor = getMotorByIndexBreakAndLitera(indexBrick, motor);
             brickMotor.On(speed);
@@ -189,7 +188,7 @@ namespace lego_communication_library
         public void trackVehicleForward(int indexBrick, sbyte speed)
         {
             Vehicle vehicle = getVehicleByIndexBrick(indexBrick);
-            vehicle.Forward(speed); 
+            vehicle.Forward(speed);
         }
 
         public void trackVehicleBackward(int indexBrick, sbyte speed)
@@ -249,7 +248,7 @@ namespace lego_communication_library
         public void waitMotorToStop(int indexBrick, char motor)
         {
             Motor brickMotor = getMotorByIndexBreakAndLitera(indexBrick, motor);
-            
+
             while (brickMotor.IsRunning())
             {
                 Thread.Sleep(50);
@@ -258,7 +257,7 @@ namespace lego_communication_library
 
         public void waitMultiMotorsToStop(int indexBrick, bool MotorA, bool MotorB, bool MotorC, bool MotorD)
         {
-            List<char> motors = new  List<char> ();
+            List<char> motors = new List<char>();
 
             if (MotorA) { motors.Add('A'); };
             if (MotorB) { motors.Add('B'); };
@@ -266,13 +265,14 @@ namespace lego_communication_library
             if (MotorD) { motors.Add('D'); };
 
             bool allMotorsStopped;
-            do {
+            do
+            {
                 allMotorsStopped = true;
                 Thread.Sleep(50);
                 foreach (char motor in motors)
                 {
                     Motor brickMotor = getMotorByIndexBreakAndLitera(indexBrick, motor);
-                
+
                     if (brickMotor.IsRunning())
                     {
                         allMotorsStopped = false;
@@ -281,12 +281,15 @@ namespace lego_communication_library
             } while (!allMotorsStopped);
         }
 
-        private Sensor getSensorObject(SensorType typeIndexSensor, int mode) 
+        private Sensor getSensorObject(SensorType typeIndexSensor, int mode)
         {
-            switch (typeIndexSensor) {
+            switch (typeIndexSensor)
+            {
                 case SensorType.UltraSonic:
+                case SensorType.NXTUltraSonic:
                     {
-                        switch (mode) {
+                        switch (mode)
+                        {
                             case 1: { return new UltrasonicSensor(UltrasonicMode.Centimeter); }
                             case 2: { return new UltrasonicSensor(UltrasonicMode.Inch); }
                             case 3: { return new UltrasonicSensor(UltrasonicMode.Listen); }
@@ -300,10 +303,11 @@ namespace lego_communication_library
                             case 1: { return new IRSensor(IRMode.Proximity); }
                             case 2: { return new IRSensor(IRMode.Remote); }
                             case 3: { return new IRSensor(IRMode.Seek); }
-                            default: { return null; };  
+                            default: { return null; };
                         }
                     }
                 case SensorType.Color:
+                case SensorType.NXTColor:
                     {
                         switch (mode)
                         {
@@ -323,8 +327,9 @@ namespace lego_communication_library
                             default: { return null; };
 
                         }
-                       
+
                     }
+                case SensorType.NXTTouch:
                 case SensorType.Touch:
                     {
                         switch (mode)
@@ -334,12 +339,41 @@ namespace lego_communication_library
                             default: { return null; };
                         }
                     }
+                case SensorType.NXTTemperature:
+                    {
+                        switch (mode)
+                        {
+                            case 1: { return new TemperatureSensor(TemperatureMode.Celcius); }
+                            case 2: { return new TemperatureSensor(TemperatureMode.Fahrenheit); }
+                            default: { return null; };
+                        }
+                    }
+                case SensorType.NXTLight:
+                    {
+                        switch (mode)
+                        {
+                            case 1: { return new LightSensor(LightMode.Ambient); }
+                            case 2: { return new LightSensor(LightMode.Relection); }
+                            default: { return null; };
+                        }
+                    }
+                case SensorType.NXTSound:
+                    {
+                        switch (mode)
+                        {
+                            case 1: { return new SoundSensor(SoundMode.SoundDB); }
+                            case 2: { return new SoundSensor(SoundMode.SoundDBA); }
+                            default: { return null; };
+                        }
+                    }
                 default: { return null; };
             }; // End Switch
         } // End Func
 
-        protected double resultMod(string str) {
-            switch (str) {
+        protected double resultMod(string str)
+        {
+            switch (str)
+            {
                 case "Black": { return 1; }
                 case "White": { return 2; }
                 case "Blue": { return 3; }
@@ -361,65 +395,78 @@ namespace lego_communication_library
             }
         }
 
-        private bool isURMode(int mod) {
-            switch (mod) {
-               case 1:
-               case 2:
-               case 3:
-                   {return true;}
-                default :{return false;}
+        private bool isURMode(int mod)
+        {
+            switch (mod)
+            {
+                case 1:
+                case 2:
+                case 3:
+                    { return true; }
+                default: { return false; }
             }
         }
-        private bool isGTMode(int mod) {
-            switch (mod) {
-               case 1:
-               case 2:
-                   {return true;}
-                default : {return false;}
+        private bool isGTMode(int mod)
+        {
+            switch (mod)
+            {
+                case 1:
+                case 2:
+                    { return true; }
+                default: { return false; }
             }
         }
-        private bool isColorMode(int mod) {
-            switch (mod) {
-               case 1:
-               case 2:
-               case 3:
-               case 4:
-                   {return true;}
-                default: {return false;}
+        private bool isColorMode(int mod)
+        {
+            switch (mod)
+            {
+                case 1:
+                case 2:
+                case 3:
+                case 4:
+                    { return true; }
+                default: { return false; }
             }
         }
 
-        private bool isSensorMode(SensorType senst,int mode )
+        private bool isSensorMode(SensorType senst, int mode)
         {
-            switch (senst){
-               case SensorType.UltraSonic:
-               case SensorType.IR:        
-                   { return isURMode(mode);}
-               case SensorType.Gyro:
-               case SensorType.Touch:
-                   {return isGTMode(mode); }
-               case SensorType.Color:
-                   {return isColorMode(mode);}
-                default: {return false;}
-             }
+            switch (senst)
+            {
+                case SensorType.NXTUltraSonic:
+                case SensorType.UltraSonic:
+                case SensorType.IR:
+                    { return isURMode(mode); }
+                case SensorType.Gyro:
+                case SensorType.Touch:
+                case SensorType.NXTTouch:
+                case SensorType.NXTTemperature:
+                case SensorType.NXTLight:
+                case SensorType.NXTSound:
+                    { return isGTMode(mode); }
+                case SensorType.Color:
+                case SensorType.NXTColor:
+                    { return isColorMode(mode); }
+                default: { return false; }
+            }
         }
         // Returns False if mode is wrong
-        public bool testSensorMode(int indexBrick, int indexSensor, int mode) 
+        public bool testSensorMode(int indexBrick, int indexSensor, int mode)
         {
             Brick<Sensor, Sensor, Sensor, Sensor> brick2 = getBrickByIndex(indexBrick);
             switch (indexSensor)
             {
                 case 1:
                     {
-                        return isSensorMode(brick2.Sensor1.GetSensorType(),mode);
+                        return isSensorMode(brick2.Sensor1.GetSensorType(), mode);
                     }
                 case 2:
                     {
-                        return isSensorMode(brick2.Sensor2.GetSensorType(),mode);
+                        return isSensorMode(brick2.Sensor2.GetSensorType(), mode);
                     }
                 case 3:
                     {
-                        return isSensorMode(brick2.Sensor3.GetSensorType(),mode);
+                        return isSensorMode(brick2.Sensor3.GetSensorType(), mode);
                     }
                 case 4:
                     {
@@ -437,24 +484,24 @@ namespace lego_communication_library
             switch (indexSensor)
             {
                 case 1:
-                    {   
+                    {
                         brick2.Sensor1 = getSensorObject(brick2.Sensor1.GetSensorType(), mode);
                         ret = resultMod(brick2.Sensor1.ReadAsString());
                         break;
                     }
-                case 2: 
+                case 2:
                     {
                         brick2.Sensor2 = getSensorObject(brick2.Sensor2.GetSensorType(), mode);
                         ret = resultMod(brick2.Sensor2.ReadAsString());
                         break;
                     }
-                case 3: 
+                case 3:
                     {
                         brick2.Sensor3 = getSensorObject(brick2.Sensor3.GetSensorType(), mode);
                         ret = resultMod(brick2.Sensor3.ReadAsString());
                         break;
                     }
-                case 4: 
+                case 4:
                     {
                         brick2.Sensor4 = getSensorObject(brick2.Sensor4.GetSensorType(), mode);
                         ret = resultMod(brick2.Sensor4.ReadAsString());
