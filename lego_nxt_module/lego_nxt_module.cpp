@@ -50,7 +50,6 @@ const unsigned int COUNT_AXIS = 11;
 //////
 
 #define ADD_LEGO_1S1F_FUNCTION(FUNCTION_NAME) \
-	function_id++; \
 	Params = new FunctionData::ParamTypes[2]; \
 	Params[0] = FunctionData::STRING; \
 	Params[1] = FunctionData::FLOAT; \
@@ -78,20 +77,6 @@ const unsigned int COUNT_AXIS = 11;
 	function_id++; 
 //////
 
-#define ADD_SENSOR_FUNCTION(FUNCTION_NAME) \
-	Params = new FunctionData::ParamTypes[2];\
-	Params[0] = FunctionData::FLOAT; \
-	Params[1] = FunctionData::FLOAT; \
-	lego_functions[function_id] = new FunctionData(function_id + 1, 2, Params, FUNCTION_NAME); \
-	function_id++; 
-//////
-
-#define ADD_SENSOR_WITHOUT_MODE_FUNCTION(FUNCTION_NAME) \
-	Params = new FunctionData::ParamTypes[1];\
-	Params[0] = FunctionData::FLOAT; \
-	lego_functions[function_id] = new FunctionData(function_id + 1, 1, Params, FUNCTION_NAME); \
-	function_id++; 
-//////
 
 #define DEFINE_ALL_FUNCTIONS \
 	ADD_LEGO_1S_FUNCTION("motorBreak")\
@@ -115,18 +100,18 @@ const unsigned int COUNT_AXIS = 11;
 	ADD_LEGO_2F_FUNCTION("trackVehicleTurnRightForward")\
 	ADD_LEGO_2F_FUNCTION("trackVehicleTurnRightForward")\
 	ADD_LEGO_0_FUNCTION("trackVehicleBrake") \
-    ADD_SENSOR_FUNCTION("readHiTecColor")\
-    ADD_SENSOR_WITHOUT_MODE_FUNCTION("readHiTecCompass")\
-    ADD_SENSOR_WITHOUT_MODE_FUNCTION("readHiTecGyro")\
-    ADD_SENSOR_FUNCTION("readHiTecTilt")\
-    ADD_SENSOR_FUNCTION("readNXTColor")\
-    ADD_SENSOR_FUNCTION("readNXTLight")\
-    ADD_SENSOR_FUNCTION("readNXTSonar")\
-    ADD_SENSOR_FUNCTION("readNXTSound")\
-    ADD_SENSOR_FUNCTION("readNXTTouch")\
-    ADD_SENSOR_FUNCTION("readRCXLight")\
-    ADD_SENSOR_WITHOUT_MODE_FUNCTION("readRCXRotation")\
-    ADD_SENSOR_FUNCTION("readRCXTemperature");
+    ADD_LEGO_2F_FUNCTION("readHiTecColor")\
+    ADD_LEGO_1F_FUNCTION("readHiTecCompass")\
+    ADD_LEGO_1F_FUNCTION("readHiTecGyro")\
+    ADD_LEGO_2F_FUNCTION("readHiTecTilt")\
+    ADD_LEGO_2F_FUNCTION("readNXTColor")\
+    ADD_LEGO_2F_FUNCTION("readNXTLight")\
+    ADD_LEGO_2F_FUNCTION("readNXTSonar")\
+    ADD_LEGO_2F_FUNCTION("readNXTSound")\
+    ADD_LEGO_2F_FUNCTION("readNXTTouch")\
+    ADD_LEGO_2F_FUNCTION("readRCXLight")\
+    ADD_LEGO_1F_FUNCTION("readRCXRotation")\
+    ADD_LEGO_2F_FUNCTION("readRCXTemperature");
 
 
 #define ADD_ROBOT_AXIS(AXIS_NAME, UPPER_VALUE, LOWER_VALUE) \
@@ -152,7 +137,7 @@ ADD_ROBOT_AXIS("rotation", 100, -100);
 
 
 const char* LegoRobotModule::getUID() {
-	return "Lego_NXT_dll";
+	return "Lego_NXT_Module";
 };
 FunctionData** LegoRobotModule::getFunctions(unsigned int *count_functions) {
 	*count_functions = COUNT_LEGO_FUNCTIONS;
@@ -163,8 +148,8 @@ LegoRobotModule::LegoRobotModule() {
 	lego_functions = new FunctionData*[COUNT_LEGO_FUNCTIONS];
 	system_value function_id = 0;
 	FunctionData::ParamTypes *Params = NULL;
-	//DEFINE FUNCTIONS
 
+	// define robot functions
 	DEFINE_ALL_FUNCTIONS
 
 	// define robot axis
