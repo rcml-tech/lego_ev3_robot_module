@@ -19,7 +19,7 @@ namespace lego_communication_library
         private static NXT_brick instance;
 
 
-        private Motor getMotorByLitera(Brick<Sensor, Sensor, Sensor, Sensor> brick, char motor) // вместо литер числа
+        private Motor getMotorByLitera(Brick<Sensor, Sensor, Sensor, Sensor> brick, char motor) 
         {
             switch (motor)
             {
@@ -327,11 +327,11 @@ namespace lego_communication_library
                     { return new NXTColorSensor(ColorMode.Full, SensorMode.Raw); }
                 case 2:
                     { return new NXTColorSensor(ColorMode.Red, SensorMode.Percent); }
-                case 4:
+                case 3:
                     { return new NXTColorSensor(ColorMode.Green, SensorMode.Percent); }
-                case 5:
+                case 4:
                     { return new NXTColorSensor(ColorMode.Blue, SensorMode.Percent); }
-                case 6:
+                case 5:
                     { return new NXTColorSensor(ColorMode.None, SensorMode.Percent); }
             }
         }

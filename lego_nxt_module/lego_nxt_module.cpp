@@ -19,7 +19,7 @@
 EXTERN_C IMAGE_DOS_HEADER __ImageBase;
 
 const unsigned int COUNT_LEGO_FUNCTIONS = 33;
-const unsigned int COUNT_AXIS = 11;
+const unsigned int COUNT_AXIS = 9;
 
 
 #define ADD_LEGO_0_FUNCTION(FUNCTION_NAME) \
@@ -127,11 +127,9 @@ ADD_ROBOT_AXIS("locked", 1, 0)\
 ADD_ROBOT_AXIS("speedMotorA", 100, -100)\
 ADD_ROBOT_AXIS("speedMotorB", 100, -100)\
 ADD_ROBOT_AXIS("speedMotorC", 100, -100)\
-ADD_ROBOT_AXIS("speedMotorD", 100, -100)\
 ADD_ROBOT_AXIS("moveMotorA", 1000, -1000)\
 ADD_ROBOT_AXIS("moveMotorB", 1000, -1000)\
 ADD_ROBOT_AXIS("moveMotorC", 1000, -1000)\
-ADD_ROBOT_AXIS("moveMotorD", 1000, -1000)\
 ADD_ROBOT_AXIS("straight", 100, -100)\
 ADD_ROBOT_AXIS("rotation", 100, -100);
 
@@ -195,14 +193,8 @@ inline void isThreeMode(int mode){
 		throw std::exception();
 	}
 };
-inline void isFourMode(int mode){
-	if ((mode < 1) || (mode > 4))
-	{
-		throw std::exception();
-	}
-};
-inline void isSixMode(int mode){
-	if ((mode < 1) || (mode > 6))
+inline void isFiveMode(int mode){
+	if ((mode < 1) || (mode > 5))
 	{
 		throw std::exception();
 	}
@@ -571,14 +563,14 @@ FunctionResult* LegoRobot::executeFunction(system_value functionId, void **args)
 		case 26:{
 			variable_value *input1 = (variable_value *)args[0];
 			variable_value *input2 = (variable_value *)args[1];
-			isSixMode(*input2);
+			isFiveMode(*input2);
 				rez = lego_communication_library::NXT_brick::getInstance()->readNXTColor(robot_index, *input1, *input2);
 			break;
 		}
 		case 27:{
 			variable_value *input1 = (variable_value *)args[0];
 			variable_value *input2 = (variable_value *)args[1];
-			isFourMode(*input2);
+			isTwoMode(*input2);
 				rez = lego_communication_library::NXT_brick::getInstance()->readNXTLight(robot_index, *input1, *input2);
 			break;
 		}
