@@ -244,6 +244,26 @@ namespace MonoBrick.NXT
         {
 			return GetScaledValue().ToString();
         }
+        /// <summary>
+        /// Reads a sensor value as int
+        /// </summary>
+        /// <returns>
+        /// The value as int
+        /// </returns>
+        virtual public int ReadAsInt()
+        {
+            return GetScaledValue();
+        }
+        /// <summary>
+        /// Method for HiTec Color and Tilt Sensors
+        /// </summary>
+        /// <param name="mode"></param>
+        /// <returns></returns>
+        virtual public int ReadAsInt(int mode) 
+        {
+            return GetScaledValue();
+        }
+
 
 		/// <summary>
 		/// Gets a value indicating whether the sensor has been initialized.
@@ -472,6 +492,16 @@ namespace MonoBrick.NXT
 			}
 			return ReadLightLevel().ToString();
 		}
+
+        public override int ReadAsInt()
+        {
+            if (Type == SensorType.ColorFull && Mode == SensorMode.Raw)
+            {
+                return (int) ReadColor();
+            }
+            return ReadLightLevel();
+        }
+
 
 
 	}
@@ -827,6 +857,11 @@ namespace MonoBrick.NXT
 		public override string ReadAsString()
         {
             return this.ReadAngularAcceleration().ToString() + " deg/sec";
+        }
+
+        public override int ReadAsInt()
+        {
+            return this.ReadAngularAcceleration();
         }
 
 		/// <summary>
