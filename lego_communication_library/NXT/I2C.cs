@@ -907,7 +907,7 @@ namespace MonoBrick.NXT
 		/// </returns>
         public override string ReadAsString()
         {
-            return ReadDirection() + " Degrees" ;
+            return "Degrees: " + ReadDirection();
         }
 
         public override int ReadAsInt()
