@@ -11,8 +11,8 @@
 #include <vector>
 #include <map>
 
-#include "../module_headers/module.h"
-#include "../module_headers/robot_module.h"
+#include "../../module_headers/module.h"
+#include "../../module_headers/robot_module.h"
 #include "lego_ev3_module.h"
 #include "SimpleIni.h"
 
@@ -218,17 +218,18 @@ int LegoRobotModule::init(){
 		printf("Can't load '%s' file!\n", ConfigPath);
 		return 1;
 	}
+
+
+	allow_dynamic = ini.GetBoolValue("options", "dynamic_connection", false);
+
 	CSimpleIniA::TNamesDepend values;
 	ini.GetAllValues("connections", "connection", values);
 	CSimpleIniA::TNamesDepend::const_iterator ini_value;
-	for ( ini_value = values.begin(); ini_value != values.end(); ++ini_value) {
+	for(ini_value = values.begin(); ini_value != values.end(); ++ini_value) {
 		printf("- %s\n", ini_value->pItem);
 		std::string connection(ini_value->pItem);
-		System::String^ connection_c = gcnew System::String(connection.c_str());
-		lego_communication_library::EV3_brick^ singletoneBrick = lego_communication_library::EV3_brick::getInstance();
-		int index_robot = singletoneBrick->createBrick(connection_c);
-		LegoRobot *lego_robot = new LegoRobot(index_robot);
-		lego_robot->connection = connection;
+		
+		LegoRobot *lego_robot = new LegoRobot(connection, allow_dynamic);
 		aviable_connections[connection] = lego_robot;
 	}
 	return 0;
@@ -248,33 +249,48 @@ Robot* LegoRobotModule::robotRequire(){
 };
 
 bool LegoRobot::require(){
-	if (!isAviable) { return false; }
-
-	lego_communication_library::EV3_brick^ singletoneBrick = lego_communication_library::EV3_brick::getInstance();
-	try {
-		singletoneBrick->connectBrick(robot_index);
-	}
-	catch (...) {
-		singletoneBrick->disconnectBrick(robot_index);
-		return false;
+	if (!is_aviable) { 
+		return false; 
 	}
 
-	printf("Connected to %s robot\n", connection.c_str());
-	isAviable = false;
+	if (allow_dynamic) {
+		if (!connect()) {
+			return false;
+		}
+	}
 
+	is_aviable = false;
 	return true;
 };
 
 void LegoRobot::free(){
-	if (isAviable) {
+	if (is_aviable) {
 		return;
 	}
-	isAviable = true;
-	lego_communication_library::EV3_brick^ singletoneBrick = lego_communication_library::EV3_brick::getInstance();
-	singletoneBrick->disconnectBrick(robot_index);
-	Sleep(1000);
+	is_aviable = true;
+
+	if (allow_dynamic) {
+		disconnect();
+		Sleep(1000);
+	}
 };
 
+bool LegoRobot::connect(){
+	lego_communication_library::EV3_brick^ singletoneBrick = lego_communication_library::EV3_brick::getInstance();
+	try {
+		singletoneBrick->connectBrick(robot_index);
+		printf("Connected to %s robot\n", connection.c_str());
+	} catch (...) {
+		singletoneBrick->disconnectBrick(robot_index);
+		return false;
+	}
+	return true;
+}
+
+void LegoRobot::disconnect(){
+	lego_communication_library::EV3_brick^ singletoneBrick = lego_communication_library::EV3_brick::getInstance();
+	singletoneBrick->disconnectBrick(robot_index);
+}
 
 void LegoRobotModule::robotFree(Robot *robot){
 	EnterCriticalSection(&LRM_cs);
@@ -292,9 +308,10 @@ AxisData **LegoRobotModule::getAxis(unsigned int *count_axis){
 	return robot_axis;
 };
 void LegoRobotModule::final(){
-	lego_communication_library::EV3_brick^ singletoneBrick = lego_communication_library::EV3_brick::getInstance();
 	for (m_connections::iterator i = aviable_connections.begin(); i != aviable_connections.end(); ++i) {
-		singletoneBrick->disconnectBrick(i->second->robot_index);
+		if (!allow_dynamic) {
+			i->second->disconnect();
+		}
 		delete i->second;
 	}
 	aviable_connections.clear();
@@ -562,6 +579,19 @@ int LegoRobotModule::endProgram(int uniq_index) {
 	return 0;
 }
 
+LegoRobot::LegoRobot(std::string connection, bool allow_dynamic): 
+	connection(connection), is_aviable(true), is_trackVehicleOn(false), is_locked(false), allow_dynamic(allow_dynamic) {
+	
+	System::String^ connection_c = gcnew System::String(connection.c_str());
+	lego_communication_library::EV3_brick^ singletoneBrick = lego_communication_library::EV3_brick::getInstance();
+	robot_index = singletoneBrick->createBrick(connection_c);
+
+	if (!allow_dynamic) {
+		if (!connect()) {
+			is_aviable = false;
+		}
+	}
+}
 
 __declspec(dllexport) RobotModule* getRobotModuleObject() {
 	return new LegoRobotModule();

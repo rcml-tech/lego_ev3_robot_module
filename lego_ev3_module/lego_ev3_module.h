@@ -6,31 +6,39 @@
 #ifndef LEGO_MODULE_H
 #define	LEGO_MODULE_H
 class LegoRobot : public Robot {
-	bool isAviable;
-public:
-	int robot_index;
+protected:
+	std::string connection;
+	bool is_aviable;
 	bool is_locked;
 	bool is_trackVehicleOn;
-
-	std::string connection;
-
-	bool require();
-	void free();
-
+	bool allow_dynamic;
+	
 	std::vector<variable_value> axis_state;
-	LegoRobot(int robot_index) : robot_index(robot_index), isAviable(true), is_trackVehicleOn(false), is_locked(false){}
+public:
+	int robot_index;
+
+	LegoRobot(std::string connection, bool allow_dynamic);
 	FunctionResult* executeFunction(system_value command_index, void **args);
 	void axisControl(system_value axis_index, variable_value value);
 	~LegoRobot() {};
+
+	bool connect();
+	void disconnect();
+
+	bool require();
+	void free();
 };
 typedef std::map<std::string, LegoRobot*> m_connections;
 class LegoRobotModule : public RobotModule{
-public:
+protected:
 	CRITICAL_SECTION LRM_cs;
 	m_connections aviable_connections;
 	FunctionData **lego_functions;
 	AxisData **robot_axis;
 	colorPrintf_t *colorPrintf;
+	bool allow_dynamic;
+public:
+	
 	LegoRobotModule();
 
 	//init
