@@ -6,11 +6,16 @@
 #ifndef LEGO_MODULE_H
 #define	LEGO_MODULE_H
 class LegoRobot : public Robot {
+	bool isAviable;
 public:
 	int robot_index;
-	bool isAviable;
 	bool is_locked;
 	bool is_trackVehicleOn;
+
+	std::string connection;
+
+	bool require();
+	void free();
 
 	std::vector<variable_value> axis_state;
 	LegoRobot(int robot_index) : robot_index(robot_index), isAviable(true), is_trackVehicleOn(false), is_locked(false){}

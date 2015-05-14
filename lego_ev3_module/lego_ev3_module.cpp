@@ -218,40 +218,61 @@ int LegoRobotModule::init(){
 		System::String^ connection_c = gcnew System::String(connection.c_str());
 		lego_communication_library::EV3_brick^ singletoneBrick = lego_communication_library::EV3_brick::getInstance();
 		int index_robot = singletoneBrick->createBrick(connection_c);
-		colorPrintf(this, ConsoleColor(ConsoleColor::white), "Attemp to connect: %s\n", connection.c_str());
-		try {
-			singletoneBrick->connectBrick(index_robot);
-			LegoRobot *lego_robot = new LegoRobot(index_robot);
-			aviable_connections[connection] = lego_robot;
-			colorPrintf(this, ConsoleColor(ConsoleColor::green), "Lego robot connected!\n");
-		}
-		catch (...) {
-			colorPrintf(this, ConsoleColor(ConsoleColor::red), "Lego robot connect FAIL!\n");
-			singletoneBrick->disconnectBrick(index_robot);
-		}
+		LegoRobot *lego_robot = new LegoRobot(index_robot);
+		lego_robot->connection = connection;
+		aviable_connections[connection] = lego_robot;
 	}
 	return 0;
 };
+
+
 Robot* LegoRobotModule::robotRequire(){
 	EnterCriticalSection(&LRM_cs);
 	for (m_connections::iterator i = aviable_connections.begin(); i != aviable_connections.end(); ++i) {
-		if (i->second->isAviable) {
-			LegoRobot *lego_robot = i->second;
-			lego_robot->isAviable = false;
-			Robot *robot = lego_robot;
+		if ((*i).second->require()) {
 			LeaveCriticalSection(&LRM_cs);
-			return robot;
-		};
+			return (*i).second;
+		}
 	};
 	LeaveCriticalSection(&LRM_cs);
 	return NULL;
 };
+
+bool LegoRobot::require(){
+	if (!isAviable) { return false; }
+
+	lego_communication_library::EV3_brick^ singletoneBrick = lego_communication_library::EV3_brick::getInstance();
+	try {
+		singletoneBrick->connectBrick(robot_index);
+	}
+	catch (...) {
+		singletoneBrick->disconnectBrick(robot_index);
+		return false;
+	}
+
+	printf("Connected to %s robot\n", connection.c_str());
+	isAviable = false;
+
+	return true;
+};
+
+void LegoRobot::free(){
+	if (isAviable) {
+		return;
+	}
+	isAviable = true;
+	lego_communication_library::EV3_brick^ singletoneBrick = lego_communication_library::EV3_brick::getInstance();
+	singletoneBrick->disconnectBrick(robot_index);
+};
+
+
+
 void LegoRobotModule::robotFree(Robot *robot){
 	EnterCriticalSection(&LRM_cs);
 	LegoRobot *lego_robot = reinterpret_cast<LegoRobot*>(robot);
 	for (m_connections::iterator i = aviable_connections.begin(); i != aviable_connections.end(); ++i) {
 		if (i->second == lego_robot) {
-			lego_robot->isAviable = true;
+			lego_robot->free();
 			break;
 		}
 	}
