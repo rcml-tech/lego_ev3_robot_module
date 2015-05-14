@@ -76,6 +76,15 @@ const unsigned int COUNT_AXIS = 11;
 	function_id++; 
 //////
 
+#define ADD_LEGO_2S2F_FUNCTION(FUNCTION_NAME) \
+	Params = new FunctionData::ParamTypes[4]; \
+	Params[0] = FunctionData::STRING; \
+	Params[1] = FunctionData::STRING; \
+	Params[2] = FunctionData::FLOAT; \
+	Params[3] = FunctionData::FLOAT; \
+	lego_functions[function_id] = new FunctionData(function_id + 1, 4, Params, FUNCTION_NAME); \
+	function_id++; 
+//////
 
 #define DEFINE_ALL_FUNCTIONS \
 	ADD_LEGO_1S_FUNCTION("motorBreak")\
@@ -86,7 +95,7 @@ const unsigned int COUNT_AXIS = 11;
 	ADD_LEGO_1S_FUNCTION("motorResetTacho")\
 	ADD_LEGO_1S1F_FUNCTION("motorSetDirection")\
 	ADD_LEGO_1S1F_FUNCTION("motorSetSpeed")\
-	ADD_LEGO_1S3F_FUNCTION("setTrackVehicle")\
+	ADD_LEGO_2S2F_FUNCTION("setTrackVehicle")\
 	ADD_LEGO_1S_FUNCTION("waitMotorToStop")\
 	ADD_LEGO_4F_FUNCTION("waitMultiMotorsToStop")\
 	ADD_LEGO_1F_FUNCTION("trackVehicleBackward")\
@@ -263,8 +272,8 @@ void LegoRobot::free(){
 	isAviable = true;
 	lego_communication_library::EV3_brick^ singletoneBrick = lego_communication_library::EV3_brick::getInstance();
 	singletoneBrick->disconnectBrick(robot_index);
+	Sleep(1000);
 };
-
 
 
 void LegoRobotModule::robotFree(Robot *robot){

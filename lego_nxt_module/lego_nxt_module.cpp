@@ -241,7 +241,7 @@ int LegoRobotModule::init(){
 		printf("- %s\n", ini_value->pItem);
 		std::string connection(ini_value->pItem);
 		System::String^ connection_c = gcnew System::String(connection.c_str());
-		lego_communication_library::EV3_brick^ singletoneBrick = lego_communication_library::EV3_brick::getInstance();
+		lego_communication_library::NXT_brick^ singletoneBrick = lego_communication_library::NXT_brick::getInstance();
 		int index_robot = singletoneBrick->createBrick(connection_c);
 		LegoRobot *lego_robot = new LegoRobot(index_robot);
 		lego_robot->connection = connection;
@@ -253,7 +253,7 @@ int LegoRobotModule::init(){
 bool LegoRobot::require(){
 	if (!isAviable) { return false; }
 
-	lego_communication_library::EV3_brick^ singletoneBrick = lego_communication_library::EV3_brick::getInstance();
+	lego_communication_library::NXT_brick^ singletoneBrick = lego_communication_library::NXT_brick::getInstance();
 	try {
 		singletoneBrick->connectBrick(robot_index);
 	}
@@ -273,7 +273,7 @@ void LegoRobot::free(){
 		return;
 	}
 	isAviable = true;
-	lego_communication_library::EV3_brick^ singletoneBrick = lego_communication_library::EV3_brick::getInstance();
+	lego_communication_library::NXT_brick^ singletoneBrick = lego_communication_library::NXT_brick::getInstance();
 	singletoneBrick->disconnectBrick(robot_index);
 };
 
