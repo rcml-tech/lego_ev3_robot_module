@@ -6,7 +6,7 @@ using System.Threading;
 
 using MonoBrick.EV3;
 
-namespace lego_communication_library 
+namespace lego_communication_library
 {
 
     public class EV3_brick
@@ -110,7 +110,7 @@ namespace lego_communication_library
             brickMotor.Off();
         }
 
-        public void motorBreak(int indexBrick, char motor)
+        public void motorBrake(int indexBrick, char motor)
         {
             Motor brickMotor = getMotorByIndexBreakAndLitera(indexBrick, motor);
             brickMotor.Brake();
@@ -512,5 +512,20 @@ namespace lego_communication_library
             };
             return ret;
         } // End readSensor
+
+
+        public bool isMotorRun(int indexBrick, char motor)
+        {
+            Motor brickMotor = getMotorByIndexBreakAndLitera(indexBrick, motor);
+            return brickMotor.IsRunning();
+        }
+
+        public sbyte getMotorSpeed(int indexBrick, char motor)
+        {
+            Motor brickMotor = getMotorByIndexBreakAndLitera(indexBrick, motor);
+            return brickMotor.GetSpeed();
+        }
+   
+
     }
 }
