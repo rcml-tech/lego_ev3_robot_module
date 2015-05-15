@@ -19,7 +19,7 @@ namespace lego_communication_library
         private static NXT_brick instance;
 
 
-        private Motor getMotorByLitera(Brick<Sensor, Sensor, Sensor, Sensor> brick, char motor) 
+        private Motor getMotorByLitera(Brick<Sensor, Sensor, Sensor, Sensor> brick, char motor) // вместо литер числа
         {
             switch (motor)
             {
@@ -108,7 +108,7 @@ namespace lego_communication_library
             brickMotor.Off();
         }
 
-        public void motorBreak(int indexBrick, char motor)
+        public void motorBrake(int indexBrick, char motor)
         {
             Motor brickMotor = getMotorByIndexBreakAndLitera(indexBrick, motor);
             brickMotor.Brake();
@@ -773,6 +773,13 @@ namespace lego_communication_library
             }
             return rez;
         }
+
+        public bool isMotorRun(int indexBrick, char motor)
+        {
+            Motor brickMotor = getMotorByIndexBreakAndLitera(indexBrick, motor);
+            return brickMotor.IsRunning();
+        }
+
 
     }
 }

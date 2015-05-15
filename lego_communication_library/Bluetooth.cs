@@ -95,7 +95,9 @@ namespace MonoBrick
 		public override void Open(){
 			try
 			{
-				comPort = new SerialPort(port);
+                if (comPort == null) { 
+				    comPort = new SerialPort(port);
+                }
 				comPort.Open();
 				comPort.WriteTimeout = 5000;
 				comPort.ReadTimeout = 5000;

@@ -6,7 +6,7 @@ using System.Threading;
 
 using MonoBrick.EV3;
 
-namespace lego_communication_library 
+namespace lego_communication_library
 {
 
     public class EV3_brick
@@ -110,7 +110,7 @@ namespace lego_communication_library
             brickMotor.Off();
         }
 
-        public void motorBreak(int indexBrick, char motor)
+        public void motorBrake(int indexBrick, char motor)
         {
             Motor brickMotor = getMotorByIndexBreakAndLitera(indexBrick, motor);
             brickMotor.Brake();
@@ -375,12 +375,11 @@ namespace lego_communication_library
             switch (str)
             {
                 case "Black": { return 1; }
-                case "Blue": { return 2; }
-                case "Green": { return 3; }
-                case "Yellow": { return 4; }
-                case "Red": { return 5; }
-                case "White": { return 6; }
-                case "Brown": { return 7; }
+                case "White": { return 2; }
+                case "Blue": { return 3; }
+                case "Green": { return 4; }
+                case "Yellow": { return 5; }
+                case "Red": { return 6; }
                 default:
                     {
                         string temps;
@@ -512,5 +511,20 @@ namespace lego_communication_library
             };
             return ret;
         } // End readSensor
+
+
+        public bool isMotorRun(int indexBrick, char motor)
+        {
+            Motor brickMotor = getMotorByIndexBreakAndLitera(indexBrick, motor);
+            return brickMotor.IsRunning();
+        }
+
+        public sbyte getMotorSpeed(int indexBrick, char motor)
+        {
+            Motor brickMotor = getMotorByIndexBreakAndLitera(indexBrick, motor);
+            return brickMotor.GetSpeed();
+        }
+   
+
     }
 }
