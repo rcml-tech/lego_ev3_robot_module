@@ -18,7 +18,7 @@
 
 EXTERN_C IMAGE_DOS_HEADER __ImageBase;
 
-const unsigned int COUNT_LEGO_FUNCTIONS = 33;
+const unsigned int COUNT_LEGO_FUNCTIONS = 34;
 const unsigned int COUNT_AXIS = 9;
 
 
@@ -79,7 +79,7 @@ const unsigned int COUNT_AXIS = 9;
 
 
 #define DEFINE_ALL_FUNCTIONS \
-	ADD_LEGO_1S_FUNCTION("motorBreak")\
+	ADD_LEGO_1S_FUNCTION("motorBrake")\
 	ADD_LEGO_1S_FUNCTION("motorGetDirection")\
 	ADD_LEGO_1S_FUNCTION("motorGetTacho")\
 	ADD_LEGO_1S3F_FUNCTION("motorMoveTo")\
@@ -111,7 +111,8 @@ const unsigned int COUNT_AXIS = 9;
     ADD_LEGO_2F_FUNCTION("readNXTTouch")\
     ADD_LEGO_2F_FUNCTION("readRCXLight")\
     ADD_LEGO_1F_FUNCTION("readRCXRotation")\
-    ADD_LEGO_2F_FUNCTION("readRCXTemperature");
+    ADD_LEGO_2F_FUNCTION("readRCXTemperature")\
+	ADD_LEGO_1S_FUNCTION("isMotorRun");
 
 
 #define ADD_ROBOT_AXIS(AXIS_NAME, UPPER_VALUE, LOWER_VALUE) \
@@ -370,7 +371,7 @@ FunctionResult* LegoRobot::executeFunction(system_value functionId, void **args)
 		case 1: {
 			wchar_t input1 = *(const char *)args[0];
 			isMotor(input1);
-			lego_communication_library::NXT_brick::getInstance()->motorBreak(robot_index, input1);
+			lego_communication_library::NXT_brick::getInstance()->motorBrake(robot_index, input1);
 			
 			break;
 		}
@@ -629,6 +630,12 @@ FunctionResult* LegoRobot::executeFunction(system_value functionId, void **args)
 			variable_value *input2 = (variable_value *)args[1];
 			isTwoMode(*input2);
 				rez = lego_communication_library::NXT_brick::getInstance()->readRCXTemperature(robot_index, *input1, *input2);
+			break;
+		}
+		case 34:{
+			wchar_t input1 = *(const char *)args[0];
+			isMotor(input1);
+			rez = lego_communication_library::NXT_brick::getInstance()->isMotorRun(robot_index, input1);
 			break;
 		}
 		};

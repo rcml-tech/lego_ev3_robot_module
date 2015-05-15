@@ -69,8 +69,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="EV3_brick.cs" />
     <Compile Include="NXT_brick.cs" />
+    <Compile Include="EV3_brick.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Bluetooth.cs" />
     <Compile Include="IMotor.cs" />

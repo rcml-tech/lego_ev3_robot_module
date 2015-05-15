@@ -11,14 +11,14 @@
 #include <vector>
 #include <map>
 
-#include "../../module_headers/module.h"
-#include "../../module_headers/robot_module.h"
+#include "../module_headers/module.h"
+#include "../module_headers/robot_module.h"
 #include "lego_ev3_module.h"
 #include "SimpleIni.h"
 
 EXTERN_C IMAGE_DOS_HEADER __ImageBase;
 
-const unsigned int COUNT_LEGO_FUNCTIONS = 22;
+const unsigned int COUNT_LEGO_FUNCTIONS = 24;
 const unsigned int COUNT_AXIS = 11;
 
 #define ADD_LEGO_0_FUNCTION(FUNCTION_NAME) \
@@ -87,7 +87,7 @@ const unsigned int COUNT_AXIS = 11;
 //////
 
 #define DEFINE_ALL_FUNCTIONS \
-	ADD_LEGO_1S_FUNCTION("motorBreak")\
+	ADD_LEGO_1S_FUNCTION("motorBrake")\
 	ADD_LEGO_1S_FUNCTION("motorGetDirection")\
 	ADD_LEGO_1S_FUNCTION("motorGetTacho")\
 	ADD_LEGO_1S3F_FUNCTION("motorMoveTo")\
@@ -108,7 +108,9 @@ const unsigned int COUNT_AXIS = 11;
 	ADD_LEGO_2F_FUNCTION("trackVehicleTurnRightForward")\
 	ADD_LEGO_2F_FUNCTION("trackVehicleTurnRightForward")\
 	ADD_LEGO_0_FUNCTION("trackVehicleBrake") \
-	ADD_LEGO_2F_FUNCTION("readSensor");
+	ADD_LEGO_2F_FUNCTION("readSensor")\
+	ADD_LEGO_1S_FUNCTION("isMotorRun")\
+	ADD_LEGO_1S_FUNCTION("getMotorSpeed");
 
 
 #define ADD_ROBOT_AXIS(AXIS_NAME, UPPER_VALUE, LOWER_VALUE) \
@@ -375,7 +377,7 @@ FunctionResult* LegoRobot::executeFunction(system_value functionId, void **args)
 		case 1: {
 			wchar_t input1 = *(const char *)(*args);
 			isMotor(input1);
-			lego_communication_library::EV3_brick::getInstance()->motorBreak(robot_index, input1);
+			lego_communication_library::EV3_brick::getInstance()->motorBrake(robot_index, input1);
 			
 			break;
 		}
@@ -561,6 +563,18 @@ FunctionResult* LegoRobot::executeFunction(system_value functionId, void **args)
 				rez = lego_communication_library::EV3_brick::getInstance()->readSensor(robot_index, *input1, *input2);
 			}
 			else{ throw std::exception(); };
+			break;
+		}
+		case 23:{
+			wchar_t input1 = *(const char *)(*args);
+			isMotor(input1);
+			rez = lego_communication_library::EV3_brick::getInstance()->isMotorRun(robot_index, input1);
+			break;
+		}
+		case 24:{
+			wchar_t input1 = *(const char *)(*args);
+			isMotor(input1);
+			rez = lego_communication_library::EV3_brick::getInstance()->getMotorSpeed(robot_index, input1);
 			break;
 		}
 		};
