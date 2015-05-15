@@ -375,11 +375,12 @@ namespace lego_communication_library
             switch (str)
             {
                 case "Black": { return 1; }
-                case "White": { return 2; }
-                case "Blue": { return 3; }
-                case "Green": { return 4; }
-                case "Yellow": { return 5; }
-                case "Red": { return 6; }
+                case "Blue": { return 2; }
+                case "Green": { return 3; }
+                case "Yellow": { return 4; }
+                case "Red": { return 5; }
+                case "White": { return 6; }
+                case "Brown": { return 7; }
                 default:
                     {
                         string temps;

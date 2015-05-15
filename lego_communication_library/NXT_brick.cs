@@ -19,7 +19,7 @@ namespace lego_communication_library
         private static NXT_brick instance;
 
 
-        private Motor getMotorByLitera(Brick<Sensor, Sensor, Sensor, Sensor> brick, char motor) // вместо литер числа
+        private Motor getMotorByLitera(Brick<Sensor, Sensor, Sensor, Sensor> brick, char motor) 
         {
             switch (motor)
             {
