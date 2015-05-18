@@ -56,6 +56,16 @@ const unsigned int COUNT_AXIS = 11;
 	function_id++; 
 //////
 
+#define ADD_LEGO_3F_FUNCTION(FUNCTION_NAME) \
+	Params = new FunctionData::ParamTypes[3]; \
+	Params[0] = FunctionData::FLOAT; \
+	Params[1] = FunctionData::FLOAT; \
+	Params[2] = FunctionData::FLOAT; \
+	lego_functions[function_id] = new FunctionData(function_id + 1, 3, Params, FUNCTION_NAME); \
+	function_id++; 
+//////
+
+
 #define ADD_LEGO_4F_FUNCTION(FUNCTION_NAME) \
 	Params = new FunctionData::ParamTypes[4]; \
 	Params[0] = FunctionData::FLOAT; \
@@ -108,9 +118,9 @@ const unsigned int COUNT_AXIS = 11;
 	ADD_LEGO_2F_FUNCTION("trackVehicleTurnRightForward")\
 	ADD_LEGO_2F_FUNCTION("trackVehicleTurnRightForward")\
 	ADD_LEGO_0_FUNCTION("trackVehicleBrake") \
-	ADD_LEGO_2F_FUNCTION("readSensor")\
-	ADD_LEGO_1S_FUNCTION("isMotorRun")\
-	ADD_LEGO_1S_FUNCTION("getMotorSpeed");
+	ADD_LEGO_3F_FUNCTION("readSensor")\
+	ADD_LEGO_1S1F_FUNCTION("isMotorRunning")\
+	ADD_LEGO_1S1F_FUNCTION("getMotorSpeed");
 
 
 #define ADD_ROBOT_AXIS(AXIS_NAME, UPPER_VALUE, LOWER_VALUE) \
@@ -375,72 +385,72 @@ FunctionResult* LegoRobot::executeFunction(system_value functionId, void **args)
 	try {
 		switch (functionId) {
 		case 1: {
-			wchar_t input1 = *(const char *)(*args);
+			wchar_t input1 = *(const char *)args[0];
 			isMotor(input1);
 			lego_communication_library::EV3_brick::getInstance()->motorBrake(robot_index, input1);
 			
 			break;
 		}
 		case 2: {
-			wchar_t input1 = *(const char *)(*args);
+			wchar_t input1 = *(const char *)args[0];
 			isMotor(input1);
 				rez = lego_communication_library::EV3_brick::getInstance()->motorGetDirection(robot_index, input1);
 			break;
 		}
 		case 3: {
-			wchar_t input1 = *(const char *)(*args);
+			wchar_t input1 = *(const char *)args[0];
 
 			isMotor(input1);
 				rez = lego_communication_library::EV3_brick::getInstance()->motorGetTacho(robot_index, input1);
 			break;
 		}
 		case 4: {
-			wchar_t input1 = *(const char *)(*args);
-			variable_value *input2 = (variable_value *)(*(args + 1));
+			wchar_t input1 = *(const char *)args[0];
+			variable_value *input2 = (variable_value *)args[1];
 
 			isSpeed(*input2);
 			isMotor(input1);
-			variable_value *input3 = (variable_value *)(*(args + 2));
-			variable_value *input4 = (variable_value *)(*(args + 3));
+			variable_value *input3 = (variable_value *)args[2];
+			variable_value *input4 = (variable_value *)args[3];
 			lego_communication_library::EV3_brick::getInstance()->motorMoveTo(robot_index, input1, *input2, *input3, !!(*input4)); 
 			break;
 		}
 		case 5: {
-			wchar_t input1 = *(const char *)(*args);
+			wchar_t input1 = *(const char *)args[0];
 			isMotor(input1);
 			lego_communication_library::EV3_brick::getInstance()->motorOff(robot_index, input1);
 			 
 			break;
 		}
 		case 6: {
-			wchar_t input1 = *(const char *)(*args);
+			wchar_t input1 = *(const char *)args[0];
 			isMotor(input1);
 			lego_communication_library::EV3_brick::getInstance()->motorResetTacho(robot_index, input1);
 			break;
 		}
 		case 7: {
-			wchar_t input1 = *(const char *)(*args);
-			variable_value *input2 = (variable_value *)(*(args + 1));
+			wchar_t input1 = *(const char *)args[0];
+			variable_value *input2 = (variable_value *)args[1];
 			isMotor(input1);
 			lego_communication_library::EV3_brick::getInstance()->motorSetDirection(robot_index, input1, !!(*input2));
 			break;
 		}
 		case 8: {
-			wchar_t input1 = *(const char *)(*args);
-			variable_value *input2 = (variable_value *)(*(args + 1));
+			wchar_t input1 = *(const char *)args[0];
+			variable_value *input2 = (variable_value *)args[1];
 			isMotor(input1);
 			isSpeed(*input2);
 			lego_communication_library::EV3_brick::getInstance()->motorSetSpeed(robot_index, input1, *input2); 
 			break;
 		}
 		case 9: {
-			wchar_t input1 = *(const char *)(*args);
-			wchar_t input2 = *(const char *)(*(args + 1));
+			wchar_t input1 = *(const char *)args[0];
+			wchar_t input2 = *(const char *)args[1];
 
 			isMotor(input1);
 			isMotor(input2);
-			variable_value *input3 = (variable_value *)(*(args + 2));
-			variable_value *input4 = (variable_value *)(*(args + 3));
+			variable_value *input3 = (variable_value *)args[2];
+			variable_value *input4 = (variable_value *)args[3];
 			if (input1 != input2) {
 				lego_communication_library::EV3_brick::getInstance()->setTrackVehicle(robot_index, input1, input2, (bool)(*input3), (bool)(*input4));
 				is_trackVehicleOn = true;
@@ -449,21 +459,21 @@ FunctionResult* LegoRobot::executeFunction(system_value functionId, void **args)
 			break;
 		}
 		case 10: {
-			wchar_t input1 = *(const char *)(*args);
+			wchar_t input1 = *(const char *)args[0];
 			isMotor(input1);
 			lego_communication_library::EV3_brick::getInstance()->waitMotorToStop(robot_index, input1);
 			break;
 		}
 		case 11: {
-			variable_value *input1 = (variable_value *)(*args);
-			variable_value *input2 = (variable_value *)(*(args + 1));
-			variable_value *input3 = (variable_value *)(*(args + 2));
-			variable_value *input4 = (variable_value *)(*(args + 3));
+			variable_value *input1 = (variable_value *)args[0];
+			variable_value *input2 = (variable_value *)args[1];
+			variable_value *input3 = (variable_value *)args[2];
+			variable_value *input4 = (variable_value *)args[3];
 			lego_communication_library::EV3_brick::getInstance()->waitMultiMotorsToStop(robot_index, !!(*input1), !!(*input2), !!(*input3), !!(*input4));
 			break;
 		}
 		case 12: {
-				variable_value *input1 = (variable_value *)(*args);
+				variable_value *input1 = (variable_value *)args[0];
 				isSpeed(*input1);
 				if (is_trackVehicleOn){
 					lego_communication_library::EV3_brick::getInstance()->trackVehicleBackward(robot_index, *input1); 
@@ -472,7 +482,7 @@ FunctionResult* LegoRobot::executeFunction(system_value functionId, void **args)
 			break;
 		}
 		case 13: {
-				variable_value *input1 = (variable_value *)(*args);
+				variable_value *input1 = (variable_value *)args[0];
 				isSpeed(*input1);
 				if (is_trackVehicleOn){
 					lego_communication_library::EV3_brick::getInstance()->trackVehicleForward(robot_index, *input1);  
@@ -488,7 +498,7 @@ FunctionResult* LegoRobot::executeFunction(system_value functionId, void **args)
 			break;
 		}
 		case 15: {
-			variable_value *input1 = (variable_value *)(*args);
+			variable_value *input1 = (variable_value *)args[0];
 			isSpeed(*input1);
 			if (is_trackVehicleOn){
 				lego_communication_library::EV3_brick::getInstance()->trackVehicleSpinLeft(robot_index, *input1); 
@@ -497,7 +507,7 @@ FunctionResult* LegoRobot::executeFunction(system_value functionId, void **args)
 			break;
 		}
 		case 16: {
-			variable_value *input1 = (variable_value *)(*args);
+			variable_value *input1 = (variable_value *)args[0];
 				isSpeed(*input1);
 				if (is_trackVehicleOn){
 					lego_communication_library::EV3_brick::getInstance()->trackVehicleSpinRight(robot_index, *input1); 
@@ -506,8 +516,8 @@ FunctionResult* LegoRobot::executeFunction(system_value functionId, void **args)
 			break;
 		}
 		case 17: {
-			variable_value *input1 = (variable_value *)(*args);
-			variable_value *input2 = (variable_value *)(*(args + 1));
+			variable_value *input1 = (variable_value *)args[0];
+			variable_value *input2 = (variable_value *)args[1];
 				isSpeed(*input1);
 				isPercent(*input2);
 				if (is_trackVehicleOn){
@@ -517,8 +527,8 @@ FunctionResult* LegoRobot::executeFunction(system_value functionId, void **args)
 			break;
 		}
 		case 18: {
-			variable_value *input1 = (variable_value *)(*args);
-			variable_value *input2 = (variable_value *)(*(args + 1));
+			variable_value *input1 = (variable_value *)args[0];
+			variable_value *input2 = (variable_value *)args[1];
 				isPercent(*input2);
 				isSpeed(*input1);
 				if (is_trackVehicleOn){
@@ -528,8 +538,8 @@ FunctionResult* LegoRobot::executeFunction(system_value functionId, void **args)
 			break;
 		}
 		case 19: {
-			variable_value *input1 = (variable_value *)(*args);
-			variable_value *input2 = (variable_value *)(*(args + 1));
+			variable_value *input1 = (variable_value *)args[0];
+			variable_value *input2 = (variable_value *)args[1];
 			isSpeed(*input1);
 			isPercent(*input2);
 				if (is_trackVehicleOn){
@@ -539,8 +549,8 @@ FunctionResult* LegoRobot::executeFunction(system_value functionId, void **args)
 			break;
 		}
 		case 20: {
-			variable_value *input1 = (variable_value *)(*args);
-			variable_value *input2 = (variable_value *)(*(args + 1));
+			variable_value *input1 = (variable_value *)args[0];
+			variable_value *input2 = (variable_value *)args[1];
 			isSpeed(*input1);
 			isPercent(*input2);
 				if (is_trackVehicleOn){
@@ -557,24 +567,27 @@ FunctionResult* LegoRobot::executeFunction(system_value functionId, void **args)
 			break;
 		}
 		case 22:{
-			variable_value *input1 = (variable_value *)(*args);
-			variable_value *input2 = (variable_value *)(*(args + 1));
+			variable_value *input1 = (variable_value *)args[0];
+			variable_value *input2 = (variable_value *)args[1];
+			variable_value *input3 = (variable_value *)args[2];
 			if (lego_communication_library::EV3_brick::getInstance()->testSensorMode(robot_index, *input1, *input2)) {
-				rez = lego_communication_library::EV3_brick::getInstance()->readSensor(robot_index, *input1, *input2);
+				rez = lego_communication_library::EV3_brick::getInstance()->readSensor(robot_index, *input1, *input2, !!(*input3));
 			}
 			else{ throw std::exception(); };
 			break;
 		}
 		case 23:{
-			wchar_t input1 = *(const char *)(*args);
+			wchar_t input1 = *(const char *)args[0];
 			isMotor(input1);
-			rez = lego_communication_library::EV3_brick::getInstance()->isMotorRun(robot_index, input1);
+			variable_value *input2 = (variable_value *)args[1];
+			rez = lego_communication_library::EV3_brick::getInstance()->isMotorRunning(robot_index, input1, !!(*input2));
 			break;
 		}
 		case 24:{
-			wchar_t input1 = *(const char *)(*args);
+			wchar_t input1 = *(const char *)args[0];
 			isMotor(input1);
-			rez = lego_communication_library::EV3_brick::getInstance()->getMotorSpeed(robot_index, input1);
+			variable_value *input2 = (variable_value *)args[1];
+			rez = lego_communication_library::EV3_brick::getInstance()->getMotorSpeed(robot_index, input1, !!(*input2));
 			break;
 		}
 		};

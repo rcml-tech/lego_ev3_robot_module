@@ -49,6 +49,15 @@ const unsigned int COUNT_AXIS = 9;
 	function_id++; 
 //////
 
+#define ADD_LEGO_3F_FUNCTION(FUNCTION_NAME) \
+	Params = new FunctionData::ParamTypes[3]; \
+	Params[0] = FunctionData::FLOAT; \
+	Params[1] = FunctionData::FLOAT; \
+	Params[2] = FunctionData::FLOAT; \
+	lego_functions[function_id] = new FunctionData(function_id + 1, 3, Params, FUNCTION_NAME); \
+	function_id++; 
+//////
+
 #define ADD_LEGO_1S1F_FUNCTION(FUNCTION_NAME) \
 	Params = new FunctionData::ParamTypes[2]; \
 	Params[0] = FunctionData::STRING; \
@@ -100,19 +109,19 @@ const unsigned int COUNT_AXIS = 9;
 	ADD_LEGO_2F_FUNCTION("trackVehicleTurnRightForward")\
 	ADD_LEGO_2F_FUNCTION("trackVehicleTurnRightForward")\
 	ADD_LEGO_0_FUNCTION("trackVehicleBrake") \
-    ADD_LEGO_2F_FUNCTION("readHiTecColor")\
-    ADD_LEGO_1F_FUNCTION("readHiTecCompass")\
-    ADD_LEGO_1F_FUNCTION("readHiTecGyro")\
-    ADD_LEGO_2F_FUNCTION("readHiTecTilt")\
-    ADD_LEGO_2F_FUNCTION("readNXTColor")\
-    ADD_LEGO_2F_FUNCTION("readNXTLight")\
-    ADD_LEGO_2F_FUNCTION("readNXTSonar")\
-    ADD_LEGO_2F_FUNCTION("readNXTSound")\
-    ADD_LEGO_2F_FUNCTION("readNXTTouch")\
-    ADD_LEGO_2F_FUNCTION("readRCXLight")\
-    ADD_LEGO_1F_FUNCTION("readRCXRotation")\
-    ADD_LEGO_2F_FUNCTION("readRCXTemperature")\
-	ADD_LEGO_1S_FUNCTION("isMotorRun");
+    ADD_LEGO_3F_FUNCTION("readHiTecColor")\
+    ADD_LEGO_2F_FUNCTION("readHiTecCompass")\
+    ADD_LEGO_2F_FUNCTION("readHiTecGyro")\
+    ADD_LEGO_3F_FUNCTION("readHiTecTilt")\
+    ADD_LEGO_3F_FUNCTION("readNXTColor")\
+    ADD_LEGO_3F_FUNCTION("readNXTLight")\
+    ADD_LEGO_3F_FUNCTION("readNXTSonar")\
+    ADD_LEGO_3F_FUNCTION("readNXTSound")\
+    ADD_LEGO_3F_FUNCTION("readNXTTouch")\
+    ADD_LEGO_3F_FUNCTION("readRCXLight")\
+    ADD_LEGO_2F_FUNCTION("readRCXRotation")\
+    ADD_LEGO_3F_FUNCTION("readRCXTemperature")\
+	ADD_LEGO_1S1F_FUNCTION("isMotorRunning");
 
 
 #define ADD_ROBOT_AXIS(AXIS_NAME, UPPER_VALUE, LOWER_VALUE) \
@@ -557,85 +566,98 @@ FunctionResult* LegoRobot::executeFunction(system_value functionId, void **args)
 		case 22:{
 			variable_value *input1 = (variable_value *)args[0];
 			variable_value *input2 = (variable_value *)args[1];
+			variable_value *input3 = (variable_value *)args[2];
 			isThreeMode(*input2);
-				rez = lego_communication_library::NXT_brick::getInstance()->readHiTecColor(robot_index, *input1, *input2);
+				rez = lego_communication_library::NXT_brick::getInstance()->readHiTecColor(robot_index, *input1, *input2, !!(*input3));
 			break;
 		}
 		case 23:{
 			variable_value *input1 = (variable_value *)args[0];
-				rez = lego_communication_library::NXT_brick::getInstance()->readHiTecCompass(robot_index, *input1);
+			variable_value *input2 = (variable_value *)args[1];
+				rez = lego_communication_library::NXT_brick::getInstance()->readHiTecCompass(robot_index, *input1, !!(*input2));
 			break;
 		}
 		case 24:{
 			variable_value *input1 = (variable_value *)args[0];
-				rez = lego_communication_library::NXT_brick::getInstance()->readHiTecGyro(robot_index, *input1);
+			variable_value *input2 = (variable_value *)args[1];
+				rez = lego_communication_library::NXT_brick::getInstance()->readHiTecGyro(robot_index, *input1, !!(*input2));
 			break;
 		}
 		case 25:{
 			variable_value *input1 = (variable_value *)args[0];
 			variable_value *input2 = (variable_value *)args[1];
+			variable_value *input3 = (variable_value *)args[2];
 			isThreeMode(*input2);
-				rez = lego_communication_library::NXT_brick::getInstance()->readHiTecTilt(robot_index, *input1, *input2);
+				rez = lego_communication_library::NXT_brick::getInstance()->readHiTecTilt(robot_index, *input1, *input2, !!(*input3));
 			break;
 		}
 		case 26:{
 			variable_value *input1 = (variable_value *)args[0];
 			variable_value *input2 = (variable_value *)args[1];
+			variable_value *input3 = (variable_value *)args[2];
 			isFiveMode(*input2);
-				rez = lego_communication_library::NXT_brick::getInstance()->readNXTColor(robot_index, *input1, *input2);
+				rez = lego_communication_library::NXT_brick::getInstance()->readNXTColor(robot_index, *input1, *input2, !!(*input3));
 			break;
 		}
 		case 27:{
 			variable_value *input1 = (variable_value *)args[0];
 			variable_value *input2 = (variable_value *)args[1];
+			variable_value *input3 = (variable_value *)args[2];
 			isTwoMode(*input2);
-				rez = lego_communication_library::NXT_brick::getInstance()->readNXTLight(robot_index, *input1, *input2);
+				rez = lego_communication_library::NXT_brick::getInstance()->readNXTLight(robot_index, *input1, *input2, !!(*input3));
 			break;
 		}
 		case 28:{
 			variable_value *input1 = (variable_value *)args[0];
 			variable_value *input2 = (variable_value *)args[1];
+			variable_value *input3 = (variable_value *)args[2];
 			isTwoMode(*input2);
-				rez = lego_communication_library::NXT_brick::getInstance()->readNXTSonar(robot_index, *input1, *input2);
+				rez = lego_communication_library::NXT_brick::getInstance()->readNXTSonar(robot_index, *input1, *input2, !!(*input3));
 			break;
 		}
 		case 29:{
 			variable_value *input1 = (variable_value *)args[0];
 			variable_value *input2 = (variable_value *)args[1];
+			variable_value *input3 = (variable_value *)args[2];
 			isTwoMode(*input2);
-				rez = lego_communication_library::NXT_brick::getInstance()->readNXTSound(robot_index, *input1, *input2);
+				rez = lego_communication_library::NXT_brick::getInstance()->readNXTSound(robot_index, *input1, *input2, !!(*input3));
 			break;
 		}
 		case 30:{
 			variable_value *input1 = (variable_value *)args[0];
 			variable_value *input2 = (variable_value *)args[1];
+			variable_value *input3 = (variable_value *)args[2];
 			isTwoMode(*input2);
-				rez = lego_communication_library::NXT_brick::getInstance()->readNXTTouch(robot_index, *input1, *input2);
+				rez = lego_communication_library::NXT_brick::getInstance()->readNXTTouch(robot_index, *input1, *input2, !!(*input3));
 			break;
 		}
 		case 31:{
 			variable_value *input1 = (variable_value *)args[0];
 			variable_value *input2 = (variable_value *)args[1];
+			variable_value *input3 = (variable_value *)args[2];
 			isTwoMode(*input2);
-				rez = lego_communication_library::NXT_brick::getInstance()->readRCXLight(robot_index, *input1, *input2);
+				rez = lego_communication_library::NXT_brick::getInstance()->readRCXLight(robot_index, *input1, *input2, !!(*input3));
 			break;
 		}
 		case 32:{
 			variable_value *input1 = (variable_value *)args[0];
-				rez = lego_communication_library::NXT_brick::getInstance()->readRCXRotation(robot_index, *input1);
+			variable_value *input2 = (variable_value *)args[1];
+				rez = lego_communication_library::NXT_brick::getInstance()->readRCXRotation(robot_index, *input1, !!(*input2));
 			break;
 		}
 		case 33:{
 			variable_value *input1 = (variable_value *)args[0];
 			variable_value *input2 = (variable_value *)args[1];
+			variable_value *input3 = (variable_value *)args[2];
 			isTwoMode(*input2);
-				rez = lego_communication_library::NXT_brick::getInstance()->readRCXTemperature(robot_index, *input1, *input2);
+				rez = lego_communication_library::NXT_brick::getInstance()->readRCXTemperature(robot_index, *input1, *input2, !!(*input3));
 			break;
 		}
 		case 34:{
 			wchar_t input1 = *(const char *)args[0];
+			variable_value *input2 = (variable_value *)args[1];
 			isMotor(input1);
-			rez = lego_communication_library::NXT_brick::getInstance()->isMotorRun(robot_index, input1);
+			rez = lego_communication_library::NXT_brick::getInstance()->isMotorRun(robot_index, input1, !!(*input2));
 			break;
 		}
 		};
