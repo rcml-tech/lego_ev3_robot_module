@@ -286,10 +286,14 @@ namespace lego_communication_library
                     { return new TouchSensor(SensorMode.Raw); }
             }
         }
-        public double readNXTTouch(int indexBrick, int indexSensor, int mode)
+        public double readNXTTouch(int indexBrick, int indexSensor, int mode, bool is_Sleep)
         {
             Brick<Sensor, Sensor, Sensor, Sensor> brick2 = getBrickByIndex(indexBrick);
             double rez = 0;
+		    if (is_Sleep)
+            {
+                Thread.Sleep(100);
+            }
             switch (indexSensor) {
                 case 1:
                     {
@@ -335,10 +339,14 @@ namespace lego_communication_library
                     { return new NXTColorSensor(ColorMode.None, SensorMode.Percent); }
             }
         }
-        public double readNXTColor(int indexBrick, int indexSensor, int mode)
+        public double readNXTColor(int indexBrick, int indexSensor, int mode, bool is_Sleep)
         {
             Brick<Sensor, Sensor, Sensor, Sensor> brick2 = getBrickByIndex(indexBrick);
             double rez = 0;
+		    if (is_Sleep)
+            {
+                Thread.Sleep(100);
+            }
             switch (indexSensor)
             {
                 case 1:
@@ -383,10 +391,14 @@ namespace lego_communication_library
                     { return new NXTLightSensor(LightMode.Off, SensorMode.Percent); }
             }
         }
-        public double readNXTLight(int indexBrick, int indexSensor, int mode)
+        public double readNXTLight(int indexBrick, int indexSensor, int mode, bool is_Sleep)
         {
             Brick<Sensor, Sensor, Sensor, Sensor> brick2 = getBrickByIndex(indexBrick);
             double rez = 0;
+		    if (is_Sleep)
+            {
+                Thread.Sleep(100);
+            }
     
             switch (indexSensor)
             {
@@ -428,10 +440,14 @@ namespace lego_communication_library
                     { return new NXTSoundSensor(SoundMode.SoundDBA); }
             }
         }
-        public double readNXTSound(int indexBrick, int indexSensor, int mode)
+        public double readNXTSound(int indexBrick, int indexSensor, int mode, bool is_Sleep)
         {
             Brick<Sensor, Sensor, Sensor, Sensor> brick2 = getBrickByIndex(indexBrick);
             double rez = 0;
+		    if (is_Sleep)
+            {
+                Thread.Sleep(100);
+            }
             switch (indexSensor)
             {
                 case 1:
@@ -472,10 +488,14 @@ namespace lego_communication_library
                     { return new Sonar(SonarMode.CentiInch); }
             }
         }
-        public double readNXTSonar(int indexBrick, int indexSensor, int mode)
+        public double readNXTSonar(int indexBrick, int indexSensor, int mode, bool is_Sleep)
         {
             Brick<Sensor, Sensor, Sensor, Sensor> brick2 = getBrickByIndex(indexBrick);
             double rez = 0;
+		    if (is_Sleep)
+            {
+                Thread.Sleep(100);
+            }
             switch (indexSensor)
             {
                 case 1:
@@ -509,10 +529,14 @@ namespace lego_communication_library
 
         // HiTech SENSORS
         // Color
-        public double readHiTecColor(int indexBrick, int indexSensor, int mode) 
+        public double readHiTecColor(int indexBrick, int indexSensor, int mode, bool is_Sleep) 
         {
             Brick<Sensor, Sensor, Sensor, Sensor> brick2 = getBrickByIndex(indexBrick);
             double rez = 0;
+		    if (is_Sleep)
+            {
+                Thread.Sleep(100);
+            }
             switch (indexSensor)
             {
                 default: { break; }
@@ -544,10 +568,14 @@ namespace lego_communication_library
             return rez;
         }
         // Compass
-        public double readHiTecCompass(int indexBrick, int indexSensor)
+        public double readHiTecCompass(int indexBrick, int indexSensor, bool is_Sleep)
         {
             Brick<Sensor, Sensor, Sensor, Sensor> brick2 = getBrickByIndex(indexBrick);
             double rez = 0;
+		    if (is_Sleep)
+            {
+                Thread.Sleep(100);
+            }
             switch (indexSensor)
             {
                 default: { break; }
@@ -579,10 +607,14 @@ namespace lego_communication_library
             return rez;
         }
         // Gyro
-        public double readHiTecGyro(int indexBrick, int indexSensor)
+        public double readHiTecGyro(int indexBrick, int indexSensor, bool is_Sleep)
         {
             Brick<Sensor, Sensor, Sensor, Sensor> brick2 = getBrickByIndex(indexBrick);
             double rez = 0;
+		    if (is_Sleep)
+            {
+                Thread.Sleep(100);
+            }
             switch (indexSensor)
             {
                 default: { break; }
@@ -614,10 +646,14 @@ namespace lego_communication_library
             return rez;
         }
         // Tilt
-        public double readHiTecTilt(int indexBrick, int indexSensor, int mode)
+        public double readHiTecTilt(int indexBrick, int indexSensor, int mode, bool is_Sleep)
         {
             Brick<Sensor, Sensor, Sensor, Sensor> brick2 = getBrickByIndex(indexBrick);
             double rez = 0;
+		    if (is_Sleep)
+            {
+                Thread.Sleep(100);
+            }
             switch (indexSensor)
             {
                 default: { break; }
@@ -651,10 +687,14 @@ namespace lego_communication_library
 
         //RCX SENSORS
         //Angle
-        public double readRCXRotation(int indexBrick, int indexSensor)
+        public double readRCXRotation(int indexBrick, int indexSensor, bool is_Sleep)
         {
             Brick<Sensor, Sensor, Sensor, Sensor> brick2 = getBrickByIndex(indexBrick);
             double rez = 0;
+		    if (is_Sleep)
+            {
+                Thread.Sleep(100);
+            }
             switch (indexSensor)
             {
                 default: { break; }
@@ -696,10 +736,14 @@ namespace lego_communication_library
                     { return new RCXLightSensor(SensorMode.Raw); }
             }
         }
-        public double readRCXLight(int indexBrick, int indexSensor, int mode)
+        public double readRCXLight(int indexBrick, int indexSensor, int mode, bool is_Sleep)
         {
             Brick<Sensor, Sensor, Sensor, Sensor> brick2 = getBrickByIndex(indexBrick);
             double rez = 0;
+		    if (is_Sleep)
+            {
+                Thread.Sleep(100);
+            }
             switch (indexSensor)
             {
                 case 1:
@@ -740,10 +784,14 @@ namespace lego_communication_library
                     { return new RCXTemperatureSensor(TemperatureMode.Fahrenheit); }
             }
         }
-        public double readRCXTemperature(int indexBrick, int indexSensor, int mode)
+        public double readRCXTemperature(int indexBrick, int indexSensor, int mode, bool is_Sleep)
         {
             Brick<Sensor, Sensor, Sensor, Sensor> brick2 = getBrickByIndex(indexBrick);
             double rez = 0;
+		    if (is_Sleep)
+            {
+                Thread.Sleep(100);
+            }
             switch (indexSensor)
             {
                 case 1:
@@ -774,8 +822,12 @@ namespace lego_communication_library
             return rez;
         }
 
-        public bool isMotorRun(int indexBrick, char motor)
+        public bool isMotorRun(int indexBrick, char motor, bool is_Sleep)
         {
+            if (is_Sleep)
+            {
+                Thread.Sleep(100);
+            }
             Motor brickMotor = getMotorByIndexBreakAndLitera(indexBrick, motor);
             return brickMotor.IsRunning();
         }
