@@ -574,6 +574,16 @@ namespace MonoBrick.EV3
 	        public virtual string ReadAsString(){
 				return ReadSi().ToString();	
 			}
+
+            /// <summary>
+            /// For Ultrasonic, Temperature and Gyro Sensors and other sensors
+            /// </summary>
+            /// <returns></returns>
+            public virtual float ReadAsFloat()
+            {
+                return ReadSi();
+            }
+
 			#endregion
 	}
 	
@@ -631,6 +641,31 @@ namespace MonoBrick.EV3
 			}
 			return s;
 		}
+        /// <summary>
+        /// This Func should return sensor value as float. Read() Should Works good. But maybe we need use another method
+        /// </summary>
+        /// <returns></returns>
+        public override float ReadAsFloat()
+        {
+            float i = 0;
+            if (mode == (SensorMode)TouchMode.Count)
+            {
+                i = Read();
+            }
+            if (mode == (SensorMode)TouchMode.Boolean)
+            {
+                if (Convert.ToBoolean(Read()))
+                {
+                    i = 1;
+                }
+                else
+                {
+                    i = 0;
+                }
+            }
+            return i;
+        }
+
 		
 		/// <summary>
 		/// Read the value. In bump mode this will return the count
@@ -781,7 +816,15 @@ namespace MonoBrick.EV3
 			}
 			return s;
 		}
-		
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public override float ReadAsFloat()
+        {
+            return Read();
+        }
 		/// <summary>
 		/// Read the intensity of the reflected light
 		/// </summary>
@@ -929,7 +972,12 @@ namespace MonoBrick.EV3
 			}
 			return s;
 		}
-		
+
+        public override float ReadAsFloat()
+        {
+            return Read();
+        }
+
 		/// <summary>
 		/// Read the value of the sensor. The result will vary depending on the mode
 		/// </summary>
@@ -1022,6 +1070,11 @@ namespace MonoBrick.EV3
 			}
 			return s;
 		}
+
+        public override float ReadAsFloat()
+        {
+            return Read();
+        }
 		
 		/// <summary>
 		/// Read this instance.
@@ -1105,7 +1158,16 @@ namespace MonoBrick.EV3
 			}
 			return s;
 		}
-		
+        /// <summary>
+        /// returns sensor value as Int
+        /// </summary>
+        /// <returns></returns>
+
+        public override float ReadAsFloat()
+        {
+            return Read();
+        }
+
 		/// <summary>
 		/// Read the sensor value
 		/// </summary>
@@ -1216,7 +1278,16 @@ namespace MonoBrick.EV3
 			}
 			return s;
 		}
-		
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public override float ReadAsFloat()
+        {
+            return Read();
+        }
+
 		/// <summary>
 		/// Read the sensor value. Result depends on the mode
 		/// </summary>
@@ -1293,6 +1364,11 @@ namespace MonoBrick.EV3
 			}
 			return s;
 		}
+
+        public override float ReadAsFloat()
+        {
+            return ReadTemperature();
+        }
 		
 		/// <summary>
 		/// Read the temperature.
@@ -1368,7 +1444,12 @@ namespace MonoBrick.EV3
 			}
 			return s;
 		}
-		
+
+        public override float ReadAsFloat()
+        {
+            return Read();
+        }
+
 		/// <summary>
 		/// Read the sensor value. The result will depend on the mode
 		/// </summary>

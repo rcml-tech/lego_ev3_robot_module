@@ -17,7 +17,6 @@ namespace lego_communication_library
         private int iteratorConnectIndex;
         private static EV3_brick instance;
 
-
         private Motor getMotorByLitera(Brick<Sensor, Sensor, Sensor, Sensor> brick, char motor)
         {
             switch (motor)
@@ -370,32 +369,6 @@ namespace lego_communication_library
             }; // End Switch
         } // End Func
 
-        protected double resultMod(string str)
-        {
-            switch (str)
-            {
-                case "Black": { return 1; }
-                case "Blue": { return 2; }
-                case "Green": { return 3; }
-                case "Yellow": { return 4; }
-                case "Red": { return 5; }
-                case "White": { return 6; }
-                case "Brown": { return 7; }
-                default:
-                    {
-                        string temps;
-                        temps = str;
-                        int tempi = temps.Length;
-
-                        if (temps.IndexOf(' ') > 0)
-                        {
-                            temps = temps.Remove(temps.IndexOf(' '), tempi - temps.IndexOf(' '));
-                        }
-                        return Convert.ToDouble(temps);
-                    }
-            }
-        }
-
         private bool isURMode(int mod)
         {
             switch (mod)
@@ -477,35 +450,38 @@ namespace lego_communication_library
             };
         } // end test SensorMode
 
-        public double readSensor(int indexBrick, int indexSensor, int mode)
+        public double readSensor(int indexBrick, int indexSensor, int mode, bool is_Sleep)
         {
             Brick<Sensor, Sensor, Sensor, Sensor> brick2 = getBrickByIndex(indexBrick);
             double ret = 0;
-
+            if (is_Sleep)
+            {
+                Thread.Sleep(100);
+            }
             switch (indexSensor)
             {
                 case 1:
                     {
                         brick2.Sensor1 = getSensorObject(brick2.Sensor1.GetSensorType(), mode);
-                        ret = resultMod(brick2.Sensor1.ReadAsString());
+                        ret = brick2.Sensor1.ReadAsFloat();
                         break;
                     }
                 case 2:
                     {
                         brick2.Sensor2 = getSensorObject(brick2.Sensor2.GetSensorType(), mode);
-                        ret = resultMod(brick2.Sensor2.ReadAsString());
+                        ret = brick2.Sensor2.ReadAsFloat();
                         break;
                     }
                 case 3:
                     {
                         brick2.Sensor3 = getSensorObject(brick2.Sensor3.GetSensorType(), mode);
-                        ret = resultMod(brick2.Sensor3.ReadAsString());
+                        ret = brick2.Sensor3.ReadAsFloat();
                         break;
                     }
                 case 4:
                     {
                         brick2.Sensor4 = getSensorObject(brick2.Sensor4.GetSensorType(), mode);
-                        ret = resultMod(brick2.Sensor4.ReadAsString());
+                        ret = brick2.Sensor4.ReadAsFloat();
                         break;
                     }
                 default: { break; }
@@ -514,18 +490,24 @@ namespace lego_communication_library
         } // End readSensor
 
 
-        public bool isMotorRun(int indexBrick, char motor)
+        public bool isMotorRunning(int indexBrick, char motor, bool is_Sleep)
         {
+            if (is_Sleep)
+            {
+                Thread.Sleep(200);
+            }
             Motor brickMotor = getMotorByIndexBreakAndLitera(indexBrick, motor);
             return brickMotor.IsRunning();
         }
 
-        public sbyte getMotorSpeed(int indexBrick, char motor)
+        public sbyte getMotorSpeed(int indexBrick, char motor, bool is_Sleep)
         {
+            if (is_Sleep)
+            {
+                Thread.Sleep(200);
+            }
             Motor brickMotor = getMotorByIndexBreakAndLitera(indexBrick, motor);
             return brickMotor.GetSpeed();
         }
-   
-
     }
 }
