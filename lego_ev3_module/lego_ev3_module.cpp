@@ -56,16 +56,6 @@ const unsigned int COUNT_AXIS = 11;
 	function_id++; 
 //////
 
-#define ADD_LEGO_3F_FUNCTION(FUNCTION_NAME) \
-	Params = new FunctionData::ParamTypes[3]; \
-	Params[0] = FunctionData::FLOAT; \
-	Params[1] = FunctionData::FLOAT; \
-	Params[2] = FunctionData::FLOAT; \
-	lego_functions[function_id] = new FunctionData(function_id + 1, 3, Params, FUNCTION_NAME); \
-	function_id++; 
-//////
-
-
 #define ADD_LEGO_4F_FUNCTION(FUNCTION_NAME) \
 	Params = new FunctionData::ParamTypes[4]; \
 	Params[0] = FunctionData::FLOAT; \
@@ -118,7 +108,7 @@ const unsigned int COUNT_AXIS = 11;
 	ADD_LEGO_2F_FUNCTION("trackVehicleTurnRightForward")\
 	ADD_LEGO_2F_FUNCTION("trackVehicleTurnRightForward")\
 	ADD_LEGO_0_FUNCTION("trackVehicleBrake") \
-	ADD_LEGO_3F_FUNCTION("readSensor")\
+	ADD_LEGO_2F_FUNCTION("readSensor")\
 	ADD_LEGO_1S1F_FUNCTION("isMotorRunning")\
 	ADD_LEGO_1S1F_FUNCTION("getMotorSpeed");
 
