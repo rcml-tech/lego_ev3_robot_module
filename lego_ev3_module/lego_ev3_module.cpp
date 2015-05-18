@@ -569,9 +569,8 @@ FunctionResult* LegoRobot::executeFunction(system_value functionId, void **args)
 		case 22:{
 			variable_value *input1 = (variable_value *)args[0];
 			variable_value *input2 = (variable_value *)args[1];
-			variable_value *input3 = (variable_value *)args[2];
 			if (lego_communication_library::EV3_brick::getInstance()->testSensorMode(robot_index, *input1, *input2)) {
-				rez = lego_communication_library::EV3_brick::getInstance()->readSensor(robot_index, *input1, *input2, !!(*input3));
+				rez = lego_communication_library::EV3_brick::getInstance()->readSensor(robot_index, *input1, *input2);
 			}
 			else{ throw std::exception(); };
 			break;

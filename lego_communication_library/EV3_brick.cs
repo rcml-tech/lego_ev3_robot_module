@@ -450,14 +450,10 @@ namespace lego_communication_library
             };
         } // end test SensorMode
 
-        public double readSensor(int indexBrick, int indexSensor, int mode, bool is_Sleep)
+        public double readSensor(int indexBrick, int indexSensor, int mode)
         {
             Brick<Sensor, Sensor, Sensor, Sensor> brick2 = getBrickByIndex(indexBrick);
             double ret = 0;
-            if (is_Sleep)
-            {
-                Thread.Sleep(100);
-            }
             switch (indexSensor)
             {
                 case 1:
