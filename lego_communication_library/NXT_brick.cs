@@ -339,7 +339,7 @@ namespace lego_communication_library
         {
             Brick<Sensor, Sensor, Sensor, Sensor> brick2 = getBrickByIndex(indexBrick);
             double rez = 0;
-            switch (indexSensor)
+		    switch (indexSensor)
             {
                 case 1:
                     {
@@ -387,7 +387,6 @@ namespace lego_communication_library
         {
             Brick<Sensor, Sensor, Sensor, Sensor> brick2 = getBrickByIndex(indexBrick);
             double rez = 0;
-    
             switch (indexSensor)
             {
                 case 1:
@@ -432,7 +431,7 @@ namespace lego_communication_library
         {
             Brick<Sensor, Sensor, Sensor, Sensor> brick2 = getBrickByIndex(indexBrick);
             double rez = 0;
-            switch (indexSensor)
+		    switch (indexSensor)
             {
                 case 1:
                     {
@@ -476,7 +475,7 @@ namespace lego_communication_library
         {
             Brick<Sensor, Sensor, Sensor, Sensor> brick2 = getBrickByIndex(indexBrick);
             double rez = 0;
-            switch (indexSensor)
+		    switch (indexSensor)
             {
                 case 1:
                     {
@@ -513,7 +512,7 @@ namespace lego_communication_library
         {
             Brick<Sensor, Sensor, Sensor, Sensor> brick2 = getBrickByIndex(indexBrick);
             double rez = 0;
-            switch (indexSensor)
+		    switch (indexSensor)
             {
                 default: { break; }
                 case 1:
@@ -548,7 +547,7 @@ namespace lego_communication_library
         {
             Brick<Sensor, Sensor, Sensor, Sensor> brick2 = getBrickByIndex(indexBrick);
             double rez = 0;
-            switch (indexSensor)
+		    switch (indexSensor)
             {
                 default: { break; }
                 case 1:
@@ -583,7 +582,7 @@ namespace lego_communication_library
         {
             Brick<Sensor, Sensor, Sensor, Sensor> brick2 = getBrickByIndex(indexBrick);
             double rez = 0;
-            switch (indexSensor)
+		    switch (indexSensor)
             {
                 default: { break; }
                 case 1:
@@ -618,7 +617,7 @@ namespace lego_communication_library
         {
             Brick<Sensor, Sensor, Sensor, Sensor> brick2 = getBrickByIndex(indexBrick);
             double rez = 0;
-            switch (indexSensor)
+		    switch (indexSensor)
             {
                 default: { break; }
                 case 1:
@@ -655,7 +654,7 @@ namespace lego_communication_library
         {
             Brick<Sensor, Sensor, Sensor, Sensor> brick2 = getBrickByIndex(indexBrick);
             double rez = 0;
-            switch (indexSensor)
+		    switch (indexSensor)
             {
                 default: { break; }
                 case 1:
@@ -700,7 +699,7 @@ namespace lego_communication_library
         {
             Brick<Sensor, Sensor, Sensor, Sensor> brick2 = getBrickByIndex(indexBrick);
             double rez = 0;
-            switch (indexSensor)
+		    switch (indexSensor)
             {
                 case 1:
                     {
@@ -744,7 +743,7 @@ namespace lego_communication_library
         {
             Brick<Sensor, Sensor, Sensor, Sensor> brick2 = getBrickByIndex(indexBrick);
             double rez = 0;
-            switch (indexSensor)
+		    switch (indexSensor)
             {
                 case 1:
                     {
@@ -774,8 +773,12 @@ namespace lego_communication_library
             return rez;
         }
 
-        public bool isMotorRun(int indexBrick, char motor)
+        public bool isMotorRun(int indexBrick, char motor, bool is_Sleep)
         {
+            if (is_Sleep)
+            {
+                Thread.Sleep(100);
+            }
             Motor brickMotor = getMotorByIndexBreakAndLitera(indexBrick, motor);
             return brickMotor.IsRunning();
         }

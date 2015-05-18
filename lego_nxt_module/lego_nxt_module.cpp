@@ -112,7 +112,7 @@ const unsigned int COUNT_AXIS = 9;
     ADD_LEGO_2F_FUNCTION("readRCXLight")\
     ADD_LEGO_1F_FUNCTION("readRCXRotation")\
     ADD_LEGO_2F_FUNCTION("readRCXTemperature")\
-	ADD_LEGO_1S_FUNCTION("isMotorRun");
+	ADD_LEGO_1S1F_FUNCTION("isMotorRunning");
 
 
 #define ADD_ROBOT_AXIS(AXIS_NAME, UPPER_VALUE, LOWER_VALUE) \
@@ -634,8 +634,9 @@ FunctionResult* LegoRobot::executeFunction(system_value functionId, void **args)
 		}
 		case 34:{
 			wchar_t input1 = *(const char *)args[0];
+			variable_value *input2 = (variable_value *)args[1];
 			isMotor(input1);
-			rez = lego_communication_library::NXT_brick::getInstance()->isMotorRun(robot_index, input1);
+			rez = lego_communication_library::NXT_brick::getInstance()->isMotorRun(robot_index, input1, !!(*input2));
 			break;
 		}
 		};
