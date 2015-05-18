@@ -121,7 +121,7 @@ const unsigned int COUNT_AXIS = 9;
     ADD_LEGO_3F_FUNCTION("readRCXLight")\
     ADD_LEGO_2F_FUNCTION("readRCXRotation")\
     ADD_LEGO_3F_FUNCTION("readRCXTemperature")\
-	ADD_LEGO_1S1F_FUNCTION("isMotorRun");
+	ADD_LEGO_1S1F_FUNCTION("isMotorRunning");
 
 
 #define ADD_ROBOT_AXIS(AXIS_NAME, UPPER_VALUE, LOWER_VALUE) \
