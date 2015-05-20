@@ -11,12 +11,12 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="lego_ev3_module.cpp" />
+    <ClCompile Include="lego_ev3_robot_module.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\module_headers\module.h" />
     <ClInclude Include="..\module_headers\robot_module.h" />
-    <ClInclude Include="lego_ev3_module.h" />
+    <ClInclude Include="lego_ev3_robot_module.h" />
     <ClInclude Include="SimpleIni.h" />
   </ItemGroup>
   <ItemGroup>
@@ -27,7 +27,7 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{155D523C-62E6-49DE-98DF-F9C4969636C5}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>lego_ev3_module</RootNamespace>
+    <RootNamespace>lego_ev3_robot_module</RootNamespace>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -68,7 +68,7 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;LEGO_EV3_MODULE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;LEGO_EV3_ROBOT_MODULE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>C:\robot_project\simpleini;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
@@ -85,7 +85,7 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;LEGO_EV3_MODULE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;LEGO_EV3_ROBOT_MODULE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
     </ClCompile>
     <Link>
