@@ -103,5 +103,5 @@ rotation | 100 | -100 | Значение оси задает скорость с
 - [SimpleIni](https://github.com/brofield/simpleini)
 - [MonoBrick Communication Library](http://www.monobrick.dk/software/monobrick/)
 
-Библиотека MonoBrick Communication Library используется в отличающемся от оригинала виде и может быть найдена по адресу (https://github.com/RobotControlTechnologies/lego_communication_library) в папке lego_communication_library.
+Библиотека MonoBrick Communication Library используется в отличающемся от оригинала виде и может быть найдена по адресу (https://github.com/RobotControlTechnologies/lego_communication_library).
 
