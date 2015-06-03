@@ -1,6 +1,2 @@
-/*/Debug/
-/*/Release/
-/*/*.vcxproj.user
-/lego_communication_library/bin/Debug/
-/lego_communication_library/bin/Release/
-/lego_communication_library/obj/
+Debug/
+Release/

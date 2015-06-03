@@ -11,10 +11,12 @@
 #include <vector>
 #include <map>
 
-#include "../module_headers/module.h"
-#include "../module_headers/robot_module.h"
-#include "lego_ev3_robot_module.h"
 #include "SimpleIni.h"
+
+#include "module.h"
+#include "robot_module.h"
+#include "lego_ev3_robot_module.h"
+
 
 EXTERN_C IMAGE_DOS_HEADER __ImageBase;
 
