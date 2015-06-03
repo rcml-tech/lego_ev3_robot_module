@@ -209,7 +209,7 @@ int LegoRobotModule::init(){
 
 	HMODULE lr_handle;
 
-	lr_handle = GetModuleHandleW(L"lego_module.dll");
+	lr_handle = GetModuleHandleW(L"lego_ev3_module.dll");
 
 	WCHAR DllPath[MAX_PATH] = { 0 };
 	
