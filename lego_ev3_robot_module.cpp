@@ -592,8 +592,11 @@ FunctionResult* LegoRobot::executeFunction(system_value functionId, void **args)
 	};
 };
 
-int LegoRobotModule::startProgram(int uniq_index, void *buffer, unsigned int buffer_length) {
+int LegoRobotModule::startProgram(int uniq_index) {
 	return 0;
+}
+
+void LegoRobotModule::readPC(void *buffer, unsigned int buffer_length) {
 }
 
 int LegoRobotModule::endProgram(int uniq_index) {

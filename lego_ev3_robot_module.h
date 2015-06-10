@@ -56,8 +56,11 @@ public:
 	void robotFree(Robot *robot);
 	void final();
 
+	//intepreter - program & lib
+	void readPC(void *buffer, unsigned int buffer_length);
+	
 	//intepreter - program
-	int startProgram(int uniq_index, void *buffer, unsigned int buffer_length);
+	int startProgram(int uniq_index);
 	int endProgram(int uniq_index);
 
 	//destructor
