@@ -57,11 +57,17 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <OutDir>..\..\bin\robot_modules\lego_ev3</OutDir>
+    <OutDir>build/Debug</OutDir>
     <TargetName>lego_ev3_module</TargetName>
+    <IncludePath>G:\TempRepo\module_headers\;$(IncludePath)</IncludePath>
+    <IncludePath>G:\TempRepo\simpleini\;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
+    <OutDir>build/Release</OutDir>
+    <TargetName>lego_ev3_module</TargetName>
+    <IncludePath>G:\TempRepo\module_headers\;$(IncludePath)</IncludePath>
+    <IncludePath>G:\TempRepo\simpleini\;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -96,6 +102,11 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
   </ItemDefinitionGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\VSProjects\test_lego_robot\lego_communication_library\lego_communication_library.csproj">
+      <Project>{7b70c921-11b2-4dde-9cd5-fd6e4b58c863}</Project>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
