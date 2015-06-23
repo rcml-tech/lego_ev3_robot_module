@@ -207,14 +207,10 @@ int LegoRobotModule::init(){
 	CSimpleIniA ini;
 	ini.SetMultiKey(true);
 
-	HMODULE lr_handle;
-
-	lr_handle = GetModuleHandleW(L"lego_ev3_module.dll");
-
 	WCHAR DllPath[MAX_PATH] = { 0 };
 	
-	//GetModuleFileNameW((HINSTANCE)&__ImageBase, DllPath, _countof(DllPath));
-	GetModuleFileNameW(lr_handle, DllPath, _countof(DllPath));
+	GetModuleFileNameW((HINSTANCE)&__ImageBase, DllPath, _countof(DllPath));
+
 	WCHAR *tmp = wcsrchr(DllPath, L'\\');
 	WCHAR ConfigPath[MAX_PATH] = { 0 };
 	size_t path_len = tmp - DllPath;
@@ -225,7 +221,6 @@ int LegoRobotModule::init(){
 		printf("Can't load '%s' file!\n", ConfigPath);
 		return 1;
 	}
-
 
 	allow_dynamic = ini.GetBoolValue("options", "dynamic_connection", false);
 
@@ -592,8 +587,11 @@ FunctionResult* LegoRobot::executeFunction(system_value functionId, void **args)
 	};
 };
 
-int LegoRobotModule::startProgram(int uniq_index, void *buffer, unsigned int buffer_length) {
+int LegoRobotModule::startProgram(int uniq_index) {
 	return 0;
+}
+
+void LegoRobotModule::readPC(void *buffer, unsigned int buffer_length) {
 }
 
 int LegoRobotModule::endProgram(int uniq_index) {
