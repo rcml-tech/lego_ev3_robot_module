@@ -14,8 +14,8 @@
     <ClCompile Include="lego_ev3_robot_module.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\module_headers\module.h" />
-    <ClInclude Include="..\module_headers\robot_module.h" />
+    <ClInclude Include="module.h" />
+    <ClInclude Include="robot_module.h" />
     <ClInclude Include="lego_ev3_robot_module.h" />
     <ClInclude Include="SimpleIni.h" />
   </ItemGroup>
