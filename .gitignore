@@ -1,5 +1,3 @@
-/lego_robot_module/Debug/
-/lego_robot_module/Release/
-/lego_communication_library/bin/Debug/
-/lego_communication_library/bin/Release/
-/lego_communication_library/obj/
+Debug/
+Release/
+lego_ev3_robot_module.vcxproj.user
