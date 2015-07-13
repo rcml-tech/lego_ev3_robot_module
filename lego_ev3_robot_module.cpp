@@ -370,9 +370,9 @@ FunctionResult* LegoRobot::executeFunction(system_value functionId, void **args)
 		return NULL;
 	}
 	
-	variable_value rez=0;
-	bool throw_exception = false;
+	
 	try {
+    variable_value rez = 0;
 		switch (functionId) {
 		case 1: {
 			wchar_t input1 = *(const char *)args[0];
