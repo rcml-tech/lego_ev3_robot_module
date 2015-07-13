@@ -227,13 +227,11 @@ int LegoRobotModule::init(){
 	CSimpleIniA::TNamesDepend values;
 	ini.GetAllValues("connections", "connection", values);
 	CSimpleIniA::TNamesDepend::const_iterator ini_value;
-	int uniq_robot_index = 1;
+
 	for(ini_value = values.begin(); ini_value != values.end(); ++ini_value) {
 		colorPrintf(ConsoleColor(ConsoleColor::green),"- %s\n", ini_value->pItem);
 		std::string connection(ini_value->pItem);
-		
-		LegoRobot *lego_robot = new LegoRobot(connection, allow_dynamic,uniq_robot_index);
-		uniq_robot_index++;
+		LegoRobot *lego_robot = new LegoRobot(connection, allow_dynamic);
 		aviable_connections[connection] = lego_robot;
 	}
 	return 0;
@@ -603,14 +601,15 @@ int LegoRobotModule::endProgram(int uniq_index) {
 	return 0;
 }
 
-LegoRobot::LegoRobot(std::string connection, bool allow_dynamic,unsigned int uniq_index): 
+LegoRobot::LegoRobot(std::string connection, bool allow_dynamic): 
 	connection(connection), is_aviable(true), is_trackVehicleOn(false), is_locked(false), allow_dynamic(allow_dynamic) {
-	uniq_name = new char[40];
-	sprintf(uniq_name, "robot-%u", uniq_index);
 
 	System::String^ connection_c = gcnew System::String(connection.c_str());
 	lego_communication_library::EV3_brick^ singletoneBrick = lego_communication_library::EV3_brick::getInstance();
 	robot_index = singletoneBrick->createBrick(connection_c);
+
+	uniq_name = new char[40];
+	sprintf(uniq_name, "robot-%u", robot_index);
 
 	if (!allow_dynamic) {
 		if (!connect()) {
