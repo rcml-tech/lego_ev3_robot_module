@@ -14,19 +14,25 @@ protected:
 	bool allow_dynamic;
 	
 	std::vector<variable_value> axis_state;
+
+	char *uniq_name;
+	colorPrintfRobotVA_t *colorPrintf_p;
 public:
 	int robot_index;
 
 	LegoRobot(std::string connection, bool allow_dynamic);
+	void prepare(colorPrintfRobot_t *colorPrintf_p, colorPrintfRobotVA_t *colorPrintfVA_p);
 	FunctionResult* executeFunction(system_value command_index, void **args);
 	void axisControl(system_value axis_index, variable_value value);
-	~LegoRobot() {};
+	~LegoRobot();
 
 	bool connect();
 	void disconnect();
 
 	bool require();
 	void free();
+
+	void colorPrintf(ConsoleColor colors, const char *mask, ...);
 };
 typedef std::map<std::string, LegoRobot*> m_connections;
 class LegoRobotModule : public RobotModule{
@@ -35,7 +41,7 @@ protected:
 	m_connections aviable_connections;
 	FunctionData **lego_functions;
 	AxisData **robot_axis;
-	colorPrintf_t *colorPrintf;
+	colorPrintfModuleVA_t *colorPrintf_p;
 	bool allow_dynamic;
 public:
 	
@@ -43,7 +49,7 @@ public:
 
 	//init
 	const char *getUID();
-	void prepare(colorPrintf_t *colorPrintf_p, colorPrintfVA_t *colorPrintfVA_p);
+	void prepare(colorPrintfModule_t *colorPrintf_p, colorPrintfModuleVA_t *colorPrintfVA_p);
 
 	//compiler only
 	FunctionData** getFunctions(unsigned int *count_functions);
@@ -66,5 +72,7 @@ public:
 	//destructor
 	void destroy();
 	~LegoRobotModule() {};
+
+	void colorPrintf(ConsoleColor colors, const char *mask, ...);
 };
 #endif	/* LEGO_MODULE_H */
