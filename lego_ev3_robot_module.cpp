@@ -281,7 +281,7 @@ bool LegoRobot::connect(){
 	lego_communication_library::EV3_brick^ singletoneBrick = lego_communication_library::EV3_brick::getInstance();
 	try {
 		singletoneBrick->connectBrick(robot_index);
-		colorPrintf(ConsoleColor(ConsoleColor::yellow),"Connected to %s robot\n", connection.c_str());
+		//colorPrintf(ConsoleColor(ConsoleColor::yellow),"Connected to %s robot\n", connection.c_str());
 	} catch (...) {
 		singletoneBrick->disconnectBrick(robot_index);
 		return false;
