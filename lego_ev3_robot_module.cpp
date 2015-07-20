@@ -368,7 +368,7 @@ void *LegoRobotModule::writePC(unsigned int *buffer_length) {
 	return NULL;
 }
 
-FunctionResult* LegoRobot::executeFunction(system_value functionId, void **args) {
+FunctionResult* LegoRobot::executeFunction(CommandMode mode, system_value functionId, void **args) {
 	if ((functionId < 1) || (functionId > COUNT_LEGO_FUNCTIONS)) {
 		return NULL;
 	}
@@ -609,7 +609,7 @@ LegoRobot::LegoRobot(std::string connection, bool allow_dynamic):
 	robot_index = singletoneBrick->createBrick(connection_c);
 
 	uniq_name = new char[40];
-	sprintf(uniq_name, "robot-%u", robot_index);
+	sprintf(uniq_name, "robot-%s", connection.c_str());
 
 	if (!allow_dynamic) {
 		if (!connect()) {
