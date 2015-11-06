@@ -20,7 +20,7 @@
     <ClInclude Include="SimpleIni.h" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="C:\Program Files (x86)\Jenkins\workspace\lego_communication_library\lego_communication_library.csproj">
+    <ProjectReference Include="..\lego_communication_library\lego_communication_library.csproj">
       <Project>{7b70c921-11b2-4dde-9cd5-fd6e4b58c863}</Project>
     </ProjectReference>
   </ItemGroup>
@@ -57,6 +57,8 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
+    <OutDir>..\..\bin\robot_modules\lego_ev3</OutDir>
+    <TargetName>lego_ev3_module</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -69,7 +71,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;LEGO_EV3_ROBOT_MODULE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>C:\Program Files (x86)\Jenkins\workspace\RCML_build\simpleini;C:\Program Files (x86)\Jenkins\workspace\module_headers;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\simpleini;..\module_headers;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -86,7 +88,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;LEGO_EV3_ROBOT_MODULE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>C:\Program Files (x86)\Jenkins\workspace\RCML_build\simpleini;C:\Program Files (x86)\Jenkins\workspace\module_headers;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Program Files (x86)\Jenkins\workspace\RCML_build\simpleini;C:\Program Files (x86)\Jenkins\workspace\module_headers\000;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
