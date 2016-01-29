@@ -151,24 +151,19 @@ ADD_ROBOT_AXIS("moveMotorD", 1000, -1000) \
 ADD_ROBOT_AXIS("straight", 100, -100) \
 ADD_ROBOT_AXIS("rotation", 100, -100);
 
-#ifdef ROBOT_MODULE_H_000
-const char *LegoRobotModule::getUID() { return IID; }
-#else
 const struct ModuleInfo &LegoRobotModule::getModuleInfo() { return *mi; }
-#endif
+
 FunctionData **LegoRobotModule::getFunctions(unsigned int *count_functions) {
   *count_functions = COUNT_LEGO_FUNCTIONS;
   return lego_functions;
 };
 
 LegoRobotModule::LegoRobotModule() {
-#ifndef ROBOT_MODULE_H_000
   mi = new ModuleInfo;
   mi->uid = IID;
   mi->mode = ModuleInfo::Modes::PROD;
   mi->version = BUILD_NUMBER;
   mi->digest = NULL;
-#endif
 
   srand(time(NULL));
   lego_functions = new FunctionData *[COUNT_LEGO_FUNCTIONS];
@@ -210,9 +205,7 @@ inline void isMotor(wchar_t num) {
 };
 
 void LegoRobotModule::destroy() {
-#ifndef ROBOT_MODULE_H_000
   delete mi;
-#endif
   for (unsigned int j = 0; j < COUNT_LEGO_FUNCTIONS; ++j) {
     if (lego_functions[j]->count_params) {
       delete[] lego_functions[j]->params;
@@ -663,17 +656,9 @@ FunctionResult *LegoRobot::executeFunction(CommandMode mode,
         break;
       }
     };
-#ifdef ROBOT_MODULE_H_000
-      fr = new FunctionResult(1, rez);
-#else
-      fr = new FunctionResult(FunctionResult::Types::VALUE, rez);
-#endif  
+    fr = new FunctionResult(FunctionResult::Types::VALUE, rez); 
   } catch (...) {
-#ifdef ROBOT_MODULE_H_000
-      fr = new FunctionResult(0);
-#else
-      fr = new FunctionResult(FunctionResult::Types::EXCEPTION);
-#endif
+    fr = new FunctionResult(FunctionResult::Types::EXCEPTION);
   };
   return fr;
 };
@@ -721,11 +706,9 @@ void LegoRobot::colorPrintf(ConsoleColor colors, const char *mask, ...) {
   va_end(args);
 }
 
-#ifndef ROBOT_MODULE_H_000
 PREFIX_FUNC_DLL unsigned short getRobotModuleApiVersion() {
   return ROBOT_MODULE_API_VERSION;
 };
-#endif
 
 __declspec(dllexport) RobotModule *getRobotModuleObject() {
   return new LegoRobotModule();
