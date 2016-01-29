@@ -11,6 +11,8 @@
 #include <vector>
 #include <map>
 
+#include "build_number.h"
+
 #include "SimpleIni.h"
 
 #include "module.h"
