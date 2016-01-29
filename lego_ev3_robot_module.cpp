@@ -11,6 +11,8 @@
 #include <vector>
 #include <map>
 
+#include "build_number.h"
+
 #include "SimpleIni.h"
 
 #include "module.h"
@@ -21,6 +23,8 @@ EXTERN_C IMAGE_DOS_HEADER __ImageBase;
 
 const unsigned int COUNT_LEGO_FUNCTIONS = 24;
 const unsigned int COUNT_AXIS = 11;
+
+#define IID "RCT.Lego_ev3_robot_module_v100"
 
 #define ADD_LEGO_0_FUNCTION(FUNCTION_NAME)                       \
   lego_functions[function_id] =                                  \
@@ -149,13 +153,20 @@ ADD_ROBOT_AXIS("moveMotorD", 1000, -1000) \
 ADD_ROBOT_AXIS("straight", 100, -100) \
 ADD_ROBOT_AXIS("rotation", 100, -100);
 
-const char *LegoRobotModule::getUID() { return "Lego_EV3_Module"; };
+const struct ModuleInfo &LegoRobotModule::getModuleInfo() { return *mi; }
+
 FunctionData **LegoRobotModule::getFunctions(unsigned int *count_functions) {
   *count_functions = COUNT_LEGO_FUNCTIONS;
   return lego_functions;
 };
 
 LegoRobotModule::LegoRobotModule() {
+  mi = new ModuleInfo;
+  mi->uid = IID;
+  mi->mode = ModuleInfo::Modes::PROD;
+  mi->version = BUILD_NUMBER;
+  mi->digest = NULL;
+
   srand(time(NULL));
   lego_functions = new FunctionData *[COUNT_LEGO_FUNCTIONS];
   system_value function_id = 0;
@@ -196,6 +207,7 @@ inline void isMotor(wchar_t num) {
 };
 
 void LegoRobotModule::destroy() {
+  delete mi;
   for (unsigned int j = 0; j < COUNT_LEGO_FUNCTIONS; ++j) {
     if (lego_functions[j]->count_params) {
       delete[] lego_functions[j]->params;
@@ -394,6 +406,7 @@ FunctionResult *LegoRobot::executeFunction(CommandMode mode,
   if ((functionId < 1) || (functionId > COUNT_LEGO_FUNCTIONS)) {
     return NULL;
   }
+  FunctionResult *fr = NULL;
 
   try {
     variable_value rez = 0;
@@ -645,10 +658,11 @@ FunctionResult *LegoRobot::executeFunction(CommandMode mode,
         break;
       }
     };
-    return new FunctionResult(1, rez);
+    fr = new FunctionResult(FunctionResult::Types::VALUE, rez); 
   } catch (...) {
-    return new FunctionResult(0);
+    fr = new FunctionResult(FunctionResult::Types::EXCEPTION);
   };
+  return fr;
 };
 
 int LegoRobotModule::startProgram(int uniq_index) { return 0; }
@@ -693,6 +707,10 @@ void LegoRobot::colorPrintf(ConsoleColor colors, const char *mask, ...) {
   (*colorPrintf_p)(this, uniq_name, colors, mask, args);
   va_end(args);
 }
+
+PREFIX_FUNC_DLL unsigned short getRobotModuleApiVersion() {
+  return ROBOT_MODULE_API_VERSION;
+};
 
 __declspec(dllexport) RobotModule *getRobotModuleObject() {
   return new LegoRobotModule();
