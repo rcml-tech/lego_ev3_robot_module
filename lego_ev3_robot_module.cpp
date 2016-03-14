@@ -709,7 +709,7 @@ void LegoRobot::colorPrintf(ConsoleColor colors, const char *mask, ...) {
 }
 
 PREFIX_FUNC_DLL unsigned short getRobotModuleApiVersion() {
-  return ROBOT_MODULE_API_VERSION;
+  return MODULE_API_VERSION;
 };
 
 __declspec(dllexport) RobotModule *getRobotModuleObject() {
