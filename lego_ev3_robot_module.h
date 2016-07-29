@@ -47,11 +47,13 @@ class LegoRobotModule : public RobotModule {
   colorPrintfModuleVA_t *colorPrintf_p;
   bool allow_dynamic;
 
+  ModuleInfo *mi;
+
  public:
   LegoRobotModule();
 
   // init
-  const char *getUID();
+  const struct ModuleInfo &getModuleInfo();
   void prepare(colorPrintfModule_t *colorPrintf_p,
                colorPrintfModuleVA_t *colorPrintfVA_p);
 
