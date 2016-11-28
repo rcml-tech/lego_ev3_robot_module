@@ -13,10 +13,10 @@
 
 #include "build_number.h"
 
-#include "SimpleIni.h"
+#include <SimpleIni.h>
 
-#include "module.h"
-#include "robot_module.h"
+#include <module.h>
+#include <robot_module.h>
 #include "lego_ev3_robot_module.h"
 
 EXTERN_C IMAGE_DOS_HEADER __ImageBase;
